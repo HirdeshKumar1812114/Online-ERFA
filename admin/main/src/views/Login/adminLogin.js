@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -47,6 +48,7 @@ export default function LoginPage(props) {
                 setValid("true")
                 // window.alert('Welcome to Admin Portal')
                 alert()
+                
 
             } else {
                 setValid("false")
@@ -59,6 +61,7 @@ export default function LoginPage(props) {
             // window.alert('Please fill all the fields')
             setValid("incomplete")
             alert()
+            
 
         }
         alert()
@@ -68,8 +71,12 @@ export default function LoginPage(props) {
         if (valid != "") {
             if (valid == "true") {
                 return (
+                    <>
                     <Alert style={{"margin-top":"-40px","margin-bottom":"15px"}} onClose={() => {setValid("")}} severity="success">OK - <strong>Login Successful. </strong></Alert>
-                )
+                 <Redirect to='/' />
+                 </>
+                    )
+
             }
             else if (valid == "false") {
 
