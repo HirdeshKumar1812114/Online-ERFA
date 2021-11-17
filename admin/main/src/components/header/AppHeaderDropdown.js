@@ -1,7 +1,9 @@
 import React from 'react'
+import Auth from '../../Auth/auth'
 import {
   CAvatar,
   CBadge,
+  CButton,
   CDropdown,
   CDropdownDivider,
   CDropdownHeader,
@@ -23,12 +25,20 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import { Redirect } from 'react-router-dom/cjs/react-router-dom.min'
 
-const AppHeaderDropdown = () => {
+const AppHeaderDropdown = props => {
+
+  const logout = () => {
+   
+    
+    
+  }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+      <CButton color="light" shape="rounded-pill">Admin</CButton>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
@@ -84,7 +94,16 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem href="#" onClick={
+         ()=>{ 
+           
+          Auth.logout(() => {
+            return <Redirect to="/login"/>
+          })
+
+         }
+        }
+        >
           <CIcon icon={cilLockLocked} className="me-2" />
           Lock Account
         </CDropdownItem>

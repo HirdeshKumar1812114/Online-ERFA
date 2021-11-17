@@ -2,6 +2,8 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
+  CButton,
+  CBadge,
   CContainer,
   CHeader,
   CHeaderBrand,
@@ -40,29 +42,25 @@ const AppHeader = () => {
               Dashboard
             </CNavLink>
           </CNavItem>
-          <CNavItem>
+          {/* <CNavItem>
             <CNavLink   href="#">Users</CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink    href="#">Settings</CNavLink>
-          </CNavItem>
+          </CNavItem> */}
         </CHeaderNav>
         <CHeaderNav>
           <CNavItem>
             <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
+              <CButton color="link" className="position-relative">
+                  <CIcon icon={cilBell} size="lg" />
+                <CBadge color="danger" position="top-end" shape="rounded-pill">
+                  5 
+                </CBadge>
+              </CButton>
             </CNavLink>
           </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem>
+          
         </CHeaderNav>
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />

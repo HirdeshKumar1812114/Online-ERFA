@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import { createBrowserHistory } from "history";
 import { HashRouter, Route, Switch, Router } from 'react-router-dom'
 import './scss/style.scss'
-
+import ProtectedRoute from './Auth/protectedRoute'
+import Register  from 'views/pages/register/Register';
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -27,12 +28,8 @@ class App extends Component {
           <Switch>
             
             <Route exact path="/login" name="Login" render={(props) => <AdminLogin {...props} />} />
-            {/* <Route exact path="*" name="Page 404" render={(props) => <Page404 {...props} />} /> */}
-            <Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} />
+            <ProtectedRoute path="/" name="Home" component={DefaultLayout} />
 
-            {/* 
-            <Route exact path="/500" name="Page 500" render={(props) => <Page500 {...props} />} />
-             */}
           </Switch>
         </React.Suspense>
       </HashRouter>
