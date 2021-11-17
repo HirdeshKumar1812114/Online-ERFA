@@ -15,7 +15,7 @@ import {
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
-const _navAdmin = [
+const _navOfficer = [
   {
     component: CNavItem,
     name: 'Dashboard',
@@ -26,25 +26,6 @@ const _navAdmin = [
     //   text: 'NEW',
     // },
   },
-    {
-    component: CNavGroup,
-    name: 'User Management',
-    to: '/officers',
-    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
-    items: [
-      {
-        
-        component: CNavItem,
-        name: 'Create New',
-        to: '/officers/create-new',
-      },
-      {
-        component: CNavItem,
-        name: 'View Users',
-        to: '/officers/view-users',
-      },
-    ],
-  },
   ]
 
-export default _navAdmin
+export default _navOfficer

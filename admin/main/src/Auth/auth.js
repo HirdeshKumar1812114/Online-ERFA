@@ -1,8 +1,11 @@
+
 class Auth {
     constructor(){
         this.authenticated = false;
-            }
+    }
 
+           
+    
     login(cb){
         this.authenticated = true;
         cb();
@@ -14,7 +17,9 @@ class Auth {
     }
 
     isAuthenticated(){
-        return this.authenticated;
+        
+            return this.authenticated;
+        
     }
 }
 

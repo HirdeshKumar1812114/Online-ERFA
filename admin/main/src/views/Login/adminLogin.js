@@ -23,10 +23,23 @@ import Auth from "../../Auth/auth"
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import axios from 'axios';
 import image from "assets/img/bg7.jpg";
+import { useCookies } from 'react-cookie';
 
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
+    const [token, setToken] = useCookies(['token']);
+    const [userID, setUserID] = useCookies(['userID']);
+    const [userType, setUserType] = useCookies(['userType']);
+
+    useEffect(() => {
+        if (token.token != null) {
+            Auth.login(() => {
+                // return (<Redirect to={'/dashboard'} />)
+                props.history.push('/dashboard')
+            })
+        }
+    }, [])
 
     const api = axios.create({
         baseURL: 'http://localhost:5000/',
@@ -41,9 +54,16 @@ export default function LoginPage(props) {
     const submitData = (e) => {
         e.preventDefault();
         if (username !== '' && password !== '') {
-            
+
             api.post('erfa/login', { username, password }).then(result => {
-                console.log(result)
+                // console.log(result.data)
+                // console.log(result.data.token)
+                setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
+                setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
+                setUserType('userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
+
+
+
                 window.alert('Welcome to Admin Portal')
                 setValid("true")
                 alert()

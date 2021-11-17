@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
@@ -13,12 +13,21 @@ import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
-import navigation from '../_nav'
+import navAdmin from '../_nav'
+import navOfficer from '../_navOfficer'
+import { useCookies } from 'react-cookie';
+
 
 const AppSidebar = () => {
+
+  const [token, setToken] = useCookies(['token']);
+  const [userID, setUserID] = useCookies(['userID']);
+  const [userType, setUserType] = useCookies(['userType']);
+
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const [usertype, setUsertype] = useState(userType.userType)
 
   return (
     <CSidebar
@@ -38,7 +47,7 @@ const AppSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          <AppSidebarNav items={usertype=="admin" ? navAdmin : navOfficer} />
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
