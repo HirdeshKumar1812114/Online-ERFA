@@ -1,20 +1,18 @@
 import React from "react";
+import 'core-js'
+import 'react-app-polyfill/stable'
 import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router-dom";
+import * as serviceWorker from './serviceWorker'
+import { Provider } from 'react-redux'
+import store from './store'
+import App from "./App";
 
-import "assets/scss/material-kit-react.scss?v=1.10.0";
 
-import AdminLogin from "views/Login/adminLogin";
-
-var hist = createBrowserHistory();
 
 ReactDOM.render(
-  <Router history={hist}>
-    <Switch>
-      <Route path="/" component={AdminLogin} />
-      {/* <Route path="/" component={Components} /> */}
-    </Switch>
-  </Router>,
+<Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById("root")
 );
+serviceWorker.unregister()
