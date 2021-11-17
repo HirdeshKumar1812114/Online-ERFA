@@ -28,14 +28,16 @@ exports.studentLogin = expressAsyncHandler(async function (req, res, next) {
   const { regid, password } = req.body;
   try {
     const student = await db.UserStudent.login(regid, password);
-    const token = createToken({ id: user._id, regid: regid });
+    const token = createToken({ id: student._id, regid: student.regid });
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     console.log(student);
+    console.log(token);
   } catch (error) {
     console.log(error);
   }
 });
 
-exports.studentLogout = expressAsyncHandler(async function (req, res, next) {});
-res.cookie('jwt','',maxAge:1);
-res.redirect('/')
+exports.studentLogout = expressAsyncHandler(async function (req, res, next) {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/");
+});

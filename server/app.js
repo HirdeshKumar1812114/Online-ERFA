@@ -6,7 +6,7 @@ var logger = require("morgan");
 var helmet = require("helmet");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var adminRouter = require("./routes/adminRoutes/userAdmin");
+var erfaRouter = require("./routes/erfaRoutes/userErfa");
 var studentRouter = require("./routes/studentRoutes/userStudent");
 var panelistRouter = require("./routes/panelistRoutes/userPanelist");
 
@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/admin", adminRouter);
+app.use("/erfa", erfaRouter);
 app.use("/users", usersRouter);
 app.use("/student", studentRouter);
 app.use("/panelist", panelistRouter);
