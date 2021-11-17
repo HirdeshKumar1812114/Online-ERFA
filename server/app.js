@@ -9,8 +9,9 @@ var usersRouter = require("./routes/users");
 var erfaRouter = require("./routes/erfaRoutes/userErfa");
 var studentRouter = require("./routes/studentRoutes/userStudent");
 var panelistRouter = require("./routes/panelistRoutes/userPanelist");
-
+var cors = require('cors')
 var app = express();
+app.use(cors())
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
