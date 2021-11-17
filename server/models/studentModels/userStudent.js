@@ -3,6 +3,15 @@ const bcrypt = require("bcrypt");
 const userStudentSchema = new mongoose.Schema({
   regid: { type: String, required: true },
   password: { type: String, required: true },
+  name: { type: String, required: true },
+  program: { type: String, required: true },
+  section: { type: String, required: true },
+  cellnumber: { type: String, required: true },
+  email: { type: String, required: true },
+  dob: { type: Date, required: true },
+  permanentaddress: { type: String, required: true },
+  mailingaddress: { type: String, required: true },
+  fathername: { type: String, required: true },
 });
 
 userStudentSchema.pre("save", async function (next) {

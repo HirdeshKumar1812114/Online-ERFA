@@ -27,8 +27,17 @@ POST http://localhost:5000/student/signup HTTP/1.1
 Content-Type: application/json
 
 {
-    "regid":"1812114",
-    "password":"abc.123"
+        "regid": "1812134",
+        "password": "abc.123",
+        "name":"Rani Imam",
+        "program": "BSCS",
+        "section": "7A",
+        "cellnumber": "03747921563",
+        "email": "rustafa@gmail.com",
+        "dob": "10-12-1998",
+        "permanentaddress": "B-201,North Karachi, Karachi",
+        "mailingaddress":"B-201,North Karachi, Karachi",
+        "fathername": "Haider"
 }
 
 ### student login request

@@ -9,18 +9,35 @@ const createToken = (user) => {
 };
 
 exports.studentSignUp = expressAsyncHandler(async (req, res) => {
-  const student = new db.UserStudent({
-    regid: req.body.regid,
-    password: req.body.password,
-  });
-
+  const regid = req.body.regid;
   try {
-    const newStudent = await student.save();
-    res
-      .status(201)
-      .json({ message: "Student signed up successfuly", student: newStudent });
+    const checkStudent = await db.UserStudent.findOne({ regid: regid });
+
+    if (!checkStudent) {
+      const newStudent = new db.UserStudent({
+        regid: req.body.regid,
+        password: req.body.password,
+        name: req.body.name,
+        program: req.body.program,
+        section: req.body.section,
+        cellnumber: req.body.cellnumber,
+        email: req.body.email,
+        dob: ISODate(req.body.dob),
+        permanentaddress: req.body.permanentaddress,
+        mailingaddress: req.body.mailingaddress,
+        fathername: req.body.fathername,
+      });
+
+      if (newStudent) {
+        const confirmStudent = await newStudent.save();
+        res.status(200).send(confirmStudent);
+        res.end();
+      }
+    } else {
+      res.status(400).send({ message: "Error in making a student" });
+    }
   } catch {
-    res.status(400).json({ message: err.message });
+    res.status(400).send({ message: "Error in adding! In catch block" });
   }
 });
 
