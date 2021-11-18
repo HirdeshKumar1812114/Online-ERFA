@@ -10,6 +10,7 @@ mongoose.connect(
 );
 
 module.exports = {
+  ScholarshipPost: require("./erfaModels/scholarshipPost"),
   ErfaOfficer: require("./erfaModels/erfaOfficerDetails"),
   UserErfa: require("./erfaModels/userErfa"),
   UserPanelist: require("./panelistModels/userPanelist"),
