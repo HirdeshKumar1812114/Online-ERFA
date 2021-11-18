@@ -3,7 +3,7 @@ const db = require("../../models");
 
 exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
   const checkRecord = await db.ErfaOfficer.findOne({
-    email: req.body.email
+    email: req.body.email,
   });
   if (checkRecord === null) {
     const addNewUser = new db.UserErfa({
@@ -16,15 +16,15 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
       const user = await addNewUser.save();
 
       if (user) {
-        console.log(req.body)
+        console.log(req.body);
         const addNewOfficer = new db.ErfaOfficer({
           username: req.body.username,
           password: user.password,
           designation: req.body.designation,
           cellnumber: req.body.cellNumber,
           email: user.email,
-          nic:req.body.nic,
-          dob:req.body.dob
+          nic: req.body.nic,
+          dob: req.body.dob,
         });
         try {
           const newOfficer = await addNewOfficer.save();
@@ -42,7 +42,7 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
       res.status(400).send({ message: "Error in catch block 1" });
     }
   } else {
-    res.status(400).send({ message: "Record Officer email is already used" });
+    res.status(200).send({ message: "User already exits" });
   }
 });
 
