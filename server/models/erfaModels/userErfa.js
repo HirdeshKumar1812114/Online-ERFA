@@ -38,4 +38,3 @@ UserErfaSchema.statics.checkPassword = async function (email, password) {
 
 const userErfa = mongoose.model("Usererfa", UserErfaSchema);
 module.exports = userErfa;
-s

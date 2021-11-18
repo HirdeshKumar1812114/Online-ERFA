@@ -16,11 +16,12 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
       const user = await addNewUser.save();
 
       if (user) {
+        console.log(req.body)
         const addNewOfficer = new db.ErfaOfficer({
           username: req.body.username,
           password: user.password,
           designation: req.body.designation,
-          cellnumber: req.body.cellnumber,
+          cellnumber: req.body.cellNumber,
           email: user.email,
           nic:req.body.nic,
           dob:req.body.dob
