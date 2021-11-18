@@ -9,9 +9,10 @@ var usersRouter = require("./routes/users");
 var erfaRouter = require("./routes/erfaRoutes/userErfa");
 var studentRouter = require("./routes/studentRoutes/userStudent");
 var panelistRouter = require("./routes/panelistRoutes/userPanelist");
-var cors = require('cors')
+var erfaOfficerRouter = require("./routes/erfaRoutes/erfaOfficer");
+var cors = require("cors");
 var app = express();
-app.use(cors())
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -29,7 +30,7 @@ app.use("/erfa", erfaRouter);
 app.use("/users", usersRouter);
 app.use("/student", studentRouter);
 app.use("/panelist", panelistRouter);
-
+app.use("/officer", erfaOfficerRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
