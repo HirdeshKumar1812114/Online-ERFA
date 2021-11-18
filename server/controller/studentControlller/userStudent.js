@@ -78,6 +78,7 @@ exports.deleteStudent = expressAsyncHandler(async function (req, res, next) {
   try {
     await db.UserStudent.findByIdAndRemove(req.params.id);
     res.json("Delete the student");
+    res.end();
   } catch (err) {
     res.status(400).send("Error in delete catch block");
   }

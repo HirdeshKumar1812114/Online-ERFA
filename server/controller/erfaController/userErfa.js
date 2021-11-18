@@ -49,6 +49,7 @@ exports.erfaSignUp = expressAsyncHandler(async (req, res) => {
   try {
     const newuser = await user.save();
     res.status(200).json({ user: newuser });
+    res.end();
   } catch (err) {
     console.log(err);
   }
@@ -76,6 +77,7 @@ exports.changePassword = expressAsyncHandler(async (req, res) => {
     try {
       await checkPass.save();
       res.status(200).json("Password update");
+      res.end();
     } catch (error) {
       res.status(400).json("Password not update");
     }

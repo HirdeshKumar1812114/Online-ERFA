@@ -43,6 +43,7 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
     }
   } else {
     res.status(200).send({ message: "userAlreadyExisted" });
+    res.end();
   }
 });
 
@@ -75,11 +76,18 @@ exports.getAllErfaOfficer = expressAsyncHandler(async (req, res, next) => {
 });
 
 exports.deleteErfaOfficer = expressAsyncHandler(async (req, res, next) => {
+  const take = await db.ErfaOfficer.findOne({ _id: req.params.id });
+  const give = await db.UserErfa.findOne({ email: take.email });
+
   try {
-    await db.ErfaOfficer.findByIdAndRemove(req.params.id);
-    res.json("Delete the ERFA Officer");
+    if (take && give) {
+      await db.UserErfa.findByIdAndRemove({ _id: give._id });
+      await db.ErfaOfficer.findByIdAndRemove({ _id: req.params.id });
+      res.status(200).json("Delete the ERFA Officer");
+      res.end();
+    }
   } catch (err) {
-    res.status(400).send("Error in delete catch block");
+    res.status(404).send("Error in delete catch block");
   }
 });
 
