@@ -42,7 +42,7 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
       res.status(400).send({ message: "Error in catch block 1" });
     }
   } else {
-    res.status(200).send({ message: "User already exits" });
+    res.status(200).send({ message: "userAlreadyExisted" });
   }
 });
 
