@@ -3,7 +3,9 @@ const db = require("../../models");
 const jwt = require("jsonwebtoken");
 const maxAge = 2 * 24 * 60 * 60;
 const createToken = (user) => {
-  return jwt.sign({ ...user }, "Don't tell", { expiresIn: maxAge });
+  return jwt.sign({ _id: user._id, username: user.username }, "Don't tell", {
+    expiresIn: maxAge,
+  });
 };
 
 exports.erfaLogin = expressAsyncHandler(async (req, res, next) => {
@@ -15,11 +17,11 @@ exports.erfaLogin = expressAsyncHandler(async (req, res, next) => {
       username: checkUser.username,
     });
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    console.log(checkUser);
-    console.log(token);
+
     const sendUserName = checkUser.username;
     const sendUserType = checkUser.usertype;
-
+    /*console.log(checkUser);
+    console.log(token);*/
     res.status(200).send({ token, sendUserName, sendUserType });
     res.end();
   } catch (err) {
@@ -41,3 +43,17 @@ exports.erfaSignUp = expressAsyncHandler(async (req, res) => {
     console.log(err);
   }
 });
+
+exports.checkToken = (req, res, next) => {
+  const token = req.header("x-auth-token");
+
+  if (!token) res.status(401).json({ msg: "No Token" });
+  try {
+    const decodedToken = jwt.verify(token, "Don't tell");
+    req.user = decodedToken;
+    next();
+  } catch (e) {
+    return;
+    res.status(400).json({ msg: "Token is not valid" });
+  }
+};

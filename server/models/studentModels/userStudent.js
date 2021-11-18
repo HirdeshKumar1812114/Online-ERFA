@@ -8,7 +8,7 @@ const userStudentSchema = new mongoose.Schema({
   section: { type: String, required: true },
   cellnumber: { type: String, required: true },
   email: { type: String, required: true },
-  dob: { type: Date, required: true },
+  dob: { type: String, required: true },
   permanentaddress: { type: String, required: true },
   mailingaddress: { type: String, required: true },
   fathername: { type: String, required: true },

@@ -21,12 +21,30 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Auth from "../../Auth/auth"
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
-
+import axios from 'axios';
 import image from "assets/img/bg7.jpg";
+import { useCookies } from 'react-cookie';
 
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
+    const [token, setToken] = useCookies(['token']);
+    const [userID, setUserID] = useCookies(['userID']);
+    const [userType, setUserType] = useCookies(['userType']);
+
+    useEffect(() => {
+        if (token.token != null) {
+            Auth.login(() => {
+                // return (<Redirect to={'/dashboard'} />)
+                props.history.push('/dashboard')
+            })
+        }
+    }, [])
+
+    const api = axios.create({
+        baseURL: 'http://localhost:5000/',
+        timeout: 1000,
+    });
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -36,35 +54,51 @@ export default function LoginPage(props) {
     const submitData = (e) => {
         e.preventDefault();
         if (username !== '' && password !== '') {
-            setValid("true")
-            //    api.post('login', {username, password}).then(result => {
-            //         window.alert("Login");
-            //     }).catch(err => {
-            //       console.log(err)
-            //       window.alert(`Invalid Credentials ${err}`)
-            //     })
 
-            if (username == 'admin' && password == 'admin') {
+            api.post('erfa/login', { username, password }).then(result => {
+                // console.log(result.data)
+                // console.log(result.data.token)
+                setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
+                setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
+                setUserType('userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
+
+
+
+                window.alert('Welcome to Admin Portal')
                 setValid("true")
-                Auth.login(()=>{
-                props.history.push("/")   
+                alert()
+                Auth.login(() => {
+                    props.history.push("/")
                 })
                 // window.alert('Welcome to Admin Portal')
-                alert()
-                
 
-            } else {
+            }).catch(err => {
+                console.log(err)
                 setValid("false")
-                // window.alert('Invalid Credentials')
                 alert()
+            })
 
-            }
+            // if (username == 'admin' && password == 'admin') {
+            //     setValid("true")
+            //     Auth.login(()=>{
+            //     props.history.push("/")   
+            //     })
+            //     // window.alert('Welcome to Admin Portal')
+            //     alert()
+
+
+            // } else {
+            //     setValid("false")
+            //     // window.alert('Invalid Credentials')
+            //     alert()
+
+            // }
 
         } else {
             // window.alert('Please fill all the fields')
             setValid("incomplete")
             alert()
-            
+
 
         }
         alert()
@@ -75,18 +109,18 @@ export default function LoginPage(props) {
             if (valid == "true") {
                 return (
                     <>
-                    <Alert style={{"margin-top":"-40px","margin-bottom":"15px"}} onClose={() => {setValid("")}} severity="success">OK - <strong>Login Successful. </strong></Alert>
-                 <Redirect to='/' />
-                 </>
-                    )
+                        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="success">OK - <strong>Login Successful. </strong></Alert>
+                        <Redirect to='/' />
+                    </>
+                )
 
             }
             else if (valid == "false") {
 
-                return (<Alert style={{"margin-top":"-40px","margin-bottom":"15px"}} onClose={() => {setValid("")}} severity="error">ERROR — <strong>Invalid Credentials!</strong></Alert>)
+                return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="error">ERROR — <strong>Invalid Credentials!</strong></Alert>)
             }
             else {
-                return (<Alert style={{"margin-top":"-40px","margin-bottom":"15px"}} onClose={() => {setValid("")}} severity="warning">ALERT — <strong>Please fill all fields!</strong></Alert>)
+                return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="warning">ALERT — <strong>Please fill all fields!</strong></Alert>)
             }
         }
         else {
@@ -105,13 +139,13 @@ export default function LoginPage(props) {
     return (
         <div>
             <Header
-        absolute
-        color="transparent"
-        brand="ONLINE ERFA"
-        rightLinks={<HeaderLinks />}
-        {...rest}
-      />
-            
+                absolute
+                color="transparent"
+                brand="ONLINE ERFA"
+                rightLinks={<HeaderLinks />}
+                {...rest}
+            />
+
 
             <div
                 className={classes.pageHeader}
@@ -123,7 +157,7 @@ export default function LoginPage(props) {
             >
 
                 <div className={classes.container}>
-{alert()}
+                    {alert()}
 
                     <GridContainer justify="center">
                         <GridItem xs={12} sm={12} md={4}>
@@ -182,8 +216,8 @@ export default function LoginPage(props) {
                         </GridItem>
                     </GridContainer>
                 </div>
-            <Footer  whiteFont />
-  
+                <Footer whiteFont />
+
             </div>
             {/* <prev >{JSON.stringify(username, null, 2)}</prev>
             <prev>{JSON.stringify(password, null, 2)}</prev>
