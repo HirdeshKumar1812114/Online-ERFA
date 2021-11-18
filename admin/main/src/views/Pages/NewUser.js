@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+
 import {
   CContainer,
   CButton,
@@ -16,8 +17,13 @@ import {
   CRow,
 } from '@coreui/react'
 import Alert from '@mui/material/Alert';
+import RingLoader from "react-spinners/RingLoader";
+import { css } from "@emotion/react";
 
 
+const override = css`
+  margin: 0 auto;
+`;
 
 
 const Layout = () => {
@@ -33,54 +39,105 @@ const Layout = () => {
   const [loading, setLoading] = useState(false)
   const [valid, setValid] = useState('')
   const [isMatched, setIsMatched] = useState()
-  
-  
+  let [color, setColor] = useState("#49A54D");
+  const [validated, setValidated] = useState(false)
 
   const api = axios.create({
     baseURL: 'http://localhost:5000/',
     timeout: 1000,
   });
 
-  const submitData = (e) => {
-    e.preventDefault();
-    if (username !== '' && password !== '', designation !== '' && cellNumber !== '' && email !== '' && nic !== '' && dob != '') {
-     
-      if(password === re_password){
-      setValid("true")
-        setIsMatched(true)
-        api.post('officer/addofficer', {
-          username,
-          password,
-          designation,
-          cellNumber,
-          email,
-          nic,
-          dob
-        }, setLoading(true))
-          .then(result => {
-            setLoading(false)
-            // console.log(result.data)
-            // console.log(result.data.token)
-            alert()
-            setValid("true")
-            Auth.login(() => {
-              props.history.push("/")
-            })
-            // window.alert('Welcome to Admin Portal')
-  
-          }).catch(err => {
-            setLoading(false)
-            console.log(err)
-            setValid("false")
-            alert()
-          })
-  
-      }else{
-        setValid('invalidPassword')
-        alert()
 
-      }
-      
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+      setValid("incomplete")
+      alert()
+    }
+    
+    if (password === re_password) {
+      setIsMatched(true)
+      submitData()
+    }
+    else {
+      setIsMatched(false)
+      event.preventDefault()
+      event.stopPropagation()
+      setValid('invalidPassword')
+      alert()
+    }
+
+    setValidated(true)
+  }
+
+  // const handleSubmit = (event) => {
+  //   const form = event.currentTarget
+  //   if (form.checkValidity() === false) {
+  //     event.preventDefault()
+  //     event.stopPropagation()
+  //     setValid("incomplete")
+  //     alert()
+  //   } else {
+
+  //     if (password === re_password) {
+  //       setIsMatched(true)
+  //       setValidated(true)
+  //       submitData()
+  //     }
+  //     else {
+  //       setIsMatched(false)
+  //       setValid('invalidPassword')
+  //       alert()
+  //     }
+  //   }
+
+
+
+  // }
+  const submitData = () => {
+
+
+
+    if (username !== '' && password !== '', designation !== '' && cellNumber !== '' && email !== '' && nic !== '' && dob != '') {
+
+
+      api.post('officer/addofficer', {
+        username,
+        password,
+        designation,
+        cellNumber,
+        email,
+        nic,
+        dob
+      }, setLoading(true))
+        .then(result => {
+          setValid("true")
+          setUsername("")
+          setPassword("")
+          setDesignation("")
+          setCellNumber("")
+          setEmail("")
+          setNic("")
+          setDob("")
+          setRepassword("")
+          setLoading(false)
+          console.log(result)
+          // console.log(result.data.token)
+          alert()
+
+
+        }).catch(err => {
+          setLoading(false)
+          console.log(err)
+          setValid("error")
+          alert()
+        })
+
+
+
+
 
     } else {
       setValid("incomplete")
@@ -89,6 +146,7 @@ const Layout = () => {
 
     }
 
+
   }
 
   const alert = () => {
@@ -96,9 +154,9 @@ const Layout = () => {
       if (valid == "true") {
         return (
           <>
-        <br />
-        <br />
-            <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="success">OK - <strong>Form Complete. </strong></Alert>
+            <br />
+            <br />
+            <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="success">OK - <strong>New ERFA Portal user created</strong></Alert>
             {/* <Redirect to='/' /> */}
           </>
         )
@@ -106,29 +164,32 @@ const Layout = () => {
       else if (valid == "userExist") {
 
         return (
-        <>
-        <br />
-        <br />
-        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="error">ERROR — <strong>Invalid Credentials!</strong></Alert>
-        </>
-      )}
+          <>
+            <br />
+            <br />
+            <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="error">ERROR — <strong>Invalid Credentials!</strong></Alert>
+          </>
+        )
+      }
       else if (valid == "invalidPassword") {
 
         return (
-        <>
-        <br />
-        <br />
-        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="error">ERROR — <strong>Password not Matched</strong></Alert>
-        </>
-      )}
+          <>
+            <br />
+            <br />
+            <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="error">ERROR — <strong>Password not Matched</strong></Alert>
+          </>
+        )
+      }
       else if (valid == "incomplete") {
         return (
-        <>
-        <br />
-        <br />
-        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="warning">ALERT — <strong> Incomplete form, please fill all fields !</strong></Alert>
-        </>
-        )}
+          <>
+            <br />
+            <br />
+            <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="warning">ALERT — <strong> Incomplete form, please fill all fields !</strong></Alert>
+          </>
+        )
+      }
     }
     else {
       return (
@@ -144,22 +205,41 @@ const Layout = () => {
           <strong><h3>New User Form</h3></strong>
         </CCardHeader>
         <CCardBody>
-       {alert()}
-       
-          <CForm className="row g-3">
+
+          {alert()}
+{loading == true ? 
+              <>
+              <br />
+              <RingLoader color={color} css={override} size={100} /> 
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              </>
+              :
+           
+          <CForm
+            className="row g-3 needs-validation"
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+          >
 
             <CCol md={12}>
               <CFormLabel htmlFor="inputUserName4">User Name</CFormLabel>
-              <CFormInput type="text" id="inputUsername4" placeholder="First_Name   Middle_Name   Last_Name"
+              <CFormInput required value={username} type="text" id="inputUsername4" placeholder="First_Name   Middle_Name   Last_Name"
                 onChange={
                   (e) => { setUsername(e.target.value) }
+
                 }
               />
             </CCol>
-            
+
             <CCol md={6}>
               <CFormLabel htmlFor="designation">Designation</CFormLabel>
-              <CFormInput type="text" id="designation" placeholder="Manager"
+              <CFormInput required value={designation} type="text" id="designation" placeholder="Manager"
                 onChange={
                   (e) => { setDesignation(e.target.value) }
                 }
@@ -167,7 +247,7 @@ const Layout = () => {
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputCellNo">Cell Number</CFormLabel>
-              <CFormInput type="number" id="inputCellNo"
+              <CFormInput required value={cellNumber} type="number" id="inputCellNo"
                 onChange={
                   (e) => { setCellNumber(e.target.value) }
                 }
@@ -175,7 +255,7 @@ const Layout = () => {
             </CCol>
             <CCol xs={6}>
               <CFormLabel htmlFor="inputEmail">Email</CFormLabel>
-              <CFormInput type="email" id="inputEmail" placeholder="xyz@szabist.pk"
+              <CFormInput required value={email} type="email" id="inputEmail" placeholder="xyz@szabist.pk"
                 onChange={
                   (e) => { setEmail(e.target.value) }
                 }
@@ -183,16 +263,16 @@ const Layout = () => {
             </CCol>
             <CCol xs={6}>
               <CFormLabel htmlFor="inputNic">NIC Number</CFormLabel>
-              <CFormInput id="inputNic" placeholder="XXXX-XXXXXXX-X (13-digits with dashes)"
+              <CFormInput required value={nic} id="inputNic" placeholder="XXXX-XXXXXXX-X (13-digits with dashes)"
                 onChange={
                   (e) => { setNic(e.target.value) }
                 }
               />
             </CCol>
-            
+
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Password</CFormLabel>
-              <CFormInput type="password" id="inputPassword4"
+              <CFormInput required value={password} type="password" id="inputPassword4"
                 onChange={
                   (e) => { setPassword(e.target.value) }
                 }
@@ -200,24 +280,31 @@ const Layout = () => {
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputRePassword4">Retype Password</CFormLabel>
-              <CFormInput type="password" id="inputRePassword4"
+              <CFormInput required value={re_password} type="password" id="inputRePassword4"
                 onChange={
-                  (e) => { setRepassword(e.target.value) }
+                  (e) => {
+                    setRepassword(e.target.value)
+
+                  }
                 }
               />
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputDob">Date of Birth</CFormLabel>
-              <CFormInput id="inputDob" type="date"
+              <CFormInput required value={dob} id="inputDob" type="date"
                 onChange={
                   (e) => { setDob(e.target.value) }
                 }
               />
             </CCol>
             <CCol xs={12}>
-              <CButton type="submit" onClick={submitData}>Sign in</CButton>
+              
+            <CButton type="submit">Add User</CButton>
+
+
             </CCol>
           </CForm>
+           }
         </CCardBody>
       </CCard>
       <prev >{JSON.stringify(username, null, 2)}</prev>
@@ -226,9 +313,9 @@ const Layout = () => {
       <prev >{JSON.stringify(cellNumber, null, 2)}</prev>
       <prev >{JSON.stringify(nic, null, 2)}</prev>
       <prev >{JSON.stringify(dob, null, 2)}</prev>
-      <prev >{JSON.stringify(re_password  , null, 2)}</prev>
-      <prev >{JSON.stringify(valid  , null, 2)}</prev>
-      <prev >{JSON.stringify(isMatched  , null, 2)}</prev>
+      <prev >{JSON.stringify(re_password, null, 2)}</prev>
+      <prev >{JSON.stringify(valid, null, 2)}</prev>
+      <prev >{JSON.stringify(isMatched, null, 2)}</prev>
 
 
 

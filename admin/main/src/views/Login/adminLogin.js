@@ -80,7 +80,7 @@ export default function LoginPage(props) {
             
                 api.post('erfa/login', { username, password },setLoading(true)).then(result => {
                     setLoading(false)
-                    // console.log(result.data)
+                    console.log(result.data)
                     // console.log(result.data.token)
                     setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
                     setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
