@@ -40,6 +40,8 @@ export default function LoginPage(props) {
     const [userType, setUserType] = useCookies(['userType']);
     const [loading, setLoading] =useState(false)
     let [color, setColor] = useState("#49A54D");
+
+
     useEffect(() => {
         if (token.token != null) {
             Auth.login(() => {
@@ -49,6 +51,8 @@ export default function LoginPage(props) {
         }
     }, [])
 
+
+    
     const api = axios.create({
         baseURL: 'http://localhost:5000/',
         timeout: 1000,
