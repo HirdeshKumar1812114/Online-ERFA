@@ -3,26 +3,36 @@ const db = require("../../models");
 const jwt = require("jsonwebtoken");
 const maxAge = 2 * 24 * 60 * 60;
 const createToken = (user) => {
-  return jwt.sign({ _id: user._id, email: user.email }, "Don't tell", {
-    expiresIn: maxAge,
-  });
+  return jwt.sign(
+    { _id: user._id, email: user.email, username: user.name },
+    "Don't tell",
+    {
+      expiresIn: maxAge,
+    }
+  );
 };
 
 exports.erfaLogin = expressAsyncHandler(async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const checkUser = await db.UserErfa.login(email, password);
+    const checkUserEmail = await db.ErfaOfficer.findOne({
+      email: checkUser.email,
+    });
+
     const token = createToken({
       id: checkUser._id,
-      username: checkUser.email,
+      email: checkUser.email,
+      username: checkUserEmail.username,
     });
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 
     const sendEmail = checkUser.email;
     const sendUserType = checkUser.usertype;
+    const sendUserName = checkUserEmail.username;
     /*console.log(checkUser);
     console.log(token);*/
-    res.status(200).send({ token, sendEmail, sendUserType });
+    res.status(200).send({ token, sendEmail, sendUserType, sendUserName });
     res.end();
   } catch (err) {
     console.log(err);
