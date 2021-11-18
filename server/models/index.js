@@ -11,6 +11,7 @@ mongoose.connect(
 
 module.exports = {
   UserErfa: require("./erfaModels/userErfa"),
+  ErfaOfficer: require("./erfaModels/erfaOfficer"),
   UserPanelist: require("./panelistModels/userPanelist"),
   UserStudent: require("./studentModels/userStudent"),
 };
