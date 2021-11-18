@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const UserErfaSchema = new mongoose.Schema({
-  username: { type: String, required: true },
+  email: { type: String, required: true },
   password: { type: String, required: true },
   usertype: { type: String, required: true },
 });
@@ -12,8 +12,8 @@ UserErfaSchema.pre("save", async function (next) {
   next();
 });
 
-UserErfaSchema.statics.login = async function (username, password) {
-  const user = await this.findOne({ username });
+UserErfaSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email});
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {
@@ -25,8 +25,8 @@ UserErfaSchema.statics.login = async function (username, password) {
   throw { message: "Incorrect Username" };
 };
 
-UserErfaSchema.statics.checkPassword = async function (username, password) {
-  const user = await this.findOne({ username });
+UserErfaSchema.statics.checkPassword = async function (email, password) {
+  const user = await this.findOne({ email });
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {
@@ -38,3 +38,4 @@ UserErfaSchema.statics.checkPassword = async function (username, password) {
 
 const userErfa = mongoose.model("Usererfa", UserErfaSchema);
 module.exports = userErfa;
+s

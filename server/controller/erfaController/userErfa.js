@@ -3,26 +3,26 @@ const db = require("../../models");
 const jwt = require("jsonwebtoken");
 const maxAge = 2 * 24 * 60 * 60;
 const createToken = (user) => {
-  return jwt.sign({ _id: user._id, username: user.username }, "Don't tell", {
+  return jwt.sign({ _id: user._id, email: user.email }, "Don't tell", {
     expiresIn: maxAge,
   });
 };
 
 exports.erfaLogin = expressAsyncHandler(async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const checkUser = await db.UserErfa.login(username, password);
+    const { email, password } = req.body;
+    const checkUser = await db.UserErfa.login(email, password);
     const token = createToken({
       id: checkUser._id,
-      username: checkUser.username,
+      username: checkUser.email,
     });
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 
-    const sendUserName = checkUser.username;
+    const sendEmail = checkUser.email;
     const sendUserType = checkUser.usertype;
     /*console.log(checkUser);
     console.log(token);*/
-    res.status(200).send({ token, sendUserName, sendUserType });
+    res.status(200).send({ token, sendEmail, sendUserType });
     res.end();
   } catch (err) {
     console.log(err);
@@ -31,7 +31,7 @@ exports.erfaLogin = expressAsyncHandler(async (req, res, next) => {
 
 exports.erfaSignUp = expressAsyncHandler(async (req, res) => {
   const user = new db.UserErfa({
-    username: req.body.username,
+    email: req.body.email,
     password: req.body.password,
     usertype: req.body.usertype,
   });
@@ -58,10 +58,10 @@ exports.checkToken = (req, res, next) => {
   }
 };
 exports.changePassword = expressAsyncHandler(async (req, res) => {
-  const { username, oldpassword, newpassword } = req.body;
-  const checkPass = await db.UserErfa.checkPassword(username, oldpassword);
+  const { email, oldpassword, newpassword } = req.body;
+  const checkPass = await db.UserErfa.checkPassword(email, oldpassword);
   if (checkPass) {
-    checkPass.username = username;
+    checkPass.email = email;
     checkPass.password = newpassword;
     try {
       await checkPass.save();

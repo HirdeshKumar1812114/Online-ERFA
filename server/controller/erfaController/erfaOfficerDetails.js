@@ -3,11 +3,11 @@ const db = require("../../models");
 
 exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
   const checkRecord = await db.ErfaOfficer.findOne({
-    officerid: req.body.officerid,
+    email: req.body.email
   });
   if (checkRecord === null) {
     const addNewUser = new db.UserErfa({
-      username: req.body.username,
+      email: req.body.email,
       password: req.body.password,
       usertype: "officer",
     });
@@ -17,12 +17,13 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
 
       if (user) {
         const addNewOfficer = new db.ErfaOfficer({
-          officerid: req.body.officerid,
-          username: user.username,
+          username: req.body.username,
           password: user.password,
           designation: req.body.designation,
           cellnumber: req.body.cellnumber,
-          email: req.body.email,
+          email: user.email,
+          nic:req.body.nic,
+          dob:req.body.dob
         });
         try {
           const newOfficer = await addNewOfficer.save();
@@ -40,13 +41,13 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
       res.status(400).send({ message: "Error in catch block 1" });
     }
   } else {
-    res.status(400).send({ message: "Record Officer ID is alreadyused" });
+    res.status(400).send({ message: "Record Officer email is already used" });
   }
 });
 
 exports.getErfaOfficer = expressAsyncHandler(async (req, res, next) => {
   try {
-    const officer = await db.ErfaOfficer.findOne({ officerid: req.params.id });
+    const officer = await db.ErfaOfficer.findOne({ _id: req.params.id });
     if (officer) {
       res.status(200).send(officer);
       res.end();
