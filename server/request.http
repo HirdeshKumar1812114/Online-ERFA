@@ -6,8 +6,7 @@ Content-Type: application/json
 {
 
     "username": "head",
-    "password":"abc.123",
-    "usertype": "admin"
+    "password":"abc.123"
 
 }
 ### new user in erfa
