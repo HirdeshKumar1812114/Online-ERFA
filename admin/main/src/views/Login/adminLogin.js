@@ -44,15 +44,24 @@ export default function LoginPage(props) {
 
     useEffect(() => {
         if (token.token != null) {
-            Auth.login(() => {
+            api.get('erfa/dashboard', {
+                headers: {
+                    'x-auth-token':token.token
+                }
+            }).then((result) =>{
+               console.log(result.data)
+               Auth.login(() => {
                 // return (<Redirect to={'/dashboard'} />)
                 props.history.push('/dashboard')
             })
+            } )
+
+            
         }
     }, [])
 
 
-    
+
     const api = axios.create({
         baseURL: 'http://localhost:5000/',
         timeout: 1000,
