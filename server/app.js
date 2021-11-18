@@ -9,10 +9,16 @@ var usersRouter = require("./routes/users");
 var erfaRouter = require("./routes/erfaRoutes/userErfa");
 var studentRouter = require("./routes/studentRoutes/userStudent");
 var panelistRouter = require("./routes/panelistRoutes/userPanelist");
+<<<<<<< HEAD
 var erfaOfficerRouter = require("./routes/erfaRoutes/erfaOfficer");
 var cors = require("cors");
 var app = express();
 app.use(cors());
+=======
+var cors = require('cors')
+var app = express();
+app.use(cors())
+>>>>>>> 5a15da89dc328d0959bce3de112c05cc1973a48f
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
