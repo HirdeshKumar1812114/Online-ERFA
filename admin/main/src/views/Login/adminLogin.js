@@ -24,6 +24,13 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 import axios from 'axios';
 import image from "assets/img/bg7.jpg";
 import { useCookies } from 'react-cookie';
+import { css } from "@emotion/react";
+import RingLoader from "react-spinners/RingLoader";
+
+const override = css`
+  margin: 0 auto;
+`;
+
 
 const useStyles = makeStyles(styles);
 
@@ -31,7 +38,8 @@ export default function LoginPage(props) {
     const [token, setToken] = useCookies(['token']);
     const [userID, setUserID] = useCookies(['userID']);
     const [userType, setUserType] = useCookies(['userType']);
-
+    const [loading, setLoading] =useState(false)
+    let [color, setColor] = useState("#49A54D");
     useEffect(() => {
         if (token.token != null) {
             Auth.login(() => {
@@ -55,29 +63,32 @@ export default function LoginPage(props) {
         e.preventDefault();
         if (username !== '' && password !== '') {
 
-            api.post('erfa/login', { username, password }).then(result => {
-                // console.log(result.data)
-                // console.log(result.data.token)
-                setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
-                setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
-                setUserType('userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
+            
+                api.post('erfa/login', { username, password },setLoading(true)).then(result => {
+                    setLoading(false)
+                    // console.log(result.data)
+                    // console.log(result.data.token)
+                    setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
+                    setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
+                    setUserType('userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
 
 
 
-                window.alert('Welcome to Admin Portal')
-                setValid("true")
-                alert()
-                Auth.login(() => {
-                    props.history.push("/")
+                    window.alert('Welcome to Admin Portal')
+                    setValid("true")
+                    alert()
+                    Auth.login(() => {
+                        props.history.push("/")
+                    })
+                    // window.alert('Welcome to Admin Portal')
+
+                }).catch(err => {
+                    setLoading(false)
+                    console.log(err)
+                    setValid("false")
+                    alert()
                 })
-                // window.alert('Welcome to Admin Portal')
-
-            }).catch(err => {
-                console.log(err)
-                setValid("false")
-                alert()
-            })
-
+            
             // if (username == 'admin' && password == 'admin') {
             //     setValid("true")
             //     Auth.login(()=>{
@@ -113,7 +124,6 @@ export default function LoginPage(props) {
                         <Redirect to='/' />
                     </>
                 )
-
             }
             else if (valid == "false") {
 
@@ -136,8 +146,12 @@ export default function LoginPage(props) {
     }, 700);
     const classes = useStyles();
     const { ...rest } = props;
+
+
+
     return (
         <div>
+            
             <Header
                 absolute
                 color="transparent"
@@ -205,10 +219,16 @@ export default function LoginPage(props) {
                                                 autoComplete: "off",
                                             }}
                                         />
+                                         
                                     </CardBody>
+                                   
+                                      
+                                  
+                                  <br />
                                     <CardFooter className={classes.cardFooter}>
+                                    
                                         <Button simple color="primary" size="lg" onClick={submitData}>
-                                            Login
+                                            {loading == true ? <RingLoader  color={color} css={override} size={25}/>: <>Login</>}
                                         </Button >
                                     </CardFooter>
                                 </form>
