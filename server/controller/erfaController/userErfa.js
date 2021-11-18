@@ -57,3 +57,19 @@ exports.checkToken = (req, res, next) => {
     res.status(400).json({ msg: "Token is not valid" });
   }
 };
+exports.changePassword = expressAsyncHandler(async (req, res) => {
+  const { username, oldpassword, newpassword } = req.body;
+  const checkPass = await db.UserErfa.checkPassword(username, oldpassword);
+  if (checkPass) {
+    checkPass.username = username;
+    checkPass.password = newpassword;
+    try {
+      await checkPass.save();
+      res.status(200).json("Password update");
+    } catch (error) {
+      res.status(400).json("Password not update");
+    }
+  } else {
+    res.status(400).json("Password not matched");
+  }
+});

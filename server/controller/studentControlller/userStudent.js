@@ -87,7 +87,7 @@ exports.getStudent = expressAsyncHandler(async function (req, res, next) {
   try {
     const student = await db.UserStudent.findOne({ _id: req.params.id });
     if (student) {
-      res.status(200).json({ message: "Details updated" });
+      res.status(200).json({ message: "Details" });
       res.end();
     } else {
       res.status(400).json({ message: "Not found" });
@@ -105,7 +105,7 @@ exports.updateStudent = expressAsyncHandler(async function (req, res, next) {
     );
 
     if (updateStudentOne) {
-      res.status(200).json();
+      res.status(200).json("Student Details Update");
       res.end();
     } else {
       res.status(400).json({ message: "Not Saved in database" });

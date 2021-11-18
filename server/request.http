@@ -1,3 +1,14 @@
+## Erfa user login
+POST http://localhost:5000/erfa/login HTTP/1.1
+Content-Type: application/json
+
+{
+
+    "username": "Muskaan",
+    "password":"abc.124"
+
+}
+
 
 ### erfa admin login request
 POST http://localhost:5000/erfa/login HTTP/1.1

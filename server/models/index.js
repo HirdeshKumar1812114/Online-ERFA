@@ -10,8 +10,8 @@ mongoose.connect(
 );
 
 module.exports = {
+  ErfaOfficer: require("./erfaModels/erfaOfficerDetails"),
   UserErfa: require("./erfaModels/userErfa"),
-  ErfaOfficer: require("./erfaModels/erfaOfficer"),
   UserPanelist: require("./panelistModels/userPanelist"),
   UserStudent: require("./studentModels/userStudent"),
 };

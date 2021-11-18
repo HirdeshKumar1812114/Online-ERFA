@@ -25,5 +25,16 @@ UserErfaSchema.statics.login = async function (username, password) {
   throw { message: "Incorrect Username" };
 };
 
+UserErfaSchema.statics.checkPassword = async function (username, password) {
+  const user = await this.findOne({ username });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    return false;
+  }
+};
+
 const userErfa = mongoose.model("Usererfa", UserErfaSchema);
 module.exports = userErfa;

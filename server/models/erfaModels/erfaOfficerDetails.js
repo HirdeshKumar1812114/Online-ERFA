@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const ErfaOfficerSchema = new mongoose.Schema({
+const ErfaOfficerDetailsSchema = new mongoose.Schema({
   officerid: { type: Number, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
@@ -8,11 +8,5 @@ const ErfaOfficerSchema = new mongoose.Schema({
   email: { type: String, required: true },
 });
 
-ErfaOfficerSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
-const erfaOfficer = mongoose.model("Erfaofficer", ErfaOfficerSchema);
+const erfaOfficer = mongoose.model("ErfaOfficer", ErfaOfficerDetailsSchema);
 module.exports = erfaOfficer;
