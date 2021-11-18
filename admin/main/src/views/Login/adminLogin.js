@@ -31,6 +31,11 @@ const override = css`
   margin: 0 auto;
 `;
 
+const api = axios.create({
+    baseURL: 'http://localhost:5000/',
+    timeout: 1000,
+});
+
 
 const useStyles = makeStyles(styles);
 
@@ -62,11 +67,7 @@ export default function LoginPage(props) {
 
 
 
-    const api = axios.create({
-        baseURL: 'http://localhost:5000/',
-        timeout: 1000,
-    });
-
+    
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [valid, setValid] = useState('')
