@@ -13,7 +13,7 @@ UserErfaSchema.pre("save", async function (next) {
 });
 
 UserErfaSchema.statics.login = async function (email, password) {
-  const user = await this.findOne({ email});
+  const user = await this.findOne({ email });
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {
@@ -38,4 +38,3 @@ UserErfaSchema.statics.checkPassword = async function (email, password) {
 
 const userErfa = mongoose.model("Usererfa", UserErfaSchema);
 module.exports = userErfa;
-s

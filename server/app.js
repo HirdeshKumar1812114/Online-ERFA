@@ -10,6 +10,7 @@ var erfaRouter = require("./routes/erfaRoutes/userErfa");
 var studentRouter = require("./routes/studentRoutes/userStudent");
 var panelistRouter = require("./routes/panelistRoutes/userPanelist");
 var erfaOfficerRouter = require("./routes/erfaRoutes/erfaOfficerDetails");
+var scholarshipPostRouter = require("./routes/erfaRoutes/scholarshipPost");
 
 var cors = require("cors");
 var app = express();
@@ -32,7 +33,7 @@ app.use("/users", usersRouter);
 app.use("/student", studentRouter);
 app.use("/panelist", panelistRouter);
 app.use("/officer", erfaOfficerRouter);
-
+app.use("/scholarship", scholarshipPostRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
