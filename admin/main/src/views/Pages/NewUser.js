@@ -152,9 +152,7 @@ const Layout = (props) => {
   }
 
   const alert = () => {
-    setTimeout(() => {
-      setValid("")
-    }, 12000)
+    
     if (valid != "") {
       if (valid == "true") {
         return (
