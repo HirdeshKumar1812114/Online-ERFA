@@ -232,12 +232,7 @@ export default function LoginPage(props) {
                                         />
 
                                     </CardBody>
-
-
-
-                                    <br />
                                     <CardFooter className={classes.cardFooter}>
-
                                         <Button simple color="primary" size="lg" onClick={submitData}>
                                             {loading == true ? <RingLoader color={color} css={override} size={25} /> : <>Login</>}
                                         </Button >

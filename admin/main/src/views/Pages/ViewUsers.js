@@ -29,11 +29,13 @@ const api = axios.create({
 
 
 
-const Layout = () => {
+const Layout = (props) => {
   const [visible, setVisible] = useState(false)
   const [getUsers, setUsers] = useState([])
   const [deleteConfirm, setDelete] = useState(false)
   const [usertoDelete, setUsertoDel] = useState('')
+  const [usertoUpdate, setUsertoUpdate] = useState('')
+
   var users = [];
 
 
@@ -49,22 +51,27 @@ const Layout = () => {
   }, [getUsers]);
 
   const deleteUser = () => {
-      // console.log('user to delte: ',usertoDelete)
-      api.delete(`officer/delete/${usertoDelete}`)
-        .then(res => {
-          // console.log(res)
-          // window.alert("User deleted.")
+    // console.log('user to delte: ',usertoDelete)
+    api.delete(`officer/delete/${usertoDelete}`)
+      .then(res => {
+        // console.log(res)
+        // window.alert("User deleted.")
+        setUsertoDel("")
+        setDelete(false)
+        setVisible(false)
+      }).catch(
+        err => {
+          // console.log(err)
+          window.alert("Error Occured")
           setUsertoDel("")
-          setDelete(false)
-          setVisible(false)
-        }).catch(
-          err => {
-            // console.log(err)
-            window.alert("Error Occured")
-          setUsertoDel("")
-          }
-        )
-    
+        }
+      )
+
+
+  }
+
+  const userUpdate = () => {    
+    props.history.push('update-user')
   }
 
   return (
@@ -94,7 +101,14 @@ const Layout = () => {
                       <CTableDataCell>{user.email}</CTableDataCell>
                       <CTableDataCell>
                         <CButtonGroup role="group" aria-label="Basic mixed styles example">
-                          <CButton color="warning" style={{ 'width': '100px' }}>Edit</CButton>
+                          <CButton color="warning" style={{ 'width': '100px' }}
+                            onClick={() => {
+                              localStorage.setItem('userUpdate', user._id);
+                              userUpdate()
+                            }}
+                          >
+                            Edit
+                          </CButton>
                           <CButton color="danger" style={{ 'width': '100px' }}
                             onClick={() => {
                               setVisible(!visible)
@@ -120,14 +134,14 @@ const Layout = () => {
             </CModalHeader>
             <CModalBody>
               Are you sure you want to delete the selected user!
-              <br/>
+              <br />
               If yes then press the confirm button.
             </CModalBody>
             <CModalFooter>
               <CButton color="secondary" onClick={() => setVisible(false)}>
                 Close
               </CButton>
-              <CButton color="primary" onClick={() => { deleteUser()}}>Confirm</CButton>
+              <CButton color="primary" onClick={() => { deleteUser() }}>Confirm</CButton>
             </CModalFooter>
           </CModal>
 
