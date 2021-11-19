@@ -43,7 +43,7 @@ export default function LoginPage(props) {
     const [token, setToken] = useCookies(['token']);
     const [userID, setUserID] = useCookies(['userID']);
     const [userType, setUserType] = useCookies(['userType']);
-    const [loading, setLoading] =useState(false)
+    const [loading, setLoading] = useState(false)
     let [color, setColor] = useState("#49A54D");
 
 
@@ -51,23 +51,23 @@ export default function LoginPage(props) {
         if (token.token != null) {
             api.get('erfa/dashboard', {
                 headers: {
-                    'x-auth-token':token.token
+                    'x-auth-token': token.token
                 }
-            }).then((result) =>{
-               console.log(result.data)
-               Auth.login(() => {
-                // return (<Redirect to={'/dashboard'} />)
-                props.history.push('/dashboard')
+            }).then((result) => {
+                // console.log(result.data)
+                Auth.login(() => {
+                    // return (<Redirect to={'/dashboard'} />)
+                    props.history.push('/dashboard')
+                })
             })
-            } )
 
-            
+
         }
     }, [])
 
 
 
-    
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [valid, setValid] = useState('')
@@ -77,32 +77,29 @@ export default function LoginPage(props) {
         e.preventDefault();
         if (username !== '' && password !== '') {
 
-            
-                api.post('erfa/login', { username, password },setLoading(true)).then(result => {
-                    setLoading(false)
-                    console.log(result.data)
-                    // console.log(result.data.token)
-                    setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
-                    setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
-                    setUserType('userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
 
-
-
-                    window.alert('Welcome to Admin Portal')
-                    setValid("true")
-                    alert()
-                    Auth.login(() => {
-                        props.history.push("/")
-                    })
-                    // window.alert('Welcome to Admin Portal')
-
-                }).catch(err => {
-                    setLoading(false)
-                    console.log(err)
-                    setValid("false")
-                    alert()
+            api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
+                setLoading(false)
+                // console.log(result.data)
+                // console.log(result.data.token)
+                setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
+                setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
+                setUserType('userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
+                // window.alert('Welcome to Admin Portal')
+                setValid("true")
+                alert()
+                Auth.login(() => {
+                    props.history.push("/")
                 })
-            
+                // window.alert('Welcome to Admin Portal')
+
+            }).catch(err => {
+                setLoading(false)
+                // console.log(err)
+                setValid("false")
+                alert()
+            })
+
             // if (username == 'admin' && password == 'admin') {
             //     setValid("true")
             //     Auth.login(()=>{
@@ -165,7 +162,7 @@ export default function LoginPage(props) {
 
     return (
         <div>
-            
+
             <Header
                 absolute
                 color="transparent"
@@ -197,7 +194,7 @@ export default function LoginPage(props) {
                                     <p className={classes.divider}>Enter your Credentials</p>
                                     <CardBody>
                                         <CustomInput
-                                            labelText="Username"
+                                            labelText="Email"
                                             id="username"
                                             formControlProps={{
                                                 fullWidth: true,
@@ -233,16 +230,16 @@ export default function LoginPage(props) {
                                                 autoComplete: "off",
                                             }}
                                         />
-                                         
+
                                     </CardBody>
-                                   
-                                      
-                                  
-                                  <br />
+
+
+
+                                    <br />
                                     <CardFooter className={classes.cardFooter}>
-                                    
+
                                         <Button simple color="primary" size="lg" onClick={submitData}>
-                                            {loading == true ? <RingLoader  color={color} css={override} size={25}/>: <>Login</>}
+                                            {loading == true ? <RingLoader color={color} css={override} size={25} /> : <>Login</>}
                                         </Button >
                                     </CardFooter>
                                 </form>

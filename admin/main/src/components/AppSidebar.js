@@ -48,6 +48,7 @@ const AppSidebar = () => {
       <CSidebarNav>
         <SimpleBar>
           <AppSidebarNav items={usertype=="admin" ? navAdmin : navOfficer} />
+
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
