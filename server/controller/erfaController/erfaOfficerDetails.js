@@ -101,7 +101,6 @@ exports.updateErfaOfficer = expressAsyncHandler(async function (
       $set: {
         designation: req.body.designation,
         cellnumber: req.body.cellnumber,
-        email: req.body.email,
       },
     });
 
