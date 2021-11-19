@@ -26,17 +26,12 @@ const Layout = (props) => {
 
   const [Newdesignation, setNewDesignation] = useState('')
   const [NewcellNumber, setNewCellNumber] = useState('')
-  const [Newemail, setNewEmail] = useState('')
   const [designation, setDesignation] = useState('')
   const [cellNumber, setCellNumber] = useState('')
-  const [email, setEmail] = useState('')
-  const [nic, setNic] = useState('')
-  const [dob, setDob] = useState('')
+ 
   const [loading, setLoading] = useState(false)
   const [valid, setValid] = useState('')
-  const [isMatched, setIsMatched] = useState()
   let [color, setColor] = useState("#49A54D");
-  const [validated, setValidated] = useState(false)
   const [usertoUpdate, setUsertoUpdate] = useState('')
 
   const api = axios.create({
@@ -154,12 +149,8 @@ const Layout = (props) => {
 
                 <CButton type="submit"
                   onClick={() => {
-
                     Newdesignation == "" ? setNewDesignation(designation) : Newdesignation
-                    Newemail == "" ? setNewEmail(email) : Newemail
                     NewcellNumber == "" ? setNewCellNumber(cellNumber) : NewcellNumber
-
-
                   }}
                 >Update User</CButton>
 
