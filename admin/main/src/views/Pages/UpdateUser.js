@@ -52,23 +52,22 @@ const Layout = (props) => {
       })
       .catch(error => console.log(error))
     setDesignation(usertoUpdate.designation)
-    setEmail(usertoUpdate.email)
     setCellNumber(usertoUpdate.cellnumber)
   }, [usertoUpdate]);
 
 
   const submitData = () => {
-    console.log(Newdesignation)
-    console.log(Newemail)
-    console.log(NewcellNumber)
+    // console.log(Newdesignation)
+    // console.log(Newemail)
+    // console.log(NewcellNumber)
 
     api.put(`officer/edit/${localStorage.getItem('userUpdate')}`, {
       designation: Newdesignation,
-      email: Newemail,
       cellnumber: NewcellNumber
     }, setLoading(true))
       .then(result => {
-        console.log(result)
+        // console.log(result)
+        window.alert('User Updated')
         setValid("true")
         setLoading(false)
         props.history.push('view-users')
@@ -110,10 +109,15 @@ const Layout = (props) => {
               onSubmit={submitData}
             >
 
-              <CCol md={12}>
+              <CCol md={6}>
                 <CFormLabel htmlFor="inputUserName4">Name</CFormLabel>
                 <CFormInput disabled value={usertoUpdate.username} type="text" id="inputUsername4" placeholder="First_Name   Middle_Name   Last_Name"
                 />
+              </CCol>
+              <CCol xs={6}>
+                <CFormLabel htmlFor="inputEmail">Email</CFormLabel>
+                <CFormInput disabled value={usertoUpdate.email} type="email" id="inputEmail" 
+                                  />
               </CCol>
 
               <CCol xs={6}>
@@ -145,15 +149,7 @@ const Layout = (props) => {
                   }
                 />
               </CCol>
-              <CCol xs={6}>
-                <CFormLabel htmlFor="inputEmail">Email</CFormLabel>
-                <CFormInput value={Newemail} type="email" id="inputEmail" placeholder={email}
-                  onChange={
-                    (e) => { setNewEmail(e.target.value) }
-                  }
-                />
-              </CCol>
-
+              
               <CCol xs={12}>
 
                 <CButton type="submit"
