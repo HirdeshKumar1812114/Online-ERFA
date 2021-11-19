@@ -1,18 +1,6 @@
 const expressAsyncHandler = require("express-async-handler");
 const db = require("../../models");
-const path = require("path");
-const multer = require("multer");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploadScholarshipPoster");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-exports.uploadImg = multer({ storage: storage }).single("image");
 exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
   const checkTitle = await db.ScholarshipPost.findOne({
     title: req.body.title,
@@ -22,9 +10,10 @@ exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
     const newPost = new db.ScholarshipPost({
       title: req.body.title,
       description: req.body.description,
+
       applicationstart: req.body.applicationstart,
       applicationdeadline: req.body.applicationdeadline,
-      poster: req.file.path,
+      poster: req.body.poster,
       eligibility: req.body.eligibility,
       tags: req.body.tags,
     });
@@ -85,7 +74,7 @@ exports.updateScholarship = expressAsyncHandler(async (req, res, next) => {
         description: req.body.description,
         applicationstart: req.body.applicationstart,
         applicationdeadline: req.body.applicationdeadline,
-        poster: req.file.path,
+        poster: req.body.poster,
         eligibility: req.body.eligibility,
         tags: req.body.tags,
       },
