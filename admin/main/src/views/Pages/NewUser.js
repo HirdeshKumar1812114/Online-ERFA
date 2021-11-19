@@ -21,7 +21,7 @@ const override = css`
 `;
 
 
-const Layout = () => {
+const Layout = (props) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -151,9 +151,7 @@ const Layout = () => {
   }
 
   const alert = () => {
-    setTimeout(() => {
-      setValid("")
-    }, 5000)
+    
     if (valid != "") {
       if (valid == "true") {
         return (
