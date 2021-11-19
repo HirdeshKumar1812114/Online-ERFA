@@ -127,6 +127,7 @@ const Layout = (props) => {
             setLoading(false)
             // console.log(result)
             alert()
+            props.history.push('view-users')
           }
 
         }).catch(err => {
