@@ -21,7 +21,7 @@ const override = css`
 `;
 
 
-const Layout = () => {
+const Layout = (props) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -125,6 +125,7 @@ const Layout = () => {
             setDob("")
             setRepassword("")
             setLoading(false)
+            props.history.push('view-users')
             // console.log(result)
             alert()
           }
@@ -153,7 +154,7 @@ const Layout = () => {
   const alert = () => {
     setTimeout(() => {
       setValid("")
-    }, 5000)
+    }, 12000)
     if (valid != "") {
       if (valid == "true") {
         return (
