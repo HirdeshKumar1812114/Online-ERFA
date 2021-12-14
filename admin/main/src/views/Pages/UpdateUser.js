@@ -38,7 +38,6 @@ const Layout = (props) => {
 
   const api = axios.create({
     baseURL: "https://online-erfa.herokuapp.com/",
-    timeout: 1000,
   });
 
   useEffect(() => {
@@ -68,7 +67,7 @@ const Layout = (props) => {
       )
       .then((result) => {
         // console.log(result)
-        window.alert("User Updated");
+        // window.alert("User Updated");
         setValid("true");
         setLoading(false);
         props.history.push("view-users");

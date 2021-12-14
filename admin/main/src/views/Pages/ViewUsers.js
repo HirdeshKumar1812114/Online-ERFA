@@ -23,7 +23,6 @@ import {
 import axios from "axios";
 const api = axios.create({
   baseURL: "https://online-erfa.herokuapp.com/",
-  timeout: 1000,
 });
 
 const Layout = (props) => {
@@ -60,7 +59,7 @@ const Layout = (props) => {
         // console.log(err)
         // window.alert("Error Occured");
         setUsertoDel("");
-        setVisible("false");
+        setVisible(false);
       });
   };
 

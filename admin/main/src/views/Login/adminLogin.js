@@ -33,7 +33,6 @@ const override = css`
 
 const api = axios.create({
     baseURL: 'https://online-erfa.herokuapp.com/',
-    timeout: 1000,
 });
 
 

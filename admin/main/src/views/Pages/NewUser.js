@@ -36,7 +36,6 @@ const Layout = (props) => {
 
   const api = axios.create({
     baseURL: "https://online-erfa.herokuapp.com/",
-    timeout: 1000,
   });
 
   const handleSubmit = (event) => {
@@ -127,16 +126,17 @@ const Layout = (props) => {
             setNic("");
             setDob("");
             setRepassword("");
+            alert();
             setLoading(false);
-            // console.log(result)
-            // alert();
             props.history.push("/officers/view-users");
+            // console.log(result)
           }
         })
         .catch((err) => {
           setLoading(false);
           // console.log(err)
           setValid("error");
+
           alert();
         });
     } else {
