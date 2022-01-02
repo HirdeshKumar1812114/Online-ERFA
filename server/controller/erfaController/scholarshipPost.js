@@ -3,8 +3,8 @@ const db = require("../../models");
 const multer = require("multer");
 const path = require("path");
 const posterPath = "public/uploadScholarshipPoster";
-const fsPromises = require("fs/promises");
 const fs = require("fs");
+
 const uploadFilePath = path.resolve(__dirname, "../..", posterPath);
 
 const storage = multer.diskStorage({
