@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const ScholarshipPostSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  applicationstart: { type: String, required: true },
-  applicationdeadline: { type: String, required: true },
+  title: { type: String },
+  applicationstart: { type: String },
+  applicationdeadline: { type: String },
   poster: { type: String },
-  description: { type: String, required: true },
+  description: { type: String },
   postingdate: { type: Date, default: Date.now },
   eligibility: [String],
   tags: [String],

@@ -2,50 +2,65 @@ const expressAsyncHandler = require("express-async-handler");
 const db = require("../../models");
 const multer = require("multer");
 const path = require("path");
+var get;
+
+const uploadFilePath = path.resolve(
+  __dirname,
+  "../..",
+  "public/uploadScholarshipPoster"
+);
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../uploads");
-  },
+  destination: uploadFilePath,
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    console.log(file.originalname);
+    cb(
+      null,
+      `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
+    );
   },
 });
-exports.uploadImg = multer({ storage: storage }).single("poster");
 
-exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
-  const checkTitle = await db.ScholarshipPost.findOne({
-    title: req.body.title,
-  });
+const upload = multer({
+  storage: (storage, cb) => {
+    cb(null, storage);
 
-  if (checkTitle === null) {
-    const newPost = new db.ScholarshipPost({
-      title: req.body.title,
-      description: req.body.description,
-      applicationstart: req.body.applicationstart,
-      applicationdeadline: req.body.applicationdeadline,
-      poster: str,
-      eligibility: req.body.eligibility,
-      tags: req.body.tags,
-    });
-    try {
-      const newSp = await newPost.save();
-      if (newSp) {
-        res.status(201).send(newSp);
-        res.end();
-      } else {
-        res
-          .status(400)
-          .json({ message: "Error in making new Scholarship Post" });
-      }
-    } catch (err) {
-      res.status(400).json({ message: "Error in catch block" });
-    }
-  } else {
-    res.status(200).json({ message: "Scholarship already exists" });
-    res.end();
-  }
+    console.log(storage.originalname);
+  },
 });
+
+exports.uploadImage = multer({
+  storage: storage,
+}).single("poster");
+
+exports.addScholarshipPost = (req, res, next) => {
+  db.ScholarshipPost.findOne(
+    {
+      title: req.body.title,
+    },
+    (checkTitle) => {
+      console.log(checkTitle);
+      if (checkTitle == null) {
+        let newPost = new db.ScholarshipPost({
+          title: req.body.title,
+          description: req.body.description,
+          applicationstart: req.body.applicationstart,
+          applicationdeadline: req.body.applicationdeadline,
+          poster: req.file.filename,
+          eligibility: req.body.eligibility,
+          tags: req.body.tags,
+        });
+
+        newPost.save((err, checkTitle) => {
+          if (err) return res.json({ Error: err });
+          return res.json(newPost);
+        });
+      } else {
+        return res.json({ message: "Scholarship title already exists" });
+      }
+    }
+  );
+};
 
 exports.getAllScholarship = expressAsyncHandler(async (req, res, next) => {
   try {
