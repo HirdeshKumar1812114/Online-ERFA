@@ -3,7 +3,7 @@ var router = express.Router();
 var scholarshipPostController = require("../../controller/erfaController/scholarshipPost");
 router.post(
   "/add",
-  scholarshipPostController.uploadImg,
+  scholarshipPostController.uploadImage,
   scholarshipPostController.addScholarshipPost
 );
 router.get("/all", scholarshipPostController.getAllScholarship);
