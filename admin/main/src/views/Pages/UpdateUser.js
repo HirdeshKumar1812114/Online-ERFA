@@ -107,10 +107,9 @@ const Layout = (props) => {
                 <CFormLabel htmlFor="inputUserName4">Name</CFormLabel>
                 <CFormInput
                   disabled
-                  value={usertoUpdate.username}
+                  value={usertoUpdate.firstname+' '+usertoUpdate.lastname }
                   type="text"
                   id="inputUsername4"
-                  placeholder="First_Name   Middle_Name   Last_Name"
                 />
               </CCol>
               <CCol xs={6}>

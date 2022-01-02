@@ -79,7 +79,7 @@ const Layout = (props) => {
           <CTable striped hover responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">User Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col">User's Name</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Designation</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
@@ -90,7 +90,7 @@ const Layout = (props) => {
                 return (
                   <CTableRow>
                     <CTableHeaderCell scope="row">
-                      {user.username}
+                      {user.firstname}{" "}{user.lastname}
                     </CTableHeaderCell>
                     <CTableDataCell>{user.designation}</CTableDataCell>
                     <CTableDataCell>{user.email}</CTableDataCell>

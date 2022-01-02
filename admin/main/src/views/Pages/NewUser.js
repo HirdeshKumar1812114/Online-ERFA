@@ -109,8 +109,8 @@ const Layout = (props) => {
         .post(
           "officer/addofficer",
           {
-            firstName,
-            lastName,
+            firstname: firstName,
+            lastname: lastName,
             password,
             designation,
             cellNumber,
