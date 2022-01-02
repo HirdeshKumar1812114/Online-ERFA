@@ -66,7 +66,8 @@ const Layout = (props) => {
       event.stopPropagation();
       setValid("invalidPassword");
     }
-
+     
+    
     setValidated(true);
   };
 
@@ -103,7 +104,7 @@ const Layout = (props) => {
         cellNumber !== "" &&
         email !== "" &&
         nic !== "" &&
-        dob != "")
+        dob != "" )
     ) {
       api
         .post(
@@ -208,7 +209,7 @@ const Layout = (props) => {
               style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
               severity="warning"
             >
-              ALERT — <strong> Incomplete form, please fill all fields!</strong>
+              ALERT — <strong> Invalid form, please fill all fields proberly!</strong>
             </Alert>
           </>
         );
@@ -300,12 +301,16 @@ const Layout = (props) => {
                 <CFormInput
                   required
                   value={cellNumber}
-                  type="number"
+                  type="text"
                   placeholder="0303XXXXXXX"
-
+                  pattern="[0-9]*"
+                  maxlength = "11"
                   id="inputCellNo"
                   onChange={(e) => {
-                    setCellNumber(e.target.value);
+                    e.target.validity.valid ?
+                    setCellNumber(e.target.value)
+                    :
+                    setCellNumber(cellNumber)
                   }}
                 />
               </CCol>
@@ -327,11 +332,16 @@ const Layout = (props) => {
                 <CFormInput
                   required
                   value={nic}
-                  type="number"
+                  type="text"
+                  maxlength = "13"
+                  pattern="[0-9]*"
                   id="inputNic"
                   placeholder="XXXXXXXXXXXX (13-digits without dashes)"
                   onChange={(e) => {
-                    setNic(e.target.value);
+                    e.target.validity.valid ?
+                    setNic(e.target.value)
+                    :
+                    setNic(nic)
                   }}
                 />
               </CCol>
@@ -399,6 +409,7 @@ const Layout = (props) => {
       <prev >{JSON.stringify(re_password, null, 2)}</prev>
       <prev >{JSON.stringify(valid, null, 2)}</prev>
       <prev >{JSON.stringify(isMatched, null, 2)}</prev> */}
+
     </CContainer>
   );
 };
