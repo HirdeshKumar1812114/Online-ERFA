@@ -2,13 +2,10 @@ const expressAsyncHandler = require("express-async-handler");
 const db = require("../../models");
 const multer = require("multer");
 const path = require("path");
-var get;
-
-const uploadFilePath = path.resolve(
-  __dirname,
-  "../..",
-  "public/uploadScholarshipPoster"
-);
+const posterPath = "public/uploadScholarshipPoster";
+const fsPromises = require("fs/promises");
+const fs = require("fs");
+const uploadFilePath = path.resolve(__dirname, "../..", posterPath);
 
 const storage = multer.diskStorage({
   destination: uploadFilePath,
@@ -33,34 +30,28 @@ exports.uploadImage = multer({
   storage: storage,
 }).single("poster");
 
-exports.addScholarshipPost = (req, res, next) => {
-  db.ScholarshipPost.findOne(
-    {
+exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
+  console.log(uploadFilePath);
+  let checkTitle = await db.ScholarshipPost.findOne({ title: req.body.title });
+  if (checkTitle === null) {
+    let newPost = new db.ScholarshipPost({
       title: req.body.title,
-    },
-    (checkTitle) => {
-      console.log(checkTitle);
-      if (checkTitle == null) {
-        let newPost = new db.ScholarshipPost({
-          title: req.body.title,
-          description: req.body.description,
-          applicationstart: req.body.applicationstart,
-          applicationdeadline: req.body.applicationdeadline,
-          poster: req.file.filename,
-          eligibility: req.body.eligibility,
-          tags: req.body.tags,
-        });
+      description: req.body.description,
+      applicationstart: req.body.applicationstart,
+      applicationdeadline: req.body.applicationdeadline,
+      poster: req.file.filename,
+      eligibility: req.body.eligibility,
+      tags: req.body.tags,
+    });
 
-        newPost.save((err, checkTitle) => {
-          if (err) return res.json({ Error: err });
-          return res.json(newPost);
-        });
-      } else {
-        return res.json({ message: "Scholarship title already exists" });
-      }
-    }
-  );
-};
+    await newPost.save((err, checkTitle) => {
+      if (err) return res.json({ Error: err });
+      return res.json(newPost);
+    });
+  } else {
+    return res.json({ message: "Scholarship title already exists" });
+  }
+});
 
 exports.getAllScholarship = expressAsyncHandler(async (req, res, next) => {
   try {
@@ -82,15 +73,23 @@ exports.getScholarship = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-exports.deleteScholarship = expressAsyncHandler(async (req, res, next) => {
+exports.deleteScholarship = async (req, res) => {
   try {
-    await db.ScholarshipPost.findByIdAndRemove(req.params.id);
-    res.json({ message: "Deleted Scholarship Post" });
-    res.end();
-  } catch {
-    res.status(400).json({ message: "Not able to delete a record " });
+    const id = req.params.id;
+    if (id) {
+      const prev = await db.ScholarshipPost.findOne({ _id: id });
+      await fs.promises.unlink(uploadFilePath + "\\" + prev.poster);
+      const result = await db.ScholarshipPost.deleteOne({ _id: id });
+      console.log("saved to Mongo>>", result);
+      res.status(201).json({ message: "Deleted Successfully" }).end();
+    } else {
+      res.status(500).json({ message: "Failed id required" }).end();
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Failed" }).end();
   }
-});
+};
 
 exports.updateScholarship = expressAsyncHandler(async (req, res, next) => {
   try {
