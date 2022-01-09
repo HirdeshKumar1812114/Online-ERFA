@@ -14,8 +14,8 @@ ReactDOM.render(
 <Provider store={store}>
 <CookiesProvider>
     <App />
-  </CookiesProvider>
+</CookiesProvider>
   </Provider>,
   document.getElementById("root")
 );
-serviceWorker.register()
+serviceWorker.unregister()

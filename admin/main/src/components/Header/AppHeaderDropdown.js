@@ -30,7 +30,7 @@ import { Redirect } from 'react-router-dom/cjs/react-router-dom.min'
 
 const AppHeaderDropdown = props => {
   const [token, setToken, removeToken] = useCookies(['token']);
-  const [userID, setUserID, removeID] = useCookies(['userID']);
+  const [userName, setUserName, removeUserName] = useCookies(['userName']);
   const [userType, setUserType, removeType] = useCookies(['userType']);
   const logout = () => {
    
@@ -41,25 +41,17 @@ const AppHeaderDropdown = props => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-      <CButton color="light" shape="rounded-pill">{userID.userID}</CButton>
+      <CButton color="light" shape="rounded-pill">{userName.userName}</CButton>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
         <CDropdownItem href="#">
-          <CIcon icon={cilBell} className="me-2" />
-          Updates
-          <CBadge color="info" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilEnvelopeOpen} className="me-2" />
+          <CIcon icon={cilTask} className="me-2" />
           Notifications
-          <CBadge color="success" className="ms-2">
+          <CBadge color="danger" className="ms-2">
             42
           </CBadge>
         </CDropdownItem>
-        
         <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
         <CDropdownItem href="#">
           <CIcon icon={cilUser} className="me-2" />
@@ -74,7 +66,7 @@ const AppHeaderDropdown = props => {
         <CDropdownItem href="#" onClick={
          ()=>{ 
           removeToken('token',{path:'/',maxAge:0})
-          removeID('userID',{path:'/',maxAge:0})
+          removeUserName('userID',{path:'/',maxAge:0})
           removeType('userType',{path:'/',maxAge:0})
 
           Auth.logout(
@@ -86,7 +78,7 @@ const AppHeaderDropdown = props => {
         }
         >
           <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
