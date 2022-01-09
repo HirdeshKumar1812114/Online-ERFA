@@ -9,5 +9,9 @@ router.post(
 router.get("/all", scholarshipPostController.getAllScholarship);
 router.get("/view/:id", scholarshipPostController.getScholarship);
 router.delete("/delete/:id", scholarshipPostController.deleteScholarship);
-router.put("/edit/:id", scholarshipPostController.updateScholarship);
+router.put(
+  "/edit/:id",
+  scholarshipPostController.uploadImage,
+  scholarshipPostController.updateScholarship
+);
 module.exports = router;

@@ -80,7 +80,7 @@ exports.deleteScholarship = async (req, res) => {
       const prev = await db.ScholarshipPost.findOne({ _id: id });
       await fs.promises.unlink(uploadFilePath + "\\" + prev.poster);
       const result = await db.ScholarshipPost.deleteOne({ _id: id });
-      console.log("saved to Mongo>>", result);
+      console.log("Saved to Database>>", result);
       res.status(201).json({ message: "Deleted Successfully" }).end();
     } else {
       res.status(500).json({ message: "Failed id required" }).end();
@@ -91,30 +91,32 @@ exports.deleteScholarship = async (req, res) => {
   }
 };
 
-exports.updateScholarship = expressAsyncHandler(async (req, res, next) => {
-  try {
-    const update = await db.ScholarshipPost.findByIdAndUpdate(req.params.id, {
-      $set: {
+exports.updateScholarship = async (req, res) => {
+  console.log(req.file.filename);
+
+  const fetchDetails = await db.ScholarshipPost.findOne({ _id: req.params.id });
+  if (fetchDetails) {
+    const updateDetails = await db.ScholarshipPost.findOneAndUpdate(
+      { _id: fetchDetails.id },
+      {
         title: req.body.title,
         description: req.body.description,
         applicationstart: req.body.applicationstart,
         applicationdeadline: req.body.applicationdeadline,
-        poster: req.body.poster,
+        poster: req.file.filename,
         eligibility: req.body.eligibility,
         tags: req.body.tags,
-      },
-    });
-
-    if (update) {
-      const checkUpdate = await update.save();
-      res
-        .status(200)
-        .send({ message: "Scholarship Details edited successfully." });
-      res.end();
+      }
+    );
+    if (updateDetails) {
+      console.log(uploadFilePath + "/" + fetchDetails.poster);
+      await fs.promises.unlink(uploadFilePath + "/" + fetchDetails.poster);
+      res.status(201).json({ message: "Updated Successfully" }).end();
     } else {
-      res.status(400).json({ message: "Error in saving the update" });
+      res.status(400).json({ message: "Trouble in saving changes in details" });
     }
-  } catch (err) {
-    res.status(400).json({ message: "Error in updating" });
+  } else {
+    await fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
+    res.status(500).json({ message: "Error in finding" });
   }
-});
+};
