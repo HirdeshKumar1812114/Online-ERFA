@@ -64,7 +64,9 @@ exports.getErfaOfficer = expressAsyncHandler(async (req, res, next) => {
 
 exports.getAllErfaOfficer = expressAsyncHandler(async (req, res, next) => {
   try {
-    const officer = await db.ErfaOfficer.find();
+    const officer = await db.ErfaOfficer.find({
+      email: { $ne: "admin@szabist.pk" },
+    });
     if (officer) {
       res.status(200).send(officer);
       res.end();

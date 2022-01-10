@@ -40,6 +40,7 @@ app.use("/student", studentRouter);
 app.use("/panelist", panelistRouter);
 app.use("/officer", erfaOfficerRouter);
 app.use("/scholarship", scholarshipPostRouter);
+app.use("/getPoster", express.static("public/uploadScholarshipPoster/"));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
