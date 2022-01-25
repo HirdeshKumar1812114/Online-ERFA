@@ -18,7 +18,8 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
       if (user) {
         console.log(req.body);
         const addNewOfficer = new db.ErfaOfficer({
-          username: req.body.username,
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
           password: user.password,
           designation: req.body.designation,
           cellnumber: req.body.cellNumber,
@@ -63,7 +64,9 @@ exports.getErfaOfficer = expressAsyncHandler(async (req, res, next) => {
 
 exports.getAllErfaOfficer = expressAsyncHandler(async (req, res, next) => {
   try {
-    const officer = await db.ErfaOfficer.find();
+    const officer = await db.ErfaOfficer.find({
+      email: { $ne: "admin@szabist.pk" },
+    });
     if (officer) {
       res.status(200).send(officer);
       res.end();
