@@ -33,6 +33,7 @@ const override = css`
 
 const api = axios.create({
     baseURL: 'http://localhost:5000/',
+    timeout: 1000,
 });
 
 
@@ -40,8 +41,7 @@ const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
     const [token, setToken] = useCookies(['token']);
-    const [userName, setName] = useCookies(['userName']);
-    const [userEmail, setEmail] = useCookies(['userEmail']);
+    const [userID, setUserID] = useCookies(['userID']);
     const [userType, setUserType] = useCookies(['userType']);
     const [loading, setLoading] = useState(false)
     let [color, setColor] = useState("#49A54D");
@@ -80,11 +80,10 @@ export default function LoginPage(props) {
 
             api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
                 setLoading(false)
-                // console.log(result.data)
+                 console.log(result.data)
                 // console.log(result.data.token)
                 setToken('token', result.data.token, { path: '/', maxAge: 1800, secure: true })
-                setName('userName', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
-                setEmail('userEmail', result.data.sendUserEmail, { path: '/', maxAge: 1800, secure: true })
+                setUserID('userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
                 setUserType('userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
                 // window.alert('Welcome to Admin Portal')
                 setValid("true")

@@ -30,8 +30,10 @@ import { Redirect } from 'react-router-dom/cjs/react-router-dom.min'
 
 const AppHeaderDropdown = props => {
   const [token, setToken, removeToken] = useCookies(['token']);
-  const [userName, setUserName, removeUserName] = useCookies(['userName']);
+  const [userName, setUserName, removeUserName] = useCookies(['userID']);
   const [userType, setUserType, removeType] = useCookies(['userType']);
+  console.log('this is header ==> ', userName.userID)
+
   const logout = () => {
    
     
@@ -41,7 +43,7 @@ const AppHeaderDropdown = props => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-      <CButton color="light" shape="rounded-pill">{userName.userName}</CButton>
+      <CButton color="light" shape="rounded-pill">{userName.userID == "undefined" ? 'Admin' : userName.userID  }</CButton>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
