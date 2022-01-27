@@ -9,7 +9,6 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
-  CFormTextarea,
   CFormSelect,
   CFormFeedback,
 } from "@coreui/react";
@@ -23,43 +22,16 @@ const override = css`
   margin: 0 auto;
 `;
 
-const api = axios.create({
-  baseURL: "http://localhost:5000/",
-});
-
+const [title, setTitle] = useState('');
+const [applicationstart, setApplicationStart] = useState('');
+const [applicationdeadline, setApplicationEnd] = useState('');
+const [poster, setPoster] = useState();
+const [description, setDescription] = useState('');
+const [eligibility, setEligibility] = useState('');
+const [tagsArray, setTagsArray] = useState('');
+const [tags, setTags] = useState([])
 const Layout = (props) => {
 
-  const [title, setTitle] = useState('');
-  const [applicationstart, setApplicationStart] = useState('');
-  const [applicationdeadline, setApplicationEnd] = useState('');
-  const [poster, setPoster] = useState();
-  const [description, setDescription] = useState('');
-  const [eligibility, setEligibility] = useState('');
-  const [tags, setTags] = useState([])
-
-
-  const handleSubmit = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      submitData();
-  };
-  const submitData = () => {
-  axios.post('scholarship/add',{
-    title,
-    applicationstart,
-    applicationdeadline,
-    poster:poster.path,
-    description,
-    eligibility,
-    tags
-  }).then(data => {
-    console.log("Data Posted in DB");
-    console.log('Response', data)
-  }).catch(err =>{
-    console.log("Error occured : ", err)
-  })
-  
-  }
   return (
     <CContainer fluid>
       <CCard>
@@ -69,7 +41,7 @@ const Layout = (props) => {
           </strong>
         </CCardHeader>
         <CCardBody>
-          <CForm onSubmit={handleSubmit}>
+          <CForm>
             <CCol md={12}>
               <CFormLabel htmlFor="title">Title</CFormLabel>
               <CFormInput type="text" id="title" onChange={(e) => { setTitle(e.target.value) }} value={title} />
@@ -105,7 +77,7 @@ const Layout = (props) => {
 
             <CCol md={12}>
               <CFormLabel htmlFor="description">Description</CFormLabel>
-              <CFormTextarea id="description" rows="5"
+              <CFormTextarea id="description" rows="10"
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
@@ -117,10 +89,9 @@ const Layout = (props) => {
 
             <CCol md={12}>
               <CFormLabel htmlFor="description">Eligibility</CFormLabel>
-              <CFormTextarea id="description" rows="3"
+              <CFormTextarea id="description" rows="5"
                 onChange={(e) => {
-                  let ele = e.target.value.split(".")
-                  setEligibility(ele);
+                  setEligibility(e.target.value);
                 }}
                 value={eligibility}
               ></CFormTextarea>
@@ -132,15 +103,13 @@ const Layout = (props) => {
                 required
                 value={tags}
                 id="inputStartDate"
-                type="text"
+                type="date"
                 onChange={(e) => {
-                  let next = e.target.value.split(",")
-                  setTags(next);
+                  setTagsArray(e.target.value);
+                  setTags(tagsArray.split(",", 2));
                 }}
               />
             </CCol>
-            <br />
-            <br />
 
             <CCol md={12}>
               <CFormLabel htmlFor="formFile">Load Poster Image</CFormLabel>
@@ -153,9 +122,6 @@ const Layout = (props) => {
                 }}
               />
             </CCol>
-            <br />
-            <br />
-            <br />
 
             <CButton type="submit" color="primary">
               Submit
@@ -173,6 +139,7 @@ const Layout = (props) => {
       <prev >{JSON.stringify(poster, null, 2)}</prev>
       <prev >{JSON.stringify(description, null, 2)}</prev>
       <prev >{JSON.stringify(eligibility, null, 2)}</prev>
+      <prev >{JSON.stringify(tagsArray, null, 2)}</prev>
       <prev >{JSON.stringify(tags, null, 2)}</prev>
 
     </CContainer>
