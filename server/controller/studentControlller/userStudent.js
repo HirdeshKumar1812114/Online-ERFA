@@ -17,7 +17,8 @@ exports.studentSignUp = expressAsyncHandler(async (req, res) => {
       const newStudent = new db.UserStudent({
         regid: req.body.regid,
         password: req.body.password,
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         program: req.body.program,
         section: req.body.section,
         cellnumber: req.body.cellnumber,
