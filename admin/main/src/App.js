@@ -4,7 +4,6 @@ import { createBrowserHistory } from "history";
 import { HashRouter, Route, Switch, Router } from 'react-router-dom'
 import './scss/style.scss'
 import ProtectedRoute from './Auth/protectedRoute'
-import Register  from 'views/pages/register/Register';
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>

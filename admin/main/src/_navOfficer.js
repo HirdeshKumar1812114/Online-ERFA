@@ -26,6 +26,26 @@ const _navOfficer = [
     //   text: 'NEW',
     // },
   },
+  // Scholarships
+  {
+    component: CNavGroup,
+    name: 'Scholarships',
+    to: '/scholarship',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        
+        component: CNavItem,
+        name: 'New Post',
+        to: '/scholarship/new-post',
+      },
+      {
+        component: CNavItem,
+        name: 'List Posts',
+        to: '/scholarship/list-posts',
+      },
+    ],
+  },
   ]
 
 export default _navOfficer
