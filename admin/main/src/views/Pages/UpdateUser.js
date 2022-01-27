@@ -10,6 +10,7 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
+  CFormSelect
 } from "@coreui/react";
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
@@ -107,7 +108,7 @@ const Layout = (props) => {
                 <CFormLabel htmlFor="inputUserName4">Name</CFormLabel>
                 <CFormInput
                   disabled
-                  value={usertoUpdate.firstname+' '+usertoUpdate.lastname }
+                  value={usertoUpdate.firstname + ' ' + usertoUpdate.lastname}
                   type="text"
                   id="inputUsername4"
                 />
@@ -152,6 +153,7 @@ const Layout = (props) => {
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputCellNo">Cell Number</CFormLabel>
+
                 <CFormInput
                   value={usertoUpdate.cellnumber}
                   disabled
@@ -159,28 +161,51 @@ const Layout = (props) => {
               </CCol>
 
 
-
               <CCol md={6}>
-                <CFormLabel htmlFor="designation">New Designation</CFormLabel>
-                <CFormInput
+                <CFormLabel htmlFor="designation">Designation</CFormLabel>
+
+                <CFormSelect aria-label="Default select example"
                   value={Newdesignation}
-                  type="text"
-                  id="designation"
-                  placeholder={designation}
                   onChange={(e) => {
                     setNewDesignation(e.target.value);
                   }}
-                />
+                  required
+                >
+                  <option>Select type</option>
+                  <option value="Officer">Officer</option>
+                  <option value="Faculty">Faculty</option>
+                  <option value="Head">Head</option>
+
+                </CFormSelect>
+
               </CCol>
+
               <CCol md={6}>
                 <CFormLabel htmlFor="inputCellNo">New Cell Number</CFormLabel>
-                <CFormInput
+                {/* <CFormInput
                   value={NewcellNumber}
                   type="number"
                   id="inputCellNo"
                   placeholder={cellNumber}
                   onChange={(e) => {
                     setNewCellNumber(e.target.value);
+                  }}
+                /> */}
+
+
+                <CFormInput
+                  required
+                  value={NewcellNumber}
+                  type="text"
+                  placeholder={cellNumber}
+                  pattern="[0-9]*"
+                  maxlength="11"
+                  id="inputCellNo"
+                  onChange={(e) => {
+                    e.target.validity.valid ?
+                    setNewCellNumber(e.target.value)
+                      :
+                      setNewCellNumber(NewcellNumber)
                   }}
                 />
               </CCol>
