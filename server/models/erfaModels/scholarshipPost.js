@@ -6,7 +6,7 @@ const ScholarshipPostSchema = new mongoose.Schema({
   poster: { type: String },
   description: { type: String },
   postingdate: { type: Date, default: Date.now },
-  eligibility: [String],
+  eligibility: String,
   tags: [String],
 });
 

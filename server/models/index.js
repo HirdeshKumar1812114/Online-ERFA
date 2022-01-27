@@ -15,4 +15,5 @@ module.exports = {
   UserErfa: require("./erfaModels/userErfa"),
   UserPanelist: require("./panelistModels/userPanelist"),
   UserStudent: require("./studentModels/userStudent"),
+  VerStudent: require("./studentModels/verStudent"),
 };
