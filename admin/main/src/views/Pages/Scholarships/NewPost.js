@@ -44,14 +44,18 @@ const Layout = (props) => {
       submitData();
   };
   const submitData = () => {
-  axios.post('scholarship/add',{
-    title,
-    applicationstart,
-    applicationdeadline,
-    poster:poster.path,
-    description,
-    eligibility,
-    tags
+    const data = new FormData()
+    data.append('file', poster, poster[0].name)
+    data.append(title)
+    data.append(applicationstart)
+    data.append(applicationdeadline)
+    data.append(description)
+    data.append(tags)
+    
+    
+    console.log('FormData: ', data);
+  api.post('scholarship/add',{
+    data
   }).then(data => {
     console.log("Data Posted in DB");
     console.log('Response', data)
