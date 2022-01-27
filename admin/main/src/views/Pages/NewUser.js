@@ -142,6 +142,8 @@ const Layout = (props) => {
             setLoading(false);
             props.history.push("/officers/view-users");
             // console.log(result)
+            alert()
+            props.history.push('view-users')
           }
         })
         .catch((err) => {
@@ -158,6 +160,7 @@ const Layout = (props) => {
   };
 
   const alert = () => {
+    
     if (valid != "") {
       if (valid == "true") {
         return (
