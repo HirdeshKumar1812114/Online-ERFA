@@ -34,6 +34,7 @@ exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
   console.log(uploadFilePath);
 
   let checkTitle = await db.ScholarshipPost.findOne({ title: req.body.title });
+  console.log(req.file);
   if (checkTitle === null) {
     let newPost = new db.ScholarshipPost({
       title: req.body.title,
