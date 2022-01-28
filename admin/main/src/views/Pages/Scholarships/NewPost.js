@@ -235,7 +235,7 @@ const Layout = (props) => {
               <br />
               <br />
               <br />
-{validated==true ? <><span style={{"font-size":"12px", "color":'red'}}>*Fill all fields!</span></>:<></>}
+{validated==true ? <><span style={{"font-size":"14px", "color":'red'}}>*Fill all fields!</span></>:<></>}
               <CButton type="submit" color="primary">
                 Submit
               </CButton>
