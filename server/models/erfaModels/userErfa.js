@@ -17,7 +17,7 @@ UserErfaSchema.statics.login = async function (email, password) {
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {
-      console.log("Correct User ");
+      // console.log("Correct User ");
       return user;
     }
     throw { message: "Incorrect Password" };

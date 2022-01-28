@@ -10,7 +10,7 @@ const uploadFilePath = path.resolve(__dirname, "../..", posterPath);
 const storage = multer.diskStorage({
   destination: uploadFilePath,
   filename: function (req, file, cb) {
-    console.log(file.originalname);
+    // console.log(file.originalname);
     cb(
       null,
       `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
@@ -22,7 +22,7 @@ const upload = multer({
   storage: (storage, cb) => {
     cb(null, storage);
 
-    console.log(storage.originalname);
+    // console.log(storage.originalname);
   },
 });
 
@@ -86,7 +86,7 @@ exports.deleteScholarship = async (req, res) => {
       const prev = await db.ScholarshipPost.findOne({ _id: id });
       await fs.promises.unlink(uploadFilePath + "\\" + prev.poster);
       const result = await db.ScholarshipPost.deleteOne({ _id: id });
-      console.log("Saved to Database>>", result);
+      // console.log("Saved to Database>>", result);
       res.status(201).json({ message: "Deleted Successfully" }).end();
     } else {
       res.status(500).json({ message: "Failed id required" }).end();
@@ -98,7 +98,7 @@ exports.deleteScholarship = async (req, res) => {
 };
 
 exports.updateScholarship = async (req, res) => {
-  console.log(req.file.filename);
+  // console.log(req.file.filename);
 
   const fetchDetails = await db.ScholarshipPost.findOne({ _id: req.params.id });
   if (fetchDetails) {
@@ -115,7 +115,7 @@ exports.updateScholarship = async (req, res) => {
       }
     );
     if (updateDetails) {
-      console.log(uploadFilePath + "/" + fetchDetails.poster);
+      // console.log(uploadFilePath + "/" + fetchDetails.poster);
       await fs.promises.unlink(uploadFilePath + "/" + fetchDetails.poster);
       res.status(201).json({ message: "Updated Successfully" }).end();
     } else {

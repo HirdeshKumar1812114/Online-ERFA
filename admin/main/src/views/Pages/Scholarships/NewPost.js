@@ -235,7 +235,7 @@ const Layout = (props) => {
               <br />
               <br />
               <br />
-
+{validated==true ? <><span style={{"font-size":"12px", "color":'red'}}>*Fill all fields!</span></>:<></>}
               <CButton type="submit" color="primary">
                 Submit
               </CButton>
@@ -243,9 +243,9 @@ const Layout = (props) => {
           )}
         </CCardBody>
       </CCard>
-
-      {/* <prev>{JSON.stringify(title, null, 2)}</prev>
-      <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
+      
+       {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
+     {/* <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
       <prev>{JSON.stringify(applicationdeadline, null, 2)}</prev>
       <prev>{JSON.stringify(poster, null, 2)}</prev>
       <prev>{JSON.stringify(description, null, 2)}</prev>
