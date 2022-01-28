@@ -30,14 +30,14 @@ exports.erfaLogin = expressAsyncHandler(async (req, res, next) => {
     const sendUserType = checkUser.usertype;
     const sendUserName = checkUserEmail.firstname;
     const sendUserEmail = checkUserEmail.email;
-console.log(`sendUserName`, sendUserName)
-console.log('sendUserEmail :>> ', sendUserEmail);
+// console.log(`sendUserName`, sendUserName)
+// console.log('sendUserEmail :>> ', sendUserEmail);
     /*console.log(checkUser);
     console.log(token);*/
     res.status(200).send({ token, sendUserType, sendUserName, sendUserEmail });
     res.end();
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 });
 

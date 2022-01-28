@@ -32,7 +32,7 @@ const AppHeaderDropdown = props => {
   const [token, setToken, removeToken] = useCookies(['token']);
   const [userName, setUserName, removeUserName] = useCookies(['userID']);
   const [userType, setUserType, removeType] = useCookies(['userType']);
-  console.log('this is header ==> ', userName.userID)
+  // console.log('this is header ==> ', userName.userID)
 
   const logout = () => {
    

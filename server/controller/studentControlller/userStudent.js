@@ -49,10 +49,10 @@ exports.studentLogin = expressAsyncHandler(async function (req, res, next) {
     const student = await db.UserStudent.login(regid, password);
     const token = createToken({ id: student._id, regid: student.regid });
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    console.log(student);
-    console.log(token);
+    // console.log(student);
+    // console.log(token);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 });
 
