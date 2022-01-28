@@ -2,14 +2,15 @@ const jwt = require("jsonwebtoken");
 var express = require("express");
 var router = express.Router();
 var studentController = require("../../controller/studentControlller/userStudent");
-
+var verfiStudentController = require("../../controller/studentControlller/verificationStudent");
 const {
   requireAuth,
   checkStudent,
   checkUserErfa,
 } = require("../../middleware/authMiddleware");
 
-router.post("/signup");
+router.post("/checksignup", verfiStudentController.verfiStudent);
+router.post("/signup", studentController.studentSignUp);
 router.get("/getallstudents", studentController.getAllStudent);
 router.post("/login", studentController.studentLogin);
 router.post("/dashboard");
