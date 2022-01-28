@@ -1,5 +1,5 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
+import React from "react";
+import CIcon from "@coreui/icons-react";
 import {
   cilBell,
   cilCalculator,
@@ -11,61 +11,58 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
-  cilGroup
-} from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+  cilGroup,
+} from "@coreui/icons";
+import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _navAdmin = [
   {
     component: CNavItem,
-    name: 'Dashboard',
-    to: '/dashboard',
+    name: "Dashboard",
+    to: "/dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     // badge: {
     //   color: 'info',
     //   text: 'NEW',
     // },
   },
-    {
+  {
     component: CNavGroup,
-    name: 'User Management',
-    to: '/officers',
+    name: "User Management",
+    to: "/officers",
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
     items: [
       {
-        
         component: CNavItem,
-        name: 'Create New',
-        to: '/officers/create-new',
+        name: "Create New",
+        to: "/officers/create-new",
       },
       {
         component: CNavItem,
-        name: 'View Users',
-        to: '/officers/view-users',
+        name: "View Users",
+        to: "/officers/view-users",
       },
     ],
   },
   // Scholarships
   {
     component: CNavGroup,
-    name: 'Scholarships',
-    to: '/scholarship',
+    name: "Scholarships",
+    to: "/scholarship",
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
-        
         component: CNavItem,
-        name: 'New Post',
-        to: '/scholarship/new-post',
+        name: "New Post",
+        to: "/scholarship/new-post",
       },
       {
         component: CNavItem,
-        name: 'List Posts',
-        to: '/scholarship/list-posts',
+        name: "List Posts",
+        to: "/scholarship/list-posts",
       },
     ],
   },
-  ]
+];
 
-
-export default _navAdmin
+export default _navAdmin;

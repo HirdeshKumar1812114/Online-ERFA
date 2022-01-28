@@ -32,6 +32,7 @@ exports.uploadImage = multer({
 
 exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
   console.log(uploadFilePath);
+
   let checkTitle = await db.ScholarshipPost.findOne({ title: req.body.title });
   if (checkTitle === null) {
     let newPost = new db.ScholarshipPost({

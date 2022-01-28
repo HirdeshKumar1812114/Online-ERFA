@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   CContainer,
   CButton,
@@ -18,7 +19,7 @@ import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 
-import { DropzoneArea } from 'material-ui-dropzone';
+import { DropzoneArea } from "material-ui-dropzone";
 const override = css`
   margin: 0 auto;
 `;
@@ -28,42 +29,48 @@ const api = axios.create({
 });
 
 const Layout = (props) => {
-
-  const [title, setTitle] = useState('');
-  const [applicationstart, setApplicationStart] = useState('');
-  const [applicationdeadline, setApplicationEnd] = useState('');
+  const [title, setTitle] = useState("");
+  const [applicationstart, setApplicationStart] = useState("");
+  const [applicationdeadline, setApplicationEnd] = useState("");
   const [poster, setPoster] = useState();
-  const [description, setDescription] = useState('');
-  const [eligibility, setEligibility] = useState('');
-  const [tags, setTags] = useState([])
-
+  const [description, setDescription] = useState("");
+  const [eligibility, setEligibility] = useState("");
+  const [tags, setTags] = useState([]);
 
   const handleSubmit = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      submitData();
+    event.preventDefault();
+    event.stopPropagation();
+    submitData();
   };
   const submitData = () => {
-    const data = new FormData()
-    data.append('file', poster, poster[0].name)
-    data.append(title)
-    data.append(applicationstart)
-    data.append(applicationdeadline)
-    data.append(description)
-    data.append(tags)
-    
-    
-    console.log('FormData: ', data);
-  api.post('scholarship/add',{
-    data
-  }).then(data => {
-    console.log("Data Posted in DB");
-    console.log('Response', data)
-  }).catch(err =>{
-    console.log("Error occured : ", err)
-  })
-  
-  }
+    console.log(poster[0]);
+    console.log(poster[0].name);
+    const data = new FormData();
+    data.append("poster", poster[0].name);
+    data.append("title", title);
+    data.append("applicationstart", applicationstart);
+    data.append("applicationend", applicationdeadline);
+    data.append("description", description);
+    data.append("tags", tags);
+
+    console.log("FormData: ", data);
+    for (var value of data.values()) {
+      console.log(value);
+    }
+
+    api
+      .post("scholarship/add", {
+        data,
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((data) => {
+        console.log("Data Posted in DB");
+        console.log("Response", data);
+      })
+      .catch((err) => {
+        console.log("Error occured : ", err);
+      });
+  };
   return (
     <CContainer fluid>
       <CCard>
@@ -76,11 +83,20 @@ const Layout = (props) => {
           <CForm onSubmit={handleSubmit}>
             <CCol md={12}>
               <CFormLabel htmlFor="title">Title</CFormLabel>
-              <CFormInput type="text" id="title" onChange={(e) => { setTitle(e.target.value) }} value={title} />
+              <CFormInput
+                type="text"
+                id="title"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
+              />
             </CCol>
 
             <CCol md={6}>
-              <CFormLabel htmlFor="inputDob">Applicaiton starting date</CFormLabel>
+              <CFormLabel htmlFor="inputDob">
+                Applicaiton starting date
+              </CFormLabel>
               <CFormInput
                 required
                 value={applicationstart}
@@ -92,9 +108,10 @@ const Layout = (props) => {
               />
             </CCol>
 
-
             <CCol md={6}>
-              <CFormLabel htmlFor="inputDob">Applicaiton ending date</CFormLabel>
+              <CFormLabel htmlFor="inputDob">
+                Applicaiton ending date
+              </CFormLabel>
               <CFormInput
                 required
                 value={applicationdeadline}
@@ -106,24 +123,25 @@ const Layout = (props) => {
               />
             </CCol>
 
-
             <CCol md={12}>
               <CFormLabel htmlFor="description">Description</CFormLabel>
-              <CFormTextarea id="description" rows="5"
+              <CFormTextarea
+                id="description"
+                rows="5"
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
                 value={description}
-              >
-              </CFormTextarea>
+              ></CFormTextarea>
             </CCol>
-
 
             <CCol md={12}>
               <CFormLabel htmlFor="description">Eligibility</CFormLabel>
-              <CFormTextarea id="description" rows="3"
+              <CFormTextarea
+                id="description"
+                rows="3"
                 onChange={(e) => {
-                  let ele = e.target.value.split(".")
+                  let ele = e.target.value.split(".");
                   setEligibility(ele);
                 }}
                 value={eligibility}
@@ -138,7 +156,7 @@ const Layout = (props) => {
                 id="inputStartDate"
                 type="text"
                 onChange={(e) => {
-                  let next = e.target.value.split(",")
+                  let next = e.target.value.split(",");
                   setTags(next);
                 }}
               />
@@ -149,11 +167,11 @@ const Layout = (props) => {
             <CCol md={12}>
               <CFormLabel htmlFor="formFile">Load Poster Image</CFormLabel>
               <DropzoneArea
-                acceptedFiles={['image/*']}
+                acceptedFiles={["image/*"]}
                 dropzoneText={"Drag and drop an image here or click"}
                 onChange={(files) => {
-                  console.log('Files:', files);
-                  setPoster(files)
+                  console.log("Files:", files);
+                  setPoster(files);
                 }}
               />
             </CCol>
@@ -165,20 +183,16 @@ const Layout = (props) => {
               Submit
             </CButton>
           </CForm>
-
-
-
         </CCardBody>
       </CCard>
 
-      <prev >{JSON.stringify(title, null, 2)}</prev>
-      <prev >{JSON.stringify(applicationstart, null, 2)}</prev>
-      <prev >{JSON.stringify(applicationdeadline, null, 2)}</prev>
-      <prev >{JSON.stringify(poster, null, 2)}</prev>
-      <prev >{JSON.stringify(description, null, 2)}</prev>
-      <prev >{JSON.stringify(eligibility, null, 2)}</prev>
-      <prev >{JSON.stringify(tags, null, 2)}</prev>
-
+      <prev>{JSON.stringify(title, null, 2)}</prev>
+      <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
+      <prev>{JSON.stringify(applicationdeadline, null, 2)}</prev>
+      <prev>{JSON.stringify(poster, null, 2)}</prev>
+      <prev>{JSON.stringify(description, null, 2)}</prev>
+      <prev>{JSON.stringify(eligibility, null, 2)}</prev>
+      <prev>{JSON.stringify(tags, null, 2)}</prev>
     </CContainer>
   );
 };
