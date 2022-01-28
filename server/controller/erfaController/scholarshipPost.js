@@ -31,10 +31,13 @@ exports.uploadImage = multer({
 }).single("poster");
 
 exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
-  console.log(uploadFilePath);
+  // console.log('uploadFile=>',uploadFilePath);
 
   let checkTitle = await db.ScholarshipPost.findOne({ title: req.body.title });
-  console.log(req.file);
+  let tagsRemoveSpaces = req.body.tags.replace(/\s/g, "")
+  let tags = tagsRemoveSpaces.split(",")
+  // console.log('tags => ', tags);
+  // console.log('req.file==>',req.body);
   if (checkTitle === null) {
     let newPost = new db.ScholarshipPost({
       title: req.body.title,
@@ -43,7 +46,7 @@ exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
       applicationdeadline: req.body.applicationdeadline,
       poster: req.file.filename,
       eligibility: req.body.eligibility,
-      tags: req.body.tags,
+      tags: tags,
     });
 
     await newPost.save((err, checkTitle) => {
@@ -51,7 +54,8 @@ exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
       return res.json(newPost);
     });
   } else {
-    return res.json({ message: "Scholarship title already exists" });
+    fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
+    return res.json({ message: "alreadExisted" });
   }
 });
 
