@@ -84,7 +84,7 @@ exports.deleteScholarship = async (req, res) => {
     const id = req.params.id;
     if (id) {
       const prev = await db.ScholarshipPost.findOne({ _id: id });
-      await fs.promises.unlink(uploadFilePath + "\\" + prev.poster);
+      await fs.promises.unlink(uploadFilePath + "/" + prev.poster);
       const result = await db.ScholarshipPost.deleteOne({ _id: id });
       // console.log("Saved to Database>>", result);
       res.status(201).json({ message: "Deleted Successfully" }).end();
