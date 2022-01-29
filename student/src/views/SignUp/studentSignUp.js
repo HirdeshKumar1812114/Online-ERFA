@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -19,6 +20,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import { TextField } from "@material-ui/core";
 import Link from "@mui/material/Link";
 import Auth from "../../Auth/auth";
 import styles from "assets/jss/material-kit-react/views/loginPage.js";
@@ -28,7 +30,15 @@ import { useCookies } from "react-cookie";
 import { css } from "@emotion/react";
 import RingLoader from "react-spinners/RingLoader";
 import BadgeIcon from "@mui/icons-material/BadgeOutlined";
-
+import People2 from "@mui/icons-material/AccountCircleOutlined";
+import Degree from "@mui/icons-material/SchoolOutlined";
+import Group from "@mui/icons-material/GroupWorkOutlined";
+import Phone from "@mui/icons-material/PhoneAndroidOutlined";
+import Email from "@mui/icons-material/EmailOutlined";
+import Calendar from "@mui/icons-material/CalendarToday";
+import Father from "@mui/icons-material/EscalatorWarningOutlined";
+import MailingAddress from "@mui/icons-material/ContactMailOutlined";
+import Location from "@mui/icons-material/LocationOnOutlined";
 const override = css`
   margin: 0 auto;
 `;
@@ -46,6 +56,10 @@ export default function LoginPage(props) {
   const [userType, setUserType] = useCookies(["userType"]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
+  const [focus, setFocused] = useState(false);
+  const [hasValue, setHasValue] = useState(false);
+  const onFocus = () => setFocused(true);
+  const onBlur = () => setFocused(false);
 
   useEffect(() => {
     if (token.token != null) {
@@ -78,6 +92,9 @@ export default function LoginPage(props) {
   const [mailingaddress, setMailingAddress] = useState("");
   const [fathername, setFathername] = useState("");
   const [valid, setValid] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPassMatch, setIsPassMatch] = useState(false);
+  const [passMessage, setPassMessage] = useState("");
 
   const submitData = (e) => {
     e.preventDefault();
@@ -194,6 +211,18 @@ export default function LoginPage(props) {
   const classes = useStyles();
   const { ...rest } = props;
 
+  const checkPasswordValidataion = (e) => {
+    setConfirmPassword(e.target.value);
+    if (password === confirmPassword) {
+      setPassMessage("");
+      setIsPassMatch(true);
+    } else {
+      setPassMessage("Password does not match");
+
+      setIsPassMatch(false);
+    }
+  };
+
   return (
     <div>
       <Header
@@ -216,13 +245,16 @@ export default function LoginPage(props) {
           {alert()}
 
           <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={4}>
+            <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="success" className={classes.cardHeader}>
                     <h4>ERFA Student Registration </h4>
                   </CardHeader>
                   <p className={classes.divider}>Enter the following details</p>
+                  <p className={classes.divider} style={{ fontStyle: "bold" }}>
+                    {passMessage}
+                  </p>
                   <CardBody>
                     <CustomInput
                       labelText="Registration Number"
@@ -240,45 +272,292 @@ export default function LoginPage(props) {
                         ),
                       }}
                     />
-                    <CustomInput
-                      labelText="Password"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true,
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
-                      inputProps={{
-                        onChange: (event) => setPassword(event.target.value),
-                        type: "password",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off",
+                    >
+                      <span>
+                        <CustomInput
+                          labelText="Password"
+                          id="pass"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              setPassword(event.target.value),
+                            type: "password",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Icon className={classes.inputIconsColor}>
+                                  lock_outline
+                                </Icon>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                      <span>
+                        <CustomInput
+                          labelText="Confirm Password"
+                          id="confirmpass"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              checkPasswordValidataion(event),
+                            type: "password",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Icon className={classes.inputIconsColor}>
+                                  lock_outline
+                                </Icon>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
-                    />
+                    >
+                      <span>
+                        <CustomInput
+                          labelText="First Name"
+                          id="firstname"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              setFirstName(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <People2
+                                  className={classes.inputIconsColor}
+                                ></People2>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                      <span>
+                        <CustomInput
+                          labelText="Last Name"
+                          id="lastname"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              setLastName(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <People2
+                                  className={classes.inputIconsColor}
+                                ></People2>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                    </div>
 
-                    <CustomInput
-                      labelText="First Name"
-                      id="pass"
-                      formControlProps={{
-                        fullWidth: true,
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
-                      inputProps={{
-                        onChange: (event) => setFirstName(event.target.value),
-                        type: "password",
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Icon className={classes.inputIconsColor}>
-                              lock_outline
-                            </Icon>
-                          </InputAdornment>
-                        ),
-                        autoComplete: "off",
+                    >
+                      <span>
+                        <CustomInput
+                          labelText="Program"
+                          id="program"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) => setProgram(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Degree
+                                  className={classes.inputIconsColor}
+                                ></Degree>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                      <span>
+                        <CustomInput
+                          labelText="Section"
+                          id="section"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) => setSection(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Group
+                                  className={classes.inputIconsColor}
+                                ></Group>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
-                    />
+                    >
+                      <span>
+                        <CustomInput
+                          labelText="Cell Number"
+                          id="cellnumber"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              setCellNumber(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Phone
+                                  className={classes.inputIconsColor}
+                                ></Phone>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                      <span>
+                        <CustomInput
+                          labelText="Email"
+                          id="email"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) => setEmail(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Email
+                                  className={classes.inputIconsColor}
+                                ></Email>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span>
+                        <CustomInput
+                          labelText="Date of Birth"
+                          id="dob"
+                          onFocus={onFocus}
+                          onBlur={onBlur}
+                          formControlProps={{}}
+                          inputProps={{
+                            style: { width: "190px" },
+                            onClick: (event) => setHasValue(true),
+                            onChange: (event) => setDob(event.target.value),
+                            type: hasValue || focus ? "date" : "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                {hasValue || focus ? null : (
+                                  <Calendar></Calendar>
+                                )}
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                      <span>
+                        <CustomInput
+                          labelText="Fathername"
+                          id="fathername"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              setFatherName(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Father
+                                  className={classes.inputIconsColor}
+                                ></Father>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span>
+                        <CustomInput
+                          labelText="Mailing Address"
+                          id="mailingaddress"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              setMailingAddress(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <MailingAddress
+                                  className={classes.inputIconsColor}
+                                ></MailingAddress>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                      <span>
+                        <CustomInput
+                          labelText="Permanent Address"
+                          id="permanentaddress"
+                          formControlProps={{}}
+                          inputProps={{
+                            onChange: (event) =>
+                              setPermanentAddress(event.target.value),
+                            type: "text",
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Location
+                                  className={classes.inputIconsColor}
+                                ></Location>
+                              </InputAdornment>
+                            ),
+                            autoComplete: "off",
+                          }}
+                        />
+                      </span>
+                    </div>
                   </CardBody>
                   <br />
                   <CardFooter className={classes.cardFooter}>
@@ -291,7 +570,7 @@ export default function LoginPage(props) {
                       {loading == true ? (
                         <RingLoader color={color} css={override} size={25} />
                       ) : (
-                        <>Login</>
+                        <>Register</>
                       )}
                     </Button>
                   </CardFooter>
@@ -302,9 +581,10 @@ export default function LoginPage(props) {
         </div>
         <Footer whiteFont />
       </div>
-      {/* <prev >{JSON.stringify(username, null, 2)}</prev>
-            <prev>{JSON.stringify(password, null, 2)}</prev>
-            <prev>{JSON.stringify(valid, null, 2)}</prev> */}
+      <prev>{JSON.stringify(dob, null, 2)}</prev>
+      <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
+      <prev>{JSON.stringify(password, null, 2)}</prev>
+      {/*<prev>{JSON.stringify(valid, null, 2)}</prev> */}
     </div>
   );
 }

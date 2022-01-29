@@ -34,8 +34,8 @@ exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
   // console.log('uploadFile=>',uploadFilePath);
 
   let checkTitle = await db.ScholarshipPost.findOne({ title: req.body.title });
-  let tagsRemoveSpaces = req.body.tags.replace(/\s/g, "")
-  let tags = tagsRemoveSpaces.split(",")
+  let tagsRemoveSpaces = req.body.tags.replace(/\s/g, "");
+  let tags = tagsRemoveSpaces.split(",");
   // console.log('tags => ', tags);
   // console.log('req.file==>',req.body);
   if (checkTitle === null) {
