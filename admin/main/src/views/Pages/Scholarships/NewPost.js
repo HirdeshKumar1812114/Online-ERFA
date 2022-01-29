@@ -64,7 +64,8 @@ const Layout = (props) => {
       data.append("poster", poster[0]);
       data.append("title", title);
       data.append("applicationstart", applicationstart);
-      data.append("applicationend", applicationdeadline);
+      data.append("applicationdeadline", applicationdeadline);
+      data.append("eligibility", eligibility)
       data.append("description", description);
       data.append("tags", tags);
 

@@ -19,6 +19,7 @@ import {
   CTableDataCell,
   CTableBody,
 } from "@coreui/react";
+import { CBadge } from '@coreui/react'
 
 import axios from "axios";
 const api = axios.create({
@@ -27,73 +28,87 @@ const api = axios.create({
 
 const Layout = (props) => {
   const [visible, setVisible] = useState(false);
-  const [getUsers, setUsers] = useState([]);
+  const [getPost, setPost] = useState([]);
   const [deleteConfirm, setDelete] = useState(false);
-  const [usertoDelete, setUsertoDel] = useState("");
-  const [usertoUpdate, setUsertoUpdate] = useState("");
+  const [poststoDelete, setpoststoDel] = useState("");
+  const [poststoUpdate, setpoststoUpdate] = useState("");
 
-  var users = [];
+  var posts = [];
 
   useEffect(() => {
-    api.get("officer/details").then((res) => {
-      // console.log(getUsers)
-      localStorage.setItem("userData", JSON.stringify(res.data));
-      users = res.data;
-      // console.log(users)
-      setUsers(res.data);
+    api.get("scholarship/all").then((res) => {
+      console.log('getPost=>', getPost)
+      localStorage.setItem("posts", JSON.stringify(res.data));
+      posts = res.data;
+      console.log('posts=>', posts)
+      setPost(res.data);
     });
-  }, [deleteConfirm,visible]);
+  }, [deleteConfirm, visible]);
 
-  const deleteUser = () => {
-    // console.log('user to delte: ',usertoDelete)
+  const deleteposts = () => {
+    // console.log('posts to delte: ',poststoDelete)
     api
-      .delete(`officer/delete/${usertoDelete}`)
+      .delete(`scholarship/delete/${poststoDelete}`)
       .then((res) => {
         // console.log(res)
-        // window.alert("User deleted.")
-        setUsertoDel("");
+        // window.alert("posts deleted.")
+        setpoststoDel("");
         setDelete(false);
         setVisible(false);
       })
       .catch((err) => {
         // console.log(err)
         // window.alert("Error Occured");
-        setUsertoDel("");
+        setpoststoDel("");
         setVisible(false);
       });
   };
 
-  const userUpdate = () => {
-    props.history.push("update-user");
+  const postsUpdate = () => {
+    props.history.push("update-posts");
   };
-
+  const viewPost = () => {
+    props.history.push("view-post");
+  }
   return (
     <CContainer>
       <CCard>
         <CCardHeader>
           <strong>
-            <h3>All Users</h3>
+            <h3>All Posts</h3>
           </strong>
         </CCardHeader>
         <CCardBody>
           <CTable striped hover responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">User's Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Designation</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Title</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Tags</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Start Date</CTableHeaderCell>
+                <CTableHeaderCell scope="col">End Date</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {getUsers.map((user, key) => {
+              {getPost.map((posts, key) => {
                 return (
                   <CTableRow>
                     <CTableHeaderCell scope="row">
-                      {user.firstname}{" "}{user.lastname}
+                      <CButton color="link" onClick={() => {
+                        localStorage.setItem("viewPostUrl", posts._id);
+                        viewPost()
+                      }}>
+                        {posts.title}
+                      </CButton>
                     </CTableHeaderCell>
-                    <CTableDataCell>{user.designation}</CTableDataCell>
-                    <CTableDataCell>{user.email}</CTableDataCell>
+                    <CTableDataCell>
+                      {posts.tags.map((tag, i) => {
+                        return (<CBadge color="info" shape="rounded-pill" style={{ 'margin': '4px' }}>{tag}</CBadge>)
+                      })
+                      }</CTableDataCell>
+                    <CTableDataCell>{posts.applicationstart}</CTableDataCell>
+                    <CTableDataCell>{posts.applicationdeadline}</CTableDataCell>
+
                     <CTableDataCell>
                       <CButtonGroup
                         role="group"
@@ -103,8 +118,8 @@ const Layout = (props) => {
                           color="warning"
                           style={{ width: "100px" }}
                           onClick={() => {
-                            localStorage.setItem("userUpdate", user._id);
-                            userUpdate();
+                            localStorage.setItem("postsUpdate", posts._id);
+                            postsUpdate();
                           }}
                         >
                           Edit
@@ -114,7 +129,7 @@ const Layout = (props) => {
                           style={{ width: "100px" }}
                           onClick={() => {
                             setVisible(!visible);
-                            setUsertoDel(user._id);
+                            setpoststoDel(posts._id);
                           }}
                         >
                           Delete
@@ -135,11 +150,11 @@ const Layout = (props) => {
           >
             <CModalHeader>
               <CModalTitle>
-                <strong>User Delete Confirmation</strong>
+                <strong>posts Delete Confirmation</strong>
               </CModalTitle>
             </CModalHeader>
             <CModalBody>
-              Are you sure you want to delete the selected user!
+              Are you sure you want to delete the selected posts!
               <br />
               If yes then press the confirm button.
             </CModalBody>
@@ -150,7 +165,7 @@ const Layout = (props) => {
               <CButton
                 color="primary"
                 onClick={() => {
-                  deleteUser();
+                  deleteposts();
                 }}
               >
                 Confirm
