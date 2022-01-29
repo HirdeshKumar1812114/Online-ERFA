@@ -213,12 +213,14 @@ export default function LoginPage(props) {
 
   const checkPasswordValidataion = (e) => {
     setConfirmPassword(e.target.value);
-    if (password === confirmPassword) {
+    const chckPass = e.target.value;
+    if (password === chckPass) {
       setPassMessage("");
       setIsPassMatch(true);
     } else {
       setPassMessage("Password does not match");
-
+      e.preventDefault();
+      e.stopPropagation();
       setIsPassMatch(false);
     }
   };
@@ -581,7 +583,7 @@ export default function LoginPage(props) {
         </div>
         <Footer whiteFont />
       </div>
-      <prev>{JSON.stringify(dob, null, 2)}</prev>
+      {/* <prev>{JSON.stringify(dob, null, 2)}</prev> */}
       <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
       {/*<prev>{JSON.stringify(valid, null, 2)}</prev> */}
