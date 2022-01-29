@@ -65,7 +65,7 @@ const Layout = (props) => {
   };
 
   const postsUpdate = () => {
-    props.history.push("update-posts");
+    props.history.push("update-post");
   };
   const viewPost = () => {
     props.history.push("view-post");

@@ -8,6 +8,8 @@ const UpdateUser = React.lazy(() => import('./views/Pages/Officers/UpdateUser'))
 const NewPost = React.lazy(()=>import('./views/Pages/Scholarships/NewPost'))
 const ViewPost = React.lazy(()=>import('./views/Pages/Scholarships/ViewPost'))
 const ViewSeletctedPost = React.lazy(()=>import('./views/Pages/Scholarships/ViewSeletctedPost'))
+const UpdateSeletctedPost = React.lazy(()=>import('./views/Pages/Scholarships/UpdateSeletctedPost'))
+
 
 
 
@@ -28,6 +30,8 @@ const routes = [
   { path: '/scholarship/new-post', name: 'New Post', component: NewPost },
   { path: '/scholarship/list-posts', name: 'List Posts', component: ViewPost },
   { path: '/scholarship/view-post', name: 'View Post', component: ViewSeletctedPost },
+  { path: '/scholarship/update-post', name: 'Update Post', component: UpdateSeletctedPost },
+
 
 
 
