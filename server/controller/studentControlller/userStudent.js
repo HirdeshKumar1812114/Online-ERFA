@@ -9,10 +9,13 @@ const createToken = (user) => {
 };
 
 exports.studentSignUp = expressAsyncHandler(async (req, res) => {
+  console.log("I am here");
   const regid = req.body.regid;
+  console.log({ regid });
+  console.log(req.body);
   try {
     const checkStudent = await db.UserStudent.findOne({ regid: regid });
-
+    console.log(checkStudent);
     if (checkStudent === null) {
       const newStudent = new db.UserStudent({
         regid: req.body.regid,
@@ -31,6 +34,7 @@ exports.studentSignUp = expressAsyncHandler(async (req, res) => {
 
       if (newStudent) {
         const confirmStudent = await newStudent.save();
+        console.log("I am new student", { confirmStudent });
         res.status(200).send(confirmStudent);
         res.end();
       }

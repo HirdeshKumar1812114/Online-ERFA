@@ -61,23 +61,23 @@ export default function LoginPage(props) {
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
 
-  useEffect(() => {
-    if (token.token != null) {
-      api
-        .get("erfa/dashboard", {
-          headers: {
-            "x-auth-token": token.token,
-          },
-        })
-        .then((result) => {
-          // console.log(result.data)
-          Auth.login(() => {
-            // return (<Redirect to={'/dashboard'} />)
-            props.history.push("/dashboard");
-          });
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (token.token != null) {
+  //     api
+  //       .get("erfa/dashboard", {
+  //         headers: {
+  //           "x-auth-token": token.token,
+  //         },
+  //       })
+  //       .then((result) => {
+  //         // console.log(result.data)
+  //         Auth.login(() => {
+  //           // return (<Redirect to={'/dashboard'} />)
+  //           props.history.push("/dashboard");
+  //         });
+  //       });
+  //   }
+  // }, []);
 
   const [regid, setRegid] = useState("");
   const [password, setPassword] = useState("");
@@ -89,8 +89,8 @@ export default function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [permanentAddress, setPermanentAddress] = useState("");
-  const [mailingaddress, setMailingAddress] = useState("");
-  const [fathername, setFathername] = useState("");
+  const [mailingAddress, setMailingAddress] = useState("");
+  const [fatherName, setFatherName] = useState("");
   const [valid, setValid] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPassMatch, setIsPassMatch] = useState(false);
@@ -98,35 +98,65 @@ export default function LoginPage(props) {
 
   const submitData = (e) => {
     e.preventDefault();
-    if (regid !== "" && password !== "") {
+    if (
+      regid !== "" &&
+      password !== "" &&
+      firstName !== "" &&
+      lastName !== "" &&
+      program !== "" &&
+      section !== "" &&
+      cellNumber !== "" &&
+      email !== "" &&
+      dob !== "" &&
+      permanentAddress !== "" &&
+      mailingAddress !== "" &&
+      fatherName !== ""
+    ) {
       api
-        .post("erfa/login", { email: regid, password }, setLoading(true))
+        .post(
+          "student/signup",
+          {
+            regid,
+            password,
+            firstname: firstName,
+            lastname: lastName,
+            program,
+            section,
+            cellnumber: cellNumber,
+            email,
+            dob,
+            permanentaddress: permanentAddress,
+            mailingaddress: mailingAddress,
+            fathername: fatherName,
+          },
+          setLoading(true)
+        )
         .then((result) => {
-          setLoading(false);
-          console.log(result.data);
-          // console.log(result.data.token)
-          setToken("token", result.data.token, {
-            path: "/",
-            maxAge: 1800,
-            secure: true,
-          });
-          setUserID("userID", result.data.sendUserName, {
-            path: "/",
-            maxAge: 1800,
-            secure: true,
-          });
-          setUserType("userType", result.data.sendUserType, {
-            path: "/",
-            maxAge: 1800,
-            secure: true,
-          });
-          // window.alert('Welcome to Admin Portal')
-          setValid("true");
-          alert();
-          Auth.login(() => {
-            props.history.push("/");
-          });
-          // window.alert('Welcome to Admin Portal')
+          if (
+            result.data.message === "User Registration Id already used" ||
+            result.data.message === " Student Details not match"
+          ) {
+            setLoading(false);
+            console.log(result.data);
+            setPassMessage("User Not registered");
+          } else {
+            setRegid("");
+            setPassword("");
+            setfirstName("");
+            setLastName("");
+            setProgram("");
+            setSection("");
+            setCellNumber("");
+            setEmail("");
+            setDob("");
+            setPermanentAddress("");
+            setMailingAddress("");
+            setFatherName("");
+            setLoading(false);
+            console.log(result.data);
+            setPassMessage("User is Registed");
+            setValid("true");
+          }
         })
 
         .catch((err) => {
@@ -169,7 +199,7 @@ export default function LoginPage(props) {
               }}
               severity="success"
             >
-              OK - <strong>Login Successful. </strong>
+              OK - <strong>Registration Successful</strong>
             </Alert>
             <Redirect to="/" />
           </>
@@ -183,7 +213,7 @@ export default function LoginPage(props) {
             }}
             severity="error"
           >
-            ERROR — <strong>Invalid Credentials!</strong>
+            ERROR — <strong>Registration unsuccessful</strong>
           </Alert>
         );
       } else {
@@ -218,7 +248,7 @@ export default function LoginPage(props) {
       setPassMessage("");
       setIsPassMatch(true);
     } else {
-      setPassMessage("Password does not match");
+      setPassMessage("Password does not match!");
       e.preventDefault();
       e.stopPropagation();
       setIsPassMatch(false);
@@ -254,7 +284,14 @@ export default function LoginPage(props) {
                     <h4>ERFA Student Registration </h4>
                   </CardHeader>
                   <p className={classes.divider}>Enter the following details</p>
-                  <p className={classes.divider} style={{ fontStyle: "bold" }}>
+                  <p
+                    className={classes.divider}
+                    style={{
+                      fontWeight: "bold",
+                      color: "red",
+                      fontSize: "16px",
+                    }}
+                  >
                     {passMessage}
                   </p>
                   <CardBody>
@@ -583,10 +620,19 @@ export default function LoginPage(props) {
         </div>
         <Footer whiteFont />
       </div>
-      {/* <prev>{JSON.stringify(dob, null, 2)}</prev> */}
-      <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
+      <prev>{JSON.stringify(regid, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
-      {/*<prev>{JSON.stringify(valid, null, 2)}</prev> */}
+      <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
+      <prev>{JSON.stringify(firstName, null, 2)}</prev>
+      <prev>{JSON.stringify(lastName, null, 2)}</prev>
+      <prev>{JSON.stringify(program, null, 2)}</prev>
+      <prev>{JSON.stringify(section, null, 2)}</prev>
+      <prev>{JSON.stringify(cellNumber, null, 2)}</prev>
+      <prev>{JSON.stringify(email, null, 2)}</prev>
+      <prev>{JSON.stringify(dob, null, 2)}</prev>
+      <prev>{JSON.stringify(permanentAddress, null, 2)}</prev>
+      <prev>{JSON.stringify(mailingAddress, null, 2)}</prev>
+      <prev>{JSON.stringify(fatherName, null, 2)}</prev>
     </div>
   );
 }
