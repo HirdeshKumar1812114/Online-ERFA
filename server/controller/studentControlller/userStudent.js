@@ -9,13 +9,11 @@ const createToken = (user) => {
 };
 
 exports.studentSignUp = expressAsyncHandler(async (req, res) => {
-  console.log("I am here");
   const regid = req.body.regid;
-  console.log({ regid });
-  console.log(req.body);
+  console.log("Su- signup");
   try {
     const checkStudent = await db.UserStudent.findOne({ regid: regid });
-    console.log(checkStudent);
+    console.log("Su- try");
     if (checkStudent === null) {
       const newStudent = new db.UserStudent({
         regid: req.body.regid,
@@ -33,16 +31,18 @@ exports.studentSignUp = expressAsyncHandler(async (req, res) => {
       });
 
       if (newStudent) {
+        console.log("Su- try success");
         const confirmStudent = await newStudent.save();
-        console.log("I am new student", { confirmStudent });
-        res.status(200).send(confirmStudent);
-        res.end();
+        console.log(confirmStudent);
+        res.status(200).json({ message: "New Student Successfully Added" });
       }
     } else {
-      res.status(400).send({ message: "User Registration Id already used" });
+      console.log("Su- try else ");
+      res.status(400).json({ message: "User Registration Id already used" });
       res.end();
     }
   } catch {
+    console.log("Su-catch  success");
     res.status(400).send({ message: "Error in adding! In catch block" });
   }
 });

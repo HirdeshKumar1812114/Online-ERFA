@@ -45,39 +45,18 @@ const override = css`
 
 const api = axios.create({
   baseURL: "http://localhost:5000/",
-  timeout: 1000,
+  timeout: 100000,
 });
 
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
-  const [token, setToken] = useCookies(["token"]);
-  const [userID, setUserID] = useCookies(["userID"]);
-  const [userType, setUserType] = useCookies(["userType"]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
   const [focus, setFocused] = useState(false);
   const [hasValue, setHasValue] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-
-  // useEffect(() => {
-  //   if (token.token != null) {
-  //     api
-  //       .get("erfa/dashboard", {
-  //         headers: {
-  //           "x-auth-token": token.token,
-  //         },
-  //       })
-  //       .then((result) => {
-  //         // console.log(result.data)
-  //         Auth.login(() => {
-  //           // return (<Redirect to={'/dashboard'} />)
-  //           props.history.push("/dashboard");
-  //         });
-  //       });
-  //   }
-  // }, []);
 
   const [regid, setRegid] = useState("");
   const [password, setPassword] = useState("");
@@ -114,7 +93,7 @@ export default function LoginPage(props) {
     ) {
       api
         .post(
-          "student/signup",
+          "student/checksignup",
           {
             regid,
             password,
@@ -129,20 +108,27 @@ export default function LoginPage(props) {
             mailingaddress: mailingAddress,
             fathername: fatherName,
           },
+
           setLoading(true)
         )
         .then((result) => {
+          console.log({ result });
+
           if (
             result.data.message === "User Registration Id already used" ||
-            result.data.message === " Student Details not match"
+            result.data.message === "Student Details not match"
           ) {
-            setLoading(false);
-            console.log(result.data);
-            setPassMessage("User Not registered");
+            setValid("false");
+            alert();
           } else {
+            setLoading(false);
+            console.log("In catch block else ");
+            console.log(result);
+            console.log(result.data);
             setRegid("");
             setPassword("");
-            setfirstName("");
+            setConfirmPassword("");
+            setFirstName("");
             setLastName("");
             setProgram("");
             setSection("");
@@ -152,40 +138,23 @@ export default function LoginPage(props) {
             setPermanentAddress("");
             setMailingAddress("");
             setFatherName("");
-            setLoading(false);
-            console.log(result.data);
-            setPassMessage("User is Registed");
             setValid("true");
+            alert();
           }
         })
 
         .catch((err) => {
+          console.log("3");
           setLoading(false);
           // console.log(err)
           setValid("false");
           alert();
         });
-
-      // if (username == 'admin' && password == 'admin') {
-      //     setValid("true")
-      //     Auth.login(()=>{
-      //     props.history.push("/")
-      //     })
-      //     // window.alert('Welcome to Admin Portal')
-      //     alert()
-
-      // } else {
-      //     setValid("false")
-      //     // window.alert('Invalid Credentials')
-      //     alert()
-
-      // }
     } else {
-      // window.alert('Please fill all the fields')
+      console.log("4");
       setValid("incomplete");
       alert();
     }
-    alert();
   };
   const alert = () => {
     if (valid != "") {
@@ -193,7 +162,7 @@ export default function LoginPage(props) {
         return (
           <>
             <Alert
-              style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+              style={{ "margin-top": "5px", "margin-bottom": "25px" }}
               onClose={() => {
                 setValid("");
               }}
@@ -201,25 +170,28 @@ export default function LoginPage(props) {
             >
               OK - <strong>Registration Successful</strong>
             </Alert>
-            <Redirect to="/" />
           </>
         );
       } else if (valid == "false") {
         return (
           <Alert
-            style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+            style={{ "margin-top": "5px", "margin-bottom": "25px" }}
             onClose={() => {
               setValid("");
             }}
             severity="error"
           >
-            ERROR — <strong>Registration unsuccessful</strong>
+            ERROR —{" "}
+            <strong>
+              Registration record is already present or the registration id is
+              not valid
+            </strong>
           </Alert>
         );
       } else {
         return (
           <Alert
-            style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+            style={{ "margin-top": "5px", "margin-bottom": "25px" }}
             onClose={() => {
               setValid("");
             }}

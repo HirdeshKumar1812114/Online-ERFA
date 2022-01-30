@@ -16,7 +16,7 @@ import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
-import PasswordStrengthBar from 'react-password-strength-bar'
+import PasswordStrengthBar from "react-password-strength-bar";
 const override = css`
   margin: 0 auto;
 `;
@@ -36,10 +36,10 @@ const Layout = (props) => {
   const [isMatched, setIsMatched] = useState();
   let [color, setColor] = useState("#49A54D");
   const [validated, setValidated] = useState(false);
-  const [confPass, setConfPass] = useState('')
-  const [passmath, setPassmath] = useState('')
+  const [confPass, setConfPass] = useState("");
+  const [passmath, setPassmath] = useState("");
   const [passstats, setpassstats] = useState();
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
@@ -66,45 +66,41 @@ const Layout = (props) => {
       event.stopPropagation();
       setValid("invalidPassword");
     }
-     
-    
+
     setValidated(true);
   };
 
   const confirmPassword = (e) => {
-    setConfPass(e.target.value)
-    const confPass = e.target.value
-    if (password === '' || confPass === '') {
-      setPassmath('')
+    setConfPass(e.target.value);
+    const confPass = e.target.value;
+    if (password === "" || confPass === "") {
+      setPassmath("");
     } else {
       if (password !== confPass) {
-        setPassmath('Password did not matched with your password')
-        setpassstats(false)
+        setPassmath("Password did not matched with your password");
+        setpassstats(false);
         setIsMatched(false);
         setValid("invalidPassword");
-
       }
       //
       else {
         setIsMatched(true);
         setValid("");
         alert();
-        setPassmath('Password Matched')
-        setpassstats(true)
-
-
+        setPassmath("Password Matched");
+        setpassstats(true);
       }
     }
-  }
+  };
 
   const submitData = () => {
     if (
       (firstName !== "" && lastName !== "" && password !== "",
-        designation !== "" &&
+      designation !== "" &&
         cellNumber !== "" &&
         email !== "" &&
         nic !== "" &&
-        dob != "" )
+        dob != "")
     ) {
       api
         .post(
@@ -142,8 +138,8 @@ const Layout = (props) => {
             setLoading(false);
             props.history.push("/officers/view-users");
             // console.log(result)
-            alert()
-            props.history.push('view-users')
+            alert();
+            props.history.push("view-users");
           }
         })
         .catch((err) => {
@@ -160,7 +156,6 @@ const Layout = (props) => {
   };
 
   const alert = () => {
-    
     if (valid != "") {
       if (valid == "true") {
         return (
@@ -212,7 +207,8 @@ const Layout = (props) => {
               style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
               severity="warning"
             >
-              ALERT — <strong> Invalid form, please fill all fields proberly!</strong>
+              ALERT —{" "}
+              <strong> Invalid form, please fill all fields proberly!</strong>
             </Alert>
           </>
         );
@@ -277,27 +273,22 @@ const Layout = (props) => {
                 />
               </CCol>
 
-
-
-
-
               <CCol md={6}>
                 <CFormLabel htmlFor="designation">Designation</CFormLabel>
 
-                <CFormSelect aria-label="Default select example" 
-                value={designation}
-                onChange={(e) => {
-                  setDesignation(e.target.value);
-                }}
-                required
+                <CFormSelect
+                  aria-label="Default select example"
+                  value={designation}
+                  onChange={(e) => {
+                    setDesignation(e.target.value);
+                  }}
+                  required
                 >
                   <option>Select type</option>
                   <option value="Officer">Officer</option>
                   <option value="Faculty">Faculty</option>
                   <option value="Head">Head</option>
-
                 </CFormSelect>
-
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputCellNo">Cell Number</CFormLabel>
@@ -307,13 +298,12 @@ const Layout = (props) => {
                   type="text"
                   placeholder="0303XXXXXXX"
                   pattern="[0-9]*"
-                  maxlength = "11"
+                  maxlength="11"
                   id="inputCellNo"
                   onChange={(e) => {
-                    e.target.validity.valid ?
-                    setCellNumber(e.target.value)
-                    :
-                    setCellNumber(cellNumber)
+                    e.target.validity.valid
+                      ? setCellNumber(e.target.value)
+                      : setCellNumber(cellNumber);
                   }}
                 />
               </CCol>
@@ -336,15 +326,14 @@ const Layout = (props) => {
                   required
                   value={nic}
                   type="text"
-                  maxlength = "13"
+                  maxlength="13"
                   pattern="[0-9]*"
                   id="inputNic"
                   placeholder="XXXXXXXXXXXX (13-digits without dashes)"
                   onChange={(e) => {
-                    e.target.validity.valid ?
-                    setNic(e.target.value)
-                    :
-                    setNic(nic)
+                    e.target.validity.valid
+                      ? setNic(e.target.value)
+                      : setNic(nic);
                   }}
                 />
               </CCol>
@@ -376,12 +365,11 @@ const Layout = (props) => {
                 <CFormFeedback
                   style={
                     passstats !== true
-                      ? { 'font-size': '10px', color: 'red' }
-                      : { 'font-size': '10px', color: 'green' }
+                      ? { "font-size": "10px", color: "red" }
+                      : { "font-size": "10px", color: "green" }
                   }
                 >
                   {passmath}
-
                 </CFormFeedback>
               </CCol>
               <CCol md={6}>
@@ -412,7 +400,6 @@ const Layout = (props) => {
       <prev >{JSON.stringify(re_password, null, 2)}</prev>
       <prev >{JSON.stringify(valid, null, 2)}</prev>
       <prev >{JSON.stringify(isMatched, null, 2)}</prev> */}
-
     </CContainer>
   );
 };
