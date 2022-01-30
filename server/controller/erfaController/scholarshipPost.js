@@ -98,31 +98,67 @@ exports.deleteScholarship = async (req, res) => {
 };
 
 exports.updateScholarship = async (req, res) => {
-  // console.log(req.file.filename);
-
-  const fetchDetails = await db.ScholarshipPost.findOne({ _id: req.params.id });
-  if (fetchDetails) {
-    const updateDetails = await db.ScholarshipPost.findOneAndUpdate(
-      { _id: fetchDetails.id },
-      {
-        title: req.body.title,
-        description: req.body.description,
-        applicationstart: req.body.applicationstart,
-        applicationdeadline: req.body.applicationdeadline,
-        poster: req.file.filename,
-        eligibility: req.body.eligibility,
-        tags: req.body.tags,
+  const chk = req.file;
+  if (chk) {
+    const fetchDetails = await db.ScholarshipPost.findOne({
+      _id: req.params.id,
+    });
+    if (fetchDetails) {
+      const updateDetails = await db.ScholarshipPost.findOneAndUpdate(
+        { _id: fetchDetails.id },
+        {
+          title: req.body.title,
+          description: req.body.description,
+          applicationstart: req.body.applicationstart,
+          applicationdeadline: req.body.applicationdeadline,
+          poster: req.file.filename,
+          eligibility: req.body.eligibility,
+          tags: req.body.tags,
+        }
+      );
+      if (updateDetails) {
+        // console.log(uploadFilePath + "/" + fetchDetails.poster);
+        await fs.promises.unlink(uploadFilePath + "/" + fetchDetails.poster);
+        res
+          .status(201)
+          .json({ message: "Updated Successfully Details and Poster" })
+          .end();
+      } else {
+        res
+          .status(400)
+          .json({ message: "Trouble in saving changes in details" });
       }
-    );
-    if (updateDetails) {
-      // console.log(uploadFilePath + "/" + fetchDetails.poster);
-      await fs.promises.unlink(uploadFilePath + "/" + fetchDetails.poster);
-      res.status(201).json({ message: "Updated Successfully" }).end();
     } else {
-      res.status(400).json({ message: "Trouble in saving changes in details" });
+      await fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
+      res.status(500).json({ message: "Error in finding" });
     }
   } else {
-    await fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
-    res.status(500).json({ message: "Error in finding" });
+    const fetchDetails = await db.ScholarshipPost.findOne({
+      _id: req.params.id,
+    });
+    if (fetchDetails) {
+      const updateDetails = await db.ScholarshipPost.findOneAndUpdate(
+        { _id: fetchDetails.id },
+        {
+          title: req.body.title,
+          description: req.body.description,
+          applicationstart: req.body.applicationstart,
+          applicationdeadline: req.body.applicationdeadline,
+          eligibility: req.body.eligibility,
+          tags: req.body.tags,
+        }
+      );
+      if (updateDetails) {
+        // console.log(uploadFilePath + "/" + fetchDetails.poster);
+
+        res.status(201).json({ message: "Updated Details Successfully" }).end();
+      } else {
+        res
+          .status(400)
+          .json({ message: "Trouble in saving changes in details" });
+      }
+    } else {
+      res.status(500).json({ message: "Error in finding" });
+    }
   }
 };
