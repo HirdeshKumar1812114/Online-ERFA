@@ -20,9 +20,7 @@ import { useCookies } from 'react-cookie';
 
 const AppSidebar = () => {
 
-  const [token, setToken] = useCookies(['token']);
-  const [userID, setUserID] = useCookies(['userID']);
-  const [userType, setUserType] = useCookies(['userType']);
+  
 
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
@@ -47,7 +45,7 @@ const AppSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={usertype=="admin" ? navAdmin : navOfficer} />
+          <AppSidebarNav items={navOfficer} />
 
         </SimpleBar>
       </CSidebarNav>
