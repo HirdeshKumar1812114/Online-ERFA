@@ -43,7 +43,8 @@ const useStyles = makeStyles(styles);
 export default function LoginPage(props) {
   const [token, setToken] = useCookies(["token"]);
   const [userID, setUserID] = useCookies(["userID"]);
-  const [userType, setUserType] = useCookies(["userType"]);
+  const [userRegID, setUserRegID] = useCookies(["userRegID"]);
+  const [userStudentName, setUserStudentName] = useCookies(["userStudentName"]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
 
@@ -88,7 +89,13 @@ export default function LoginPage(props) {
             maxAge: 1800,
             secure: true,
           });
-          setUserType("userType", result.data.sendUserType, {
+          setUserRegID("userRegID", result.data.sendRegId, {
+            path: "/",
+            maxAge: 1800,
+            secure: true,
+          });
+
+          setUserStudentName("userStudentName", result.data.sendStudentName, {
             path: "/",
             maxAge: 1800,
             secure: true,

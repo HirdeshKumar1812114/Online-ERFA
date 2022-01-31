@@ -70,8 +70,9 @@ exports.studentLogin = expressAsyncHandler(async function (req, res, next) {
     // console.log(token);
     const sendUserId = student._id;
     const sendRegId = student.regid;
-
-    res.status(200).send({ token, sendUserId, sendRegId });
+    const sendStudentName = student.firstname;
+    console.log(sendStudentName);
+    res.status(200).send({ token, sendUserId, sendRegId, sendStudentName });
     res.end();
   } catch (error) {
     // console.log(error);
