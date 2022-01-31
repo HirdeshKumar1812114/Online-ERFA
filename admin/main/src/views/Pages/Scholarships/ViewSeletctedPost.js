@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 
 import {
   CContainer,
-  CButton,
   CCard,
   CCardBody,
   CCardHeader,
   CImage,
-  CCol,
-  CForm,
-  CFormInput,
-  CFormLabel,
-  CFormSelect
+  CButtonGroup,
+  CButton,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalFooter,
+  CModalBody,
 } from "@coreui/react";
-import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
@@ -32,6 +32,9 @@ const Layout = (props) => {
   const [eligibility, setEligibility] = useState("");
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [poststoDelete, setpoststoDel] = useState("");
+  const [visible, setVisible] = useState(false);
+
   let [color, setColor] = useState("#49A54D");
 
   const api = axios.create({
@@ -55,7 +58,29 @@ const Layout = (props) => {
 
   }, []);
 
+  const deleteposts = () => {
+    // console.log('posts to delte: ',poststoDelete)
+    api
+      .delete(`scholarship/delete/${poststoDelete}`)
+      .then((res) => {
+        // console.log(res)
+        // window.alert("posts deleted.")
+        setpoststoDel("");
+        props.history.push("list-posts");
+        setDelete(false);
+        setVisible(false);
+      })
+      .catch((err) => {
+        // console.log(err)
+        // window.alert("Error Occured");
+        setpoststoDel("");
+        setVisible(false);
+      });
+  };
 
+  const postsUpdate = () => {
+    props.history.push("update-post");
+  };
 
   return (
     <CContainer fluid>
@@ -103,9 +128,63 @@ const Layout = (props) => {
                 })
                 }
               </p>
-          </CCardBody>
-            </>
-          )}
+
+              <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+              <CButton
+              variant="outline"
+                  color="warning"
+                  onClick={() => {
+                    postsUpdate();
+                  }}
+                >
+                  Edit
+                </CButton>
+                <CButton
+                variant="outline"
+                  color="danger"
+                  onClick={() => {
+                    setVisible(!visible);
+                    setpoststoDel(localStorage.getItem("viewPostUrl"));
+                  }}
+                >
+                  Delete
+                </CButton>
+              </div>
+
+
+              <CModal
+                alignment="center"
+                scrollable
+                visible={visible}
+                onClose={() => setVisible(false)}
+              >
+                <CModalHeader>
+                  <CModalTitle>
+                    <strong>posts Delete Confirmation</strong>
+                  </CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                  Are you sure you want to delete the selected posts!
+                  <br />
+                  If yes then press the confirm button.
+                </CModalBody>
+                <CModalFooter>
+                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                    Close
+                  </CButton>
+                  <CButton
+                    color="primary"
+                    onClick={() => {
+                      deleteposts();
+                    }}
+                  >
+                    Confirm
+                  </CButton>
+                </CModalFooter>
+              </CModal>
+            </CCardBody>
+          </>
+        )}
       </CCard>
 
       {/* <prev >{JSON.stringify(username, null, 2)}</prev>
