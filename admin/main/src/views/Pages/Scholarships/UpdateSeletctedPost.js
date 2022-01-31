@@ -269,7 +269,7 @@ const Layout = (props) => {
                   <br />
                   <br />
                   <br />
-              {validated == true ? <><span style={{ "font-size": "14px", "color": 'red' }}>*Fill all fields!</span></> : <></>}
+              {validayarted == true ? <><span style={{ "font-size": "14px", "color": 'red' }}>*Fill all fields!</span></> : <></>}
 
                   <CButton type="submit" color="success">
                     <span style={{'color':"white"}}>Update Scholarship</span> 

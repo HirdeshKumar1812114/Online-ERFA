@@ -32,7 +32,9 @@ class App extends Component {
               render={(props) => <StudentLogin {...props} />}
             />
 
-            <ProtectedRoute path="/" name="Home" component={DefaultLayout} />
+            {/* <ProtectedRoute path="/" name="Home" component={DefaultLayout} /> */}
+            <Route path="/" name="Home" component={DefaultLayout} />
+
           </Switch>
         </React.Suspense>
       </HashRouter>
