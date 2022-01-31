@@ -39,9 +39,7 @@ import Calendar from "@mui/icons-material/CalendarToday";
 import Father from "@mui/icons-material/EscalatorWarningOutlined";
 import MailingAddress from "@mui/icons-material/ContactMailOutlined";
 import Location from "@mui/icons-material/LocationOnOutlined";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
+
 const override = css`
   margin: 0 auto;
 `;
@@ -518,16 +516,18 @@ export default function LoginPage(props) {
                             autoComplete: "off",
                           }}
                         /> */}
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <DatePicker
-                            label="Basic example"
-                            value={value}
-                            onChange={(newValue) => {
-                              setValue(newValue);
-                            }}
-                            renderInput={(params) => <TextField {...params} />}
-                          />
-                        </LocalizationProvider>
+                        <TextField
+                          onFocus={onFocus}
+                          onBlur={onBlur}
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              setHasValue(true);
+                              setDob(e.target.value);
+                            } else setHasValue(false);
+                          }}
+                          label="DOB"
+                          type={hasValue || focus ? "date" : "text"}
+                        />
                       </span>
                       <span>
                         <CustomInput
