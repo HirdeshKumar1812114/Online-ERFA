@@ -84,7 +84,7 @@ exports.deleteScholarship = async (req, res) => {
     const id = req.params.id;
     if (id) {
       const prev = await db.ScholarshipPost.findOne({ _id: id });
-      await fs.promises.unlink(uploadFilePath + "\\" + prev.poster);
+      await fs.promises.unlink(uploadFilePath + "/" + prev.poster);
       const result = await db.ScholarshipPost.deleteOne({ _id: id });
       // console.log("Saved to Database>>", result);
       res.status(201).json({ message: "Deleted Successfully" }).end();
@@ -99,6 +99,9 @@ exports.deleteScholarship = async (req, res) => {
 
 exports.updateScholarship = async (req, res) => {
   const chk = req.file;
+  let tagsRemoveSpaces = req.body.tags.replace(/\s/g, "");
+  let tags = tagsRemoveSpaces.split(",");
+  console.log(tags);
   if (chk) {
     const fetchDetails = await db.ScholarshipPost.findOne({
       _id: req.params.id,
@@ -113,7 +116,7 @@ exports.updateScholarship = async (req, res) => {
           applicationdeadline: req.body.applicationdeadline,
           poster: req.file.filename,
           eligibility: req.body.eligibility,
-          tags: req.body.tags,
+          tags: tags,
         }
       );
       if (updateDetails) {
@@ -145,7 +148,7 @@ exports.updateScholarship = async (req, res) => {
           applicationstart: req.body.applicationstart,
           applicationdeadline: req.body.applicationdeadline,
           eligibility: req.body.eligibility,
-          tags: req.body.tags,
+          tags: tags,
         }
       );
       if (updateDetails) {

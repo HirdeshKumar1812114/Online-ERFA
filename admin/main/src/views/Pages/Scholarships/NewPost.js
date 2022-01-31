@@ -10,9 +10,7 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
-  CFormTextarea,
-  CFormSelect,
-  CFormFeedback,
+  CFormTextarea
 } from "@coreui/react";
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
@@ -93,7 +91,7 @@ const Layout = (props) => {
             setDescription("")
             setEligibility("")
             setTags("")
-    setValidated(false)
+            setValidated(false)
 
           }
         })
@@ -236,17 +234,17 @@ const Layout = (props) => {
               <br />
               <br />
               <br />
-{validated==true ? <><span style={{"font-size":"14px", "color":'red'}}>*Fill all fields!</span></>:<></>}
+              {validated == true ? <><span style={{ "font-size": "14px", "color": 'red' }}>*Fill all fields!</span></> : <></>}
               <CButton type="submit" color="primary">
-                Submit
+              Post Scholarship
               </CButton>
             </CForm>
           )}
         </CCardBody>
       </CCard>
-      
-       {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
-     {/* <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
+
+      {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
+      {/* <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
       <prev>{JSON.stringify(applicationdeadline, null, 2)}</prev>
       <prev>{JSON.stringify(poster, null, 2)}</prev>
       <prev>{JSON.stringify(description, null, 2)}</prev>

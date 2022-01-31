@@ -53,12 +53,11 @@ const Layout = (props) => {
     data.append(tags)
     
     
-    console.log('FormData: ', data);
   api.post('scholarship/add',{
     data
   }).then(data => {
-    console.log("Data Posted in DB");
-    console.log('Response', data)
+    // console.log("Data Posted in DB");
+    // console.log('Response', data)
   }).catch(err =>{
     console.log("Error occured : ", err)
   })
