@@ -39,6 +39,9 @@ import Calendar from "@mui/icons-material/CalendarToday";
 import Father from "@mui/icons-material/EscalatorWarningOutlined";
 import MailingAddress from "@mui/icons-material/ContactMailOutlined";
 import Location from "@mui/icons-material/LocationOnOutlined";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import DatePicker from "@mui/lab/DatePicker";
 const override = css`
   margin: 0 auto;
 `;
@@ -259,9 +262,11 @@ export default function LoginPage(props) {
                   <p
                     className={classes.divider}
                     style={{
-                      fontWeight: "bold",
                       color: "red",
-                      fontSize: "16px",
+                      position: "relative",
+                      fontSize: "14px",
+                      top: "184px",
+                      left: "131px",
                     }}
                   >
                     {passMessage}
@@ -478,16 +483,30 @@ export default function LoginPage(props) {
                       }}
                     >
                       <span>
-                        <CustomInput
+                        {/* <CustomInput
+                          type="date"
+                          placeholder=""
                           labelText="Date of Birth"
+                          defaultValue=""
                           id="dob"
                           onFocus={onFocus}
                           onBlur={onBlur}
                           formControlProps={{}}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
                           inputProps={{
+                            defaultValue: "",
                             style: { width: "190px" },
+
                             onClick: (event) => setHasValue(true),
-                            onChange: (event) => setDob(event.target.value),
+
+                            onChange: (event) => {
+                              if (event.target.value) setHasValue(true);
+                              else setHasValue(false);
+
+                              setDob(event.target.value);
+                            },
                             type: hasValue || focus ? "date" : "text",
                             endAdornment: (
                               <InputAdornment position="end">
@@ -498,7 +517,17 @@ export default function LoginPage(props) {
                             ),
                             autoComplete: "off",
                           }}
-                        />
+                        /> */}
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                            label="Basic example"
+                            value={value}
+                            onChange={(newValue) => {
+                              setValue(newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                        </LocalizationProvider>
                       </span>
                       <span>
                         <CustomInput
