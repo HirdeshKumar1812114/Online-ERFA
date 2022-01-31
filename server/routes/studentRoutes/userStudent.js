@@ -9,6 +9,14 @@ const {
   checkUserErfa,
 } = require("../../middleware/authMiddleware");
 
+router.get(
+  "/dashboard",
+  studentController.checkToken,
+  function (req, res, next) {
+    res.status(200).send("verifiedUser");
+    res.end();
+  }
+);
 router.post("/checksignup", verfiStudentController.verfiStudent);
 router.post("/signup", studentController.studentSignUp);
 router.get("/getallstudents", studentController.getAllStudent);

@@ -34,7 +34,7 @@ const override = css`
 `;
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "http://localhost:5000/student",
   timeout: 1000,
 });
 
@@ -73,7 +73,7 @@ export default function LoginPage(props) {
     e.preventDefault();
     if (regid !== "" && password !== "") {
       api
-        .post("erfa/login", { email: regid, password }, setLoading(true))
+        .post("/login", { regid, password }, setLoading(true))
         .then((result) => {
           setLoading(false);
           console.log(result.data);
@@ -83,7 +83,7 @@ export default function LoginPage(props) {
             maxAge: 1800,
             secure: true,
           });
-          setUserID("userID", result.data.sendUserName, {
+          setUserID("userID", result.data.sendUserId, {
             path: "/",
             maxAge: 1800,
             secure: true,
@@ -96,9 +96,9 @@ export default function LoginPage(props) {
           // window.alert('Welcome to Admin Portal')
           setValid("true");
           alert();
-          Auth.login(() => {
-            props.history.push("/");
-          });
+          // Auth.login(() => {
+          //   props.history.push("/");
+          // });
           // window.alert('Welcome to Admin Portal')
         })
 
@@ -144,7 +144,6 @@ export default function LoginPage(props) {
             >
               OK - <strong>Login Successful. </strong>
             </Alert>
-            <Redirect to="/" />
           </>
         );
       } else if (valid == "false") {
@@ -278,10 +277,10 @@ export default function LoginPage(props) {
           </GridContainer>
         </div>
         <Footer whiteFont />
-      </div>
-      {/* <prev >{JSON.stringify(username, null, 2)}</prev>
-            <prev>{JSON.stringify(password, null, 2)}</prev>
-            <prev>{JSON.stringify(valid, null, 2)}</prev> */}
-    </div>
+      {/* </div>
+      <prev>{JSON.stringify(regid, null, 2)}</prev>
+      <prev>{JSON.stringify(password, null, 2)}</prev>
+      <prev>{JSON.stringify(valid, null, 2)}</prev>
+    </div> */}
   );
 }
