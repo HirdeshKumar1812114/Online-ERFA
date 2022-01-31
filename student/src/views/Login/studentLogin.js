@@ -277,10 +277,10 @@ export default function LoginPage(props) {
           </GridContainer>
         </div>
         <Footer whiteFont />
-      {/* </div>
-      <prev>{JSON.stringify(regid, null, 2)}</prev>
+      </div>
+      {/* <prev>{JSON.stringify(regid, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
-      <prev>{JSON.stringify(valid, null, 2)}</prev>
-    </div> */}
+      <prev>{JSON.stringify(valid, null, 2)}</prev> */}
+    </div>
   );
 }
