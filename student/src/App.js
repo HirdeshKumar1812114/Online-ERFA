@@ -31,10 +31,14 @@ class App extends Component {
               name="Login"
               render={(props) => <StudentLogin {...props} />}
             />
-
-            {/* <ProtectedRoute path="/" name="Home" component={DefaultLayout} /> */}
-            <Route path="/" name="Home" component={DefaultLayout} />
-
+            <Route
+              exact
+              path="/signup"
+              name="SignUp"
+              component={StudentSignUp}
+            />
+            <ProtectedRoute path="/" name="Home" component={DefaultLayout} />
+            {/* <Route path="/" name="Home" component={DefaultLayout} /> */}
           </Switch>
         </React.Suspense>
       </HashRouter>

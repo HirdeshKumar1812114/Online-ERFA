@@ -12,8 +12,8 @@ import { CookiesProvider } from "react-cookie";
 ReactDOM.render(
   <Provider store={store}>
     <CookiesProvider>
-      {/* <App /> */}
-      <Student />
+      <App />
+      {/* <Student /> */}
     </CookiesProvider>
   </Provider>,
   document.getElementById("root")

@@ -274,7 +274,7 @@ export default function LoginPage(props) {
                   </CardFooter>
 
                   <CardFooter className={classes.cardFooter}>
-                    <Link underline="none" href="/signup">
+                    <Link underline="none" href="#/signup">
                       Don't Have an Account ? Click Here to register.
                     </Link>
                   </CardFooter>

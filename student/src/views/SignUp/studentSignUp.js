@@ -171,6 +171,7 @@ export default function LoginPage(props) {
             >
               OK - <strong>Registration Successful</strong>
             </Alert>
+            <Redirect to="/" />
           </>
         );
       } else if (valid == "false") {
