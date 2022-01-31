@@ -18,8 +18,8 @@ import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 const _navAdmin = [
   {
     component: CNavItem,
-    name: 'Dashboard',
-    to: '/dashboard',
+    name: 'Announcements',
+    to: '/announcements',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     // badge: {
     //   color: 'info',

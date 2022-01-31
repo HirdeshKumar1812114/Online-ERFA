@@ -10,6 +10,7 @@ import {
   cilPencil,
   cilPuzzle,
   cilSpeedometer,
+  cilBullhorn,
   cilStar,
   cilGroup
 } from '@coreui/icons'
@@ -18,9 +19,9 @@ import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 const _navOfficer = [
   {
     component: CNavItem,
-    name: 'Dashboard',
-    to: '/dashboard',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    name: 'Announcements',
+    to: '/announcements',
+    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
     // badge: {
     //   color: 'info',
     //   text: 'NEW',
@@ -33,12 +34,6 @@ const _navOfficer = [
     to: '/scholarship',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
-      {
-        
-        component: CNavItem,
-        name: 'New Post',
-        to: '/scholarship/new-post',
-      },
       {
         component: CNavItem,
         name: 'List Posts',

@@ -59,8 +59,8 @@ export default function LoginPage(props) {
         .then((result) => {
           // console.log(result.data)
           Auth.login(() => {
-            // return (<Redirect to={'/dashboard'} />)
-            props.history.push("/dashboard");
+            // return (<Redirect to={'/announcements'} />)
+            props.history.push("/announcements");
           });
         });
     }
