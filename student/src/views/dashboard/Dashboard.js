@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { lazy } from "react";
 
 import {
   CAvatar,
@@ -21,13 +21,9 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-} from '@coreui/react'
-
-
+} from "@coreui/react";
 
 const Dashboard = (props) => {
-
-
   return (
     <>
       <CContainer>
@@ -60,15 +56,18 @@ const Dashboard = (props) => {
               </CCol>
             </CRow> */}
 
-
             <CRow xs={{ cols: 1 }} md={{ cols: 3 }} className="g-4">
               <CCol xs>
                 <CCard className="h-100">
-                  <CCardImage orientation="top" src="http://localhost:5000/getPoster/poster_1643631802225.jpg" />
+                  <CCardImage
+                    orientation="top"
+                    src="http://localhost:5000/getPoster/poster_1643631802225.jpg"
+                  />
                   <CCardBody>
                     <CCardTitle>Card title</CCardTitle>
                     <CCardText>
-                      Some quick example text to build on the card title and make up the bulk of the card's content.
+                      Some quick example text to build on the card title and
+                      make up the bulk of the card's content.
                     </CCardText>
                   </CCardBody>
                   <CCardFooter>
@@ -78,11 +77,15 @@ const Dashboard = (props) => {
               </CCol>
               <CCol xs>
                 <CCard className="h-100">
-                  <CCardImage orientation="top" src="http://localhost:5000/getPoster/poster_1643631802225.jpg" />
+                  <CCardImage
+                    orientation="top"
+                    src="http://localhost:5000/getPoster/poster_1643631802225.jpg"
+                  />
                   <CCardBody>
                     <CCardTitle>Card title</CCardTitle>
                     <CCardText>
-                      Some quick example text to build on the card title and make up the bulk of the card's content.
+                      Some quick example text to build on the card title and
+                      make up the bulk of the card's content.
                     </CCardText>
                   </CCardBody>
                   <CCardFooter>
@@ -92,11 +95,15 @@ const Dashboard = (props) => {
               </CCol>
               <CCol xs>
                 <CCard className="h-100">
-                  <CCardImage orientation="top" src="http://localhost:5000/getPoster/poster_1643631802225.jpg" />
+                  <CCardImage
+                    orientation="top"
+                    src="http://localhost:5000/getPoster/poster_1643631802225.jpg"
+                  />
                   <CCardBody>
                     <CCardTitle>Card title</CCardTitle>
                     <CCardText>
-                      Some quick example text to build on the card title and make up the bulk of the card's content.
+                      Some quick example text to build on the card title and
+                      make up the bulk of the card's content.
                     </CCardText>
                   </CCardBody>
                   <CCardFooter>
@@ -110,21 +117,25 @@ const Dashboard = (props) => {
 
             <CRow>
               <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-                <CButton color="primary" size="lg" variant="outline" onClick={()=>{props.history.push('scholarship/list-posts')}}>View All Scholarships</CButton>
+                <CButton
+                  color="primary"
+                  size="lg"
+                  variant="outline"
+                  onClick={() => {
+                    props.history.push("scholarship/list-posts");
+                  }}
+                >
+                  View All Scholarships
+                </CButton>
               </div>
             </CRow>
             <br></br>
             <br></br>
           </CCardFooter>
         </CCard>
-
-
       </CContainer>
-
-
-
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

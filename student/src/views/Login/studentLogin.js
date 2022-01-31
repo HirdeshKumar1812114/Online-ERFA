@@ -51,7 +51,7 @@ export default function LoginPage(props) {
   useEffect(() => {
     if (token.token != null) {
       api
-        .get("erfa/dashboard", {
+        .get("/announcements", {
           headers: {
             "x-auth-token": token.token,
           },
@@ -78,7 +78,10 @@ export default function LoginPage(props) {
         .then((result) => {
           setLoading(false);
           console.log(result.data);
-          // console.log(result.data.token)
+          console.log(result.data.sendUserId);
+          console.log(result.data.sendRegId);
+          console.log(result.data.sendStudentName);
+          console.log(result.data.token);
           setToken("token", result.data.token, {
             path: "/",
             maxAge: 1800,
@@ -151,6 +154,7 @@ export default function LoginPage(props) {
             >
               OK - <strong>Login Successful. </strong>
             </Alert>
+            <Redirect to="/announcements" />
           </>
         );
       } else if (valid == "false") {

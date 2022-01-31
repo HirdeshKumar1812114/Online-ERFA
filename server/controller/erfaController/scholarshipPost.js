@@ -165,3 +165,17 @@ exports.updateScholarship = async (req, res) => {
     }
   }
 };
+
+exports.getLastThreeScholarship = expressAsyncHandler(
+  async (req, res, next) => {
+    try {
+      const fetch = await db.ScholarshipPost.find().skip(
+        db.ScholarshipPost.count() - 3
+      );
+      res.status(200).send(fetch);
+      res.end();
+    } catch {
+      res.status(404).json({ message: "Not Found" });
+    }
+  }
+);

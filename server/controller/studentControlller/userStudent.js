@@ -15,10 +15,11 @@ exports.checkToken = (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, "Don't tell");
     req.user = decodedToken;
+    console.log("Token decoded");
     next();
   } catch (e) {
-    return;
-    res.status(400).json({ msg: "Token is not valid" });
+    console.log("Token invalid decoded");
+    // return res.status(400).json({ msg: "Token is not valid" });
   }
 };
 exports.studentSignUp = expressAsyncHandler(async (req, res) => {
@@ -72,9 +73,11 @@ exports.studentLogin = expressAsyncHandler(async function (req, res, next) {
     const sendRegId = student.regid;
     const sendStudentName = student.firstname;
     console.log(sendStudentName);
+    console.log("Works at student verfication and token made.");
     res.status(200).send({ token, sendUserId, sendRegId, sendStudentName });
     res.end();
-  } catch (error) {
+  } catch (err) {
+    res.status(400).json({ message: err.message });
     // console.log(error);
   }
 });

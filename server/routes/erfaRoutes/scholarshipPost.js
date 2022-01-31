@@ -14,4 +14,6 @@ router.put(
   scholarshipPostController.uploadImage,
   scholarshipPostController.updateScholarship
 );
+
+router.get("/last3", scholarshipPostController.getLastThreeScholarship);
 module.exports = router;
