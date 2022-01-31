@@ -517,6 +517,14 @@ export default function LoginPage(props) {
                           }}
                         /> */}
                         <TextField
+                          style={{
+                            position: "relative",
+                            width: "190px",
+                            top: "10px",
+                            color: "#AAAAAA !important",
+                            fontSize: "14px",
+                            fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+                          }}
                           onFocus={onFocus}
                           onBlur={onBlur}
                           onChange={(e) => {
@@ -621,7 +629,7 @@ export default function LoginPage(props) {
         </div>
         <Footer whiteFont />
       </div>
-      <prev>{JSON.stringify(regid, null, 2)}</prev>
+      {/* <prev>{JSON.stringify(regid, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
       <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
       <prev>{JSON.stringify(firstName, null, 2)}</prev>
@@ -633,7 +641,7 @@ export default function LoginPage(props) {
       <prev>{JSON.stringify(dob, null, 2)}</prev>
       <prev>{JSON.stringify(permanentAddress, null, 2)}</prev>
       <prev>{JSON.stringify(mailingAddress, null, 2)}</prev>
-      <prev>{JSON.stringify(fatherName, null, 2)}</prev>
+      <prev>{JSON.stringify(fatherName, null, 2)}</prev> */}
     </div>
   );
 }
