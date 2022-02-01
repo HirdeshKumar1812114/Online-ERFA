@@ -27,6 +27,7 @@ const Layout = (props) => {
   const [poster, setPoster] = useState();
   const [description, setDescription] = useState("");
   const [eligibility, setEligibility] = useState("");
+  const [eligibilityArr, setEligibilityArr] = useState([]);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [poststoDelete, setpoststoDel] = useState("");
@@ -50,10 +51,12 @@ const Layout = (props) => {
         setPoster(res.data.poster)
         setTags(res.data.tags)
         setLoading(false)
+        setEligibilityArr(eligibility.split(/\r/))
+
       })
       .catch((error) =>  console.log(error));
 
-  }, []);
+  }, [eligibility]);
 
   const deleteposts = () => {
     // // console.log('posts to delte: ',poststoDelete)
@@ -114,7 +117,11 @@ const Layout = (props) => {
 
               <p style={{ 'text-align': 'justify', 'margin': '20px' }}>{description}</p>
               <h3 style={{ 'margin': '20px' }}>Eligliblity</h3>
-              <p style={{ 'text-align': 'justify', 'margin': '20px' }}>{eligibility}</p>
+              <ul style={{ 'text-align': 'justify', 'margin': '10px' }}>
+              {eligibilityArr.map((value,key)=>{
+                 return (<li>{value}</li>)
+              })}
+              </ul>
               <h3 style={{ 'margin': '20px' }}>Timeline</h3>
               <p style={{ 'margin': '20px', 'font-size': '22px' }}>Start Date: {applicationstart}</p>
               <p style={{ 'margin': '20px', 'font-size': '22px', 'color': 'red' }}>End Date: <span style={{ 'color': 'red' }}>{applicationdeadline}</span></p>
