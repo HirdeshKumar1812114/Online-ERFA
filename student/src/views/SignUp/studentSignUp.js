@@ -447,7 +447,7 @@ export default function LoginPage(props) {
                             label="Age"
                           >
                             <MenuItem value="">
-                              <em>None</em>
+                              <em>Select Your Program</em>
                             </MenuItem>
                             <MenuItem value={"BABS"}>BABS</MenuItem>
                             <MenuItem value={"BBA"}>BBA</MenuItem>
