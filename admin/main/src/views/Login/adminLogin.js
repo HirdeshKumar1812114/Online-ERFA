@@ -48,7 +48,7 @@ export default function LoginPage(props) {
 
 
     useEffect(() => {
-        if (token.token != null) {
+        if (token.onlineerfa_admin_token != null) {
             api.get('erfa/dashboard', {
                 headers: {
                     'x-auth-token': token.onlineerfa_admin_token
