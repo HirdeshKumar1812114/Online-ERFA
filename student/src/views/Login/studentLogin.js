@@ -41,23 +41,24 @@ const api = axios.create({
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
-  const [token, setToken] = useCookies(["token"]);
-  const [userID, setUserID] = useCookies(["userID"]);
-  const [userRegID, setUserRegID] = useCookies(["userRegID"]);
-  const [userStudentName, setUserStudentName] = useCookies(["userStudentName"]);
+  const [token, setToken] = useCookies(["onlineerfa_student_token"]);
+  const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
+  const [userRegID, setUserRegID] = useCookies(["onlineerfa_student_userRegID"]);
+  const [userStudentName, setUserStudentName] = useCookies(["onlineerfa_student_userStudentName"]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
 
   useEffect(() => {
-    if (token.token != null) {
+    // console.log('Token=>',token.onlineerfa_student_token);
+    if (token.onlineerfa_student_token != null) {
       api
         .get("/announcements", {
           headers: {
-            "x-auth-token": token.token,
+            "x-auth-token": token.onlineerfa_student_token,
           },
         })
         .then((result) => {
-          // console.log(result.data)
+          // // console.log(result.data)
           Auth.login(() => {
             // return (<Redirect to={'/announcements'} />)
             props.history.push("/announcements");
@@ -77,28 +78,28 @@ export default function LoginPage(props) {
         .post("/login", { regid, password }, setLoading(true))
         .then((result) => {
           setLoading(false);
-          console.log(result.data);
-          console.log(result.data.sendUserId);
-          console.log(result.data.sendRegId);
-          console.log(result.data.sendStudentName);
-          console.log(result.data.token);
-          setToken("token", result.data.token, {
+          // console.log(result.data);
+          // console.log(result.data.sendUserId);
+          // console.log(result.data.sendRegId);
+          // console.log(result.data.sendStudentName);
+          // console.log(result.data.token);
+          setToken("onlineerfa_student_token", result.data.token, {
             path: "/",
             maxAge: 1800,
             secure: true,
           });
-          setUserID("userID", result.data.sendUserId, {
+          setUserID("onlineerfa_student_userID", result.data.sendUserId, {
             path: "/",
             maxAge: 1800,
             secure: true,
           });
-          setUserRegID("userRegID", result.data.sendRegId, {
+          setUserRegID("onlineerfa_student_userRegID", result.data.sendRegId, {
             path: "/",
             maxAge: 1800,
             secure: true,
           });
 
-          setUserStudentName("userStudentName", result.data.sendStudentName, {
+          setUserStudentName("onlineerfa_student_userStudentName", result.data.sendStudentName, {
             path: "/",
             maxAge: 1800,
             secure: true,
@@ -114,7 +115,7 @@ export default function LoginPage(props) {
 
         .catch((err) => {
           setLoading(false);
-          // console.log(err)
+          // // console.log(err)
           setValid("false");
           alert();
         });

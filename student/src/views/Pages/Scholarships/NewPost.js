@@ -56,10 +56,10 @@ const Layout = (props) => {
   api.post('scholarship/add',{
     data
   }).then(data => {
-    // console.log("Data Posted in DB");
-    // console.log('Response', data)
+    // // console.log("Data Posted in DB");
+    // // console.log('Response', data)
   }).catch(err =>{
-    console.log("Error occured : ", err)
+    // console.log("Error occured : ", err)
   })
   
   }
@@ -151,7 +151,7 @@ const Layout = (props) => {
                 acceptedFiles={['image/*']}
                 dropzoneText={"Drag and drop an image here or click"}
                 onChange={(files) => {
-                  console.log('Files:', files);
+                  // console.log('Files:', files);
                   setPoster(files)
                 }}
               />

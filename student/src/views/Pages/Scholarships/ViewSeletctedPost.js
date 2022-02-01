@@ -51,16 +51,16 @@ const Layout = (props) => {
         setTags(res.data.tags)
         setLoading(false)
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>  console.log(error));
 
   }, []);
 
   const deleteposts = () => {
-    // console.log('posts to delte: ',poststoDelete)
+    // // console.log('posts to delte: ',poststoDelete)
     api
       .delete(`scholarship/delete/${poststoDelete}`)
       .then((res) => {
-        // console.log(res)
+        // // console.log(res)
         // window.alert("posts deleted.")
         setpoststoDel("");
         props.history.push("list-posts");
@@ -68,7 +68,7 @@ const Layout = (props) => {
         setVisible(false);
       })
       .catch((err) => {
-        // console.log(err)
+        // // console.log(err)
         // window.alert("Error Occured");
         setpoststoDel("");
         setVisible(false);

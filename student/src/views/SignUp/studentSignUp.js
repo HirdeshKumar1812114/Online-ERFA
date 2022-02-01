@@ -113,7 +113,7 @@ export default function LoginPage(props) {
           setLoading(true)
         )
         .then((result) => {
-          console.log({ result });
+          // console.log({ result });
 
           if (
             result.data.message === "User Registration Id already used" ||
@@ -123,9 +123,9 @@ export default function LoginPage(props) {
             alert();
           } else {
             setLoading(false);
-            console.log("In catch block else ");
-            console.log(result);
-            console.log(result.data);
+            // console.log("In catch block else ");
+            // console.log(result);
+            // console.log(result.data);
             setRegid("");
             setPassword("");
             setConfirmPassword("");
@@ -145,14 +145,14 @@ export default function LoginPage(props) {
         })
 
         .catch((err) => {
-          console.log("3");
+          // console.log("3");
           setLoading(false);
-          // console.log(err)
+          // // console.log(err)
           setValid("false");
           alert();
         });
     } else {
-      console.log("4");
+      // console.log("4");
       setValid("incomplete");
       alert();
     }

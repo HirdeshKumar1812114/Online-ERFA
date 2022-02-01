@@ -29,15 +29,15 @@ import avatar8 from "./../../assets/images/avatars/8.jpg";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 const AppHeaderDropdown = (props) => {
-  const [token, setToken, removeToken] = useCookies(["token"]);
-  const [userID, setUserID, removeUserID] = useCookies(["userID"]);
-  const [userRegID, setUserRegID, removeUserRegID] = useCookies(["userRegID"]);
+  const [token, setToken, removeToken] = useCookies(["onlineerfa_student_token"]);
+  const [userID, setUserID, removeUserID] = useCookies(["onlineerfa_student_userID"]);
+  const [userRegID, setUserRegID, removeUserRegID] = useCookies(["onlineerfa_student_userRegID"]);
   const [userStudentName, setUserStudentName, removeUserStudentName] =
-    useCookies(["userStudentName"]);
-  console.log(userStudentName);
-  console.log(userID);
-  console.log(userRegID);
-  // console.log('this is header ==> ', userName.userID)
+    useCookies(["onlineerfa_student_userStudentName"]);
+  // console.log(userStudentName);
+  // console.log(userID);
+  // console.log(userRegID);
+  // // console.log('this is header ==> ', userName.userID)
 
   const logout = () => {};
 
@@ -45,7 +45,7 @@ const AppHeaderDropdown = (props) => {
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
         <CButton color="light" shape="rounded-pill">
-          {userStudentName.userStudentName}
+          {userStudentName.onlineerfa_student_userStudentName}
         </CButton>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
@@ -75,10 +75,10 @@ const AppHeaderDropdown = (props) => {
         <CDropdownItem
           href="#"
           onClick={() => {
-            removeToken("token", { path: "/", maxAge: 0 });
-            removeUserID("userID", { path: "/", maxAge: 0 });
-            removeUserRegID("userRegID", { path: "/", maxAge: 0 });
-            removeUserStudentName("userStudentName", { path: "/", maxAge: 0 });
+            removeToken("onlineerfa_student_token", { path: "/", maxAge: 0 });
+            removeUserID("onlineerfa_student_userID", { path: "/", maxAge: 0 });
+            removeUserRegID("onlineerfa_student_userRegID", { path: "/", maxAge: 0 });
+            removeUserStudentName("onlineerfa_student_userStudentName", { path: "/", maxAge: 0 });
 
             Auth.logout(() => {
               return <Redirect to="/login" />;

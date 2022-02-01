@@ -29,9 +29,9 @@ import avatar8 from './../../assets/images/avatars/8.jpg'
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min'
 
 const AppHeaderDropdown = props => {
-  const [token, setToken, removeToken] = useCookies(['token']);
-  const [userName, setUserName, removeUserName] = useCookies(['userID']);
-  const [userType, setUserType, removeType] = useCookies(['userType']);
+  const [token, setToken, removeToken] = useCookies(['onlineerfa_admin_token']);
+  const [userName, setUserName, removeUserName] = useCookies(['onlineerfa_admin_userID']);
+  const [userType, setUserType, removeType] = useCookies(['onlineerfa_admin_userType']);
   // console.log('this is header ==> ', userName.userID)
 
   const logout = () => {
@@ -43,7 +43,7 @@ const AppHeaderDropdown = props => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-      <CButton color="light" shape="rounded-pill">{userName.userID == "undefined" ? 'Admin' : userName.userID  }</CButton>
+      <CButton color="light" shape="rounded-pill">{userName.onlineerfa_admin_userID == "undefined" ? 'Admin' : userName.onlineerfa_admin_userID  }</CButton>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
@@ -67,9 +67,9 @@ const AppHeaderDropdown = props => {
         <CDropdownDivider />
         <CDropdownItem href="#" onClick={
          ()=>{ 
-          removeToken('token',{path:'/',maxAge:0})
-          removeUserName('userID',{path:'/',maxAge:0})
-          removeType('userType',{path:'/',maxAge:0})
+          removeToken('onlineerfa_admin_token',{path:'/',maxAge:0})
+          removeUserName('onlineerfa_admin_userID',{path:'/',maxAge:0})
+          removeType('onlineerfa_admin_userType',{path:'/',maxAge:0})
 
           Auth.logout(
             () => {

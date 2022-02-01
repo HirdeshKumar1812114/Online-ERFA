@@ -39,10 +39,10 @@ const Layout = (props) => {
 
   useEffect(() => {
     api.get("scholarship/all").then((res) => {
-      // console.log('getPost=>', getPost)
+      // // console.log('getPost=>', getPost)
       localStorage.setItem("posts", JSON.stringify(res.data));
       posts = res.data;
-      // console.log('posts=>', posts)
+      // // console.log('posts=>', posts)
       setPost(res.data);
     });
   }, [deleteConfirm, visible]);

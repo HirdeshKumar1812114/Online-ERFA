@@ -23,9 +23,9 @@ import navOfficer from "../_navOfficer";
 import { useCookies } from "react-cookie";
 
 const AppSidebar = () => {
-  const [userID, setUserID] = useCookies(["userID"]);
-  const [userRegID, setUserRegID] = useCookies(["userRegID"]);
-  const [userStudentName, setUserStudentName] = useCookies(["userStudentName"]);
+  const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
+  const [userRegID, setUserRegID] = useCookies(["onlineerfa_student_userRegID"]);
+  const [userStudentName, setUserStudentName] = useCookies(["onlineerfa_student_userStudentName"]);
 
   const dispatch = useDispatch();
   const unfoldable = useSelector((state) => state.sidebarUnfoldable);
