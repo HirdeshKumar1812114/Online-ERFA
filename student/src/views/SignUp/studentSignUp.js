@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-
+import validator from "validator";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -79,7 +79,17 @@ export default function LoginPage(props) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPassMatch, setIsPassMatch] = useState(false);
   const [passMessage, setPassMessage] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [isEmailMatch, setIsEmailMatch] = useState(false);
+  const validateEmail = (e) => {
+    var email = e.target.value;
 
+    if (validator.isEmail(email)) {
+      setEmail(email);
+    } else {
+      setEmailError("Enter valid Email!");
+    }
+  };
   const submitData = (e) => {
     e.preventDefault();
     if (
@@ -233,6 +243,20 @@ export default function LoginPage(props) {
     }
   };
 
+  const checkEmailValidataion = (e) => {
+    setEmail(e.target.value);
+
+    if (validator.isEmail(email)) {
+      setConfirmEmail("");
+      setIsEmailMatch(true);
+    } else {
+      setConfirmEmail("Email Address is not valid!");
+      e.preventDefault();
+      e.stopPropagation();
+      setIsEmailMatch(false);
+    }
+  };
+
   return (
     <div>
       <Header
@@ -267,12 +291,24 @@ export default function LoginPage(props) {
                     style={{
                       color: "red",
                       position: "relative",
-                      fontSize: "14px",
-                      top: "184px",
+                      fontSize: "10px",
+                      top: "218px",
                       left: "131px",
                     }}
                   >
                     {passMessage}
+                  </p>
+                  <p
+                    className={classes.divider}
+                    style={{
+                      color: "red",
+                      position: "relative",
+                      fontSize: "10px",
+                      top: "406px",
+                      left: "136px",
+                    }}
+                  >
+                    {confirmEmail}
                   </p>
                   <CardBody>
                     <CustomInput
@@ -283,7 +319,7 @@ export default function LoginPage(props) {
                       }}
                       inputProps={{
                         onChange: (event) => setRegid(event.target.value),
-                        type: "text",
+                        type: "number",
 
                         endAdornment: (
                           <InputAdornment position="end">
@@ -292,6 +328,7 @@ export default function LoginPage(props) {
                         ),
                       }}
                     />
+
                     <div
                       style={{
                         display: "flex",
@@ -535,7 +572,7 @@ export default function LoginPage(props) {
                           inputProps={{
                             onChange: (event) =>
                               setCellNumber(event.target.value),
-                            type: "text",
+                            type: "number",
                             endAdornment: (
                               <InputAdornment position="end">
                                 <Phone
@@ -553,7 +590,7 @@ export default function LoginPage(props) {
                           id="email"
                           formControlProps={{}}
                           inputProps={{
-                            onChange: (event) => setEmail(event.target.value),
+                            onChange: (event) => checkEmailValidataion(event),
                             type: "text",
                             endAdornment: (
                               <InputAdornment position="end">
@@ -633,7 +670,7 @@ export default function LoginPage(props) {
                       </span>
                       <span>
                         <CustomInput
-                          labelText="Fathername"
+                          labelText="Father Name"
                           id="fathername"
                           formControlProps={{}}
                           inputProps={{
@@ -723,8 +760,8 @@ export default function LoginPage(props) {
         </div>
         <Footer whiteFont />
       </div>
-      {/* <prev>{JSON.stringify(program, null, 2)}</prev> */}
-      {/* <prev>{JSON.stringify(regid, null, 2)}</prev>
+      <prev>{JSON.stringify(program, null, 2)}</prev>
+      <prev>{JSON.stringify(regid, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
       <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
       <prev>{JSON.stringify(firstName, null, 2)}</prev>
@@ -735,7 +772,7 @@ export default function LoginPage(props) {
       <prev>{JSON.stringify(dob, null, 2)}</prev>
       <prev>{JSON.stringify(permanentAddress, null, 2)}</prev>
       <prev>{JSON.stringify(mailingAddress, null, 2)}</prev>
-      <prev>{JSON.stringify(fatherName, null, 2)}</prev> */}
+      <prev>{JSON.stringify(fatherName, null, 2)}</prev>
     </div>
   );
 }
