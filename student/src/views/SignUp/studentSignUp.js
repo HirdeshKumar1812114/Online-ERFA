@@ -5,6 +5,10 @@ import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 // @material-ui/icons
 import People from "@material-ui/icons/People";
 // core components
@@ -280,6 +284,7 @@ export default function LoginPage(props) {
                       inputProps={{
                         onChange: (event) => setRegid(event.target.value),
                         type: "text",
+
                         endAdornment: (
                           <InputAdornment position="end">
                             <BadgeIcon className={classes.inputIconsColor} />
@@ -389,7 +394,7 @@ export default function LoginPage(props) {
                       }}
                     >
                       <span>
-                        <CustomInput
+                        {/* <CustomInput
                           labelText="Program"
                           id="program"
                           formControlProps={{}}
@@ -405,7 +410,95 @@ export default function LoginPage(props) {
                             ),
                             autoComplete: "off",
                           }}
-                        />
+                        /> */}
+                        <FormControl
+                          variant="standard"
+                          sx={{ m: 1, minWidth: 120 }}
+                        >
+                          <InputLabel
+                            id="demo-simple-select-standard-label"
+                            style={{
+                              top: "7px",
+                              color: "#AAAAAA !important",
+                              fontSize: "14px",
+                              fontFamily:
+                                "Roboto, Helvetica, Arial, sans-serif",
+                              fontWeight: "400",
+                              lineHeight: "1.42857",
+                              letterSpacing: " unset",
+                              left: "-8px",
+                            }}
+                          >
+                            Program
+                          </InputLabel>
+                          <Select
+                            style={{
+                              position: "relative",
+                              width: "190px",
+                              right: "9px",
+                              top: "4px",
+                            }}
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={program}
+                            onChange={(e) => {
+                              setProgram(e.target.value);
+                            }}
+                            label="Age"
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={"BABS"}>BABS</MenuItem>
+                            <MenuItem value={"BBA"}>BBA</MenuItem>
+                            <MenuItem value={"BEME"}>BEME</MenuItem>
+                            <MenuItem value={"BABS"}>BABS</MenuItem>
+                            <MenuItem value={"BS BIO Science"}>
+                              BS BIO Science
+                            </MenuItem>
+                            <MenuItem value={"BS Biotechnology"}>
+                              BS Biotechnology
+                            </MenuItem>
+                            <MenuItem value={"BS Entre"}>BS Entre </MenuItem>
+                            <MenuItem value={"BSAF"}>BSAF</MenuItem>
+                            <MenuItem value={"BSCS"}>BSCS</MenuItem>
+                            <MenuItem value={"BSAI"}>BSAI</MenuItem>
+                            <MenuItem value={"BSMS"}>BSMS</MenuItem>
+                            <MenuItem value={"BSSS"}>BSSS</MenuItem>
+                            <MenuItem value={"MA Education"}>
+                              MA Education
+                            </MenuItem>
+                            <MenuItem value={"MBA Evening 36"}>
+                              MBA Evening 36
+                            </MenuItem>
+                            <MenuItem value={"MBA Evening 72"}>
+                              MBA Evening 72
+                            </MenuItem>
+                            <MenuItem value={"MoA"}>MoA</MenuItem>
+                            <MenuItem value={"MSMD"}>MSMD</MenuItem>
+                            <MenuItem value={"MPM"}>MPM</MenuItem>
+                            <MenuItem value={"MSPM"}>MSPM</MenuItem>
+
+                            <MenuItem value={"MS-BIO"}>MS-BIO</MenuItem>
+                            <MenuItem value={"MS-BIOTECH"}>MS-BIOTECH</MenuItem>
+                            <MenuItem value={"PhD BIO Sciences"}>
+                              PhD BIO Sciences
+                            </MenuItem>
+                            <MenuItem value={"MS-Mechatronics"}>
+                              MS-Mechatronics
+                            </MenuItem>
+                            <MenuItem value={"MSCS"}>MSCS</MenuItem>
+                            <MenuItem value={"PhDCS"}>PhDCS </MenuItem>
+
+                            <MenuItem value={"MSELM"}>MSELM</MenuItem>
+                            <MenuItem value={"PhD ELM"}>PhD ELM</MenuItem>
+                            <MenuItem value={"MSMS"}>MSMS</MenuItem>
+                            <MenuItem value={"PhDMS"}>PhDMS</MenuItem>
+                            <MenuItem value={"MSPH"}>MSPH</MenuItem>
+                            <MenuItem value={"MSSS"}>MSSS</MenuItem>
+                            <MenuItem value={"PhDSS"}>PhDSS</MenuItem>
+                          </Select>
+                        </FormControl>
                       </span>
                       <span>
                         <CustomInput
@@ -630,12 +723,12 @@ export default function LoginPage(props) {
         </div>
         <Footer whiteFont />
       </div>
+      {/* <prev>{JSON.stringify(program, null, 2)}</prev> */}
       {/* <prev>{JSON.stringify(regid, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
       <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
       <prev>{JSON.stringify(firstName, null, 2)}</prev>
       <prev>{JSON.stringify(lastName, null, 2)}</prev>
-      <prev>{JSON.stringify(program, null, 2)}</prev>
       <prev>{JSON.stringify(section, null, 2)}</prev>
       <prev>{JSON.stringify(cellNumber, null, 2)}</prev>
       <prev>{JSON.stringify(email, null, 2)}</prev>
