@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import validator from "validator";
 import {
   CContainer,
   CButton,
@@ -40,6 +41,8 @@ const Layout = (props) => {
   const [passmath, setPassmath] = useState("");
   const [passstats, setpassstats] = useState();
   const [error, setError] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [isEmailMatch, setIsEmailMatch] = useState(false);
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
@@ -69,7 +72,19 @@ const Layout = (props) => {
 
     setValidated(true);
   };
+  const checkEmailValidataion = (e) => {
+    setEmail(e.target.value);
 
+    if (validator.isEmail(email)) {
+      setConfirmEmail("");
+      setIsEmailMatch(true);
+    } else {
+      setConfirmEmail("Email Address is not valid!");
+      e.preventDefault();
+      e.stopPropagation();
+      setIsEmailMatch(false);
+    }
+  };
   const confirmPassword = (e) => {
     setConfPass(e.target.value);
     const confPass = e.target.value;
@@ -315,10 +330,17 @@ const Layout = (props) => {
                   type="email"
                   id="inputEmail"
                   placeholder="xyz@szabist.pk"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
+                  onChange={(e) => checkEmailValidataion(e)}
                 />
+                <CFormFeedback
+                  style={
+                    isEmailMatch !== true
+                      ? { "font-size": "10px", color: "red" }
+                      : { "font-size": "10px", color: "green" }
+                  }
+                >
+                  {confirmEmail}
+                </CFormFeedback>
               </CCol>
               <CCol xs={6}>
                 <CFormLabel htmlFor="inputNic">NIC Number</CFormLabel>

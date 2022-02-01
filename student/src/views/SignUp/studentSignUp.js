@@ -81,15 +81,7 @@ export default function LoginPage(props) {
   const [passMessage, setPassMessage] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
-  const validateEmail = (e) => {
-    var email = e.target.value;
 
-    if (validator.isEmail(email)) {
-      setEmail(email);
-    } else {
-      setEmailError("Enter valid Email!");
-    }
-  };
   const submitData = (e) => {
     e.preventDefault();
     if (
