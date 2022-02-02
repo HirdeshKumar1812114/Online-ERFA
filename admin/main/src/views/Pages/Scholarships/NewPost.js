@@ -10,7 +10,7 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
-  CFormTextarea
+  CFormTextarea,
 } from "@coreui/react";
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
@@ -18,9 +18,8 @@ import { css } from "@emotion/react";
 import axios from "axios";
 import { DropzoneArea } from "material-ui-dropzone";
 
-
 const override = css`
-margin: 0 auto;
+  margin: 0 auto;
 `;
 
 const api = axios.create({
@@ -30,7 +29,7 @@ const Layout = (props) => {
   let [color, setColor] = useState("#49A54D");
 
   const [loading, setLoading] = useState(false);
-  const [validated, setValidated] = useState(false)
+  const [validated, setValidated] = useState(false);
   const [title, setTitle] = useState("");
   const [applicationstart, setApplicationStart] = useState("");
   const [applicationdeadline, setApplicationEnd] = useState("");
@@ -39,31 +38,28 @@ const Layout = (props) => {
   const [eligibility, setEligibility] = useState("");
   const [tags, setTags] = useState([]);
 
-
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      event.preventDefault();
+      event.stopPropagation();
     } else {
-
-      submitData()
+      submitData();
     }
-    setValidated(true)
-  }
+    setValidated(true);
+  };
 
   const submitData = () => {
     //  console.log('poster1==>',poster);
     // console.log('poster.length==>',);
 
     if (poster.length !== 0) {
-
       var data = new FormData();
       data.append("poster", poster[0]);
       data.append("title", title);
       data.append("applicationstart", applicationstart);
       data.append("applicationdeadline", applicationdeadline);
-      data.append("eligibility", eligibility)
+      data.append("eligibility", eligibility);
       data.append("description", description);
       data.append("tags", tags);
 
@@ -72,40 +68,38 @@ const Layout = (props) => {
       //   console.log('loop values==>', value);
       // }
       const config = {
-        headers: { 'content-type': 'multipart/form-data' }
-      }
+        headers: { "content-type": "multipart/form-data" },
+      };
       api
         .post("scholarship/add", data, setLoading(true), config)
         .then((result) => {
           // console.log("Data Posted in DB");
           // console.log("Response==>", result);
           setLoading(false);
-          if (result.data.message == 'alreadExisted') {
-            window.alert('Scholarship with this title alrady exists!')
+          if (result.data.message == "alreadExisted") {
+            window.alert("Scholarship with this title already exist!");
           } else {
-            window.alert('Scholarship posted!')
-            setTitle("")
-            setApplicationStart("")
-            setApplicationEnd("")
-            setPoster("")
-            setDescription("")
-            setEligibility("")
-            setTags("")
-            setValidated(false)
-
+            window.alert("Scholarship posted!");
+            setTitle("");
+            setApplicationStart("");
+            setApplicationEnd("");
+            setPoster("");
+            setDescription("");
+            setEligibility("");
+            setTags("");
+            setValidated(false);
           }
         })
         .catch((err) => {
           setLoading(false);
-          window.alert('Connection Error!')
+          window.alert("Connection Error!");
 
           // console.log("Error occured : ", err);
         });
     } else {
       setLoading(false);
-      window.alert('Please upload poster.')
+      window.alert("Please upload poster.");
     }
-
   };
   return (
     <CContainer fluid>
@@ -234,9 +228,17 @@ const Layout = (props) => {
               <br />
               <br />
               <br />
-              {validated == true ? <><span style={{ "font-size": "14px", "color": 'red' }}>*Fill all fields!</span></> : <></>}
+              {validated == true ? (
+                <>
+                  <span style={{ "font-size": "14px", color: "red" }}>
+                    *Please fill all the fields!
+                  </span>
+                </>
+              ) : (
+                <></>
+              )}
               <CButton type="submit" color="primary">
-              Post Scholarship
+                Post Scholarship
               </CButton>
             </CForm>
           )}

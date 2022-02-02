@@ -13,13 +13,13 @@ import {
   CFormInput,
   CFormLabel,
   CFormTextarea,
-  CFormSelect
+  CFormSelect,
 } from "@coreui/react";
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
-import { CBadge } from '@coreui/react'
+import { CBadge } from "@coreui/react";
 
 const override = css`
   margin: 0 auto;
@@ -39,44 +39,44 @@ const Layout = (props) => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
-  const [validated, setValidated] = useState(false)
+  const [validated, setValidated] = useState(false);
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
 
   useEffect(() => {
     api
-      .get(`scholarship/view/${localStorage.getItem("viewPostUrl")}`, setLoading(true))
+      .get(
+        `scholarship/view/${localStorage.getItem("viewPostUrl")}`,
+        setLoading(true)
+      )
       .then((res) => {
         // console.log(res.data)
-        setId(res.data._id)
-        setTitle(res.data.title)
-        setDescription(res.data.description)
-        setEligibility(res.data.eligibility)
-        setApplicationStart(res.data.applicationstart)
-        setApplicationDeadline(res.data.applicationdeadline)
-        setPoster(res.data.poster)
-        setImageName(res.data.poster)
-        setTags(res.data.tags)
-        setLoading(false)
+        setId(res.data._id);
+        setTitle(res.data.title);
+        setDescription(res.data.description);
+        setEligibility(res.data.eligibility);
+        setApplicationStart(res.data.applicationstart);
+        setApplicationDeadline(res.data.applicationdeadline);
+        setPoster(res.data.poster);
+        setImageName(res.data.poster);
+        setTags(res.data.tags);
+        setLoading(false);
       })
       .catch((error) => console.log(error));
     // console.log('Image=>', imageName);
-
   }, []);
 
-
   const handleSubmit = (event) => {
-    const form = event.currentTarget
+    const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault()
-      event.stopPropagation()
+      event.preventDefault();
+      event.stopPropagation();
     } else {
-
-      updateData()
+      updateData();
     }
-    setValidated(true)
-  }
+    setValidated(true);
+  };
 
   const updateData = () => {
     //  console.log('poster1==>',poster);
@@ -87,46 +87,48 @@ const Layout = (props) => {
     data.append("title", title);
     data.append("applicationstart", applicationstart);
     data.append("applicationdeadline", applicationdeadline);
-    data.append("eligibility", eligibility)
+    data.append("eligibility", eligibility);
     data.append("description", description);
     data.append("tags", tags);
 
-  
     const config = {
-      headers: { 'content-type': 'multipart/form-data' }
-    }
+      headers: { "content-type": "multipart/form-data" },
+    };
     api
-      .put(`scholarship/edit/${localStorage.getItem("viewPostUrl")}`, data, setLoading(true), config)
+      .put(
+        `scholarship/edit/${localStorage.getItem("viewPostUrl")}`,
+        data,
+        setLoading(true),
+        config
+      )
       .then((result) => {
         for (var value of data.values()) {
           // console.log('Values=>',value);
-       }
-       
+        }
+
         // console.log("Response==>", result);
         setLoading(false);
-        if (result.data.message == 'alreadExisted') {
-          window.alert('Scholarship with this title alrady exists!')
+        if (result.data.message == "alreadExisted") {
+          window.alert("Scholarship with this title already exist!");
         } else {
-        setLoading(false);
+          setLoading(false);
 
-          window.alert('Scholarship updated!')
-          
+          window.alert("Scholarship updated!");
+
           props.history.push("view-post");
-
         }
       })
       .catch((err) => {
         setLoading(false);
-        window.alert('Connection Error!')
+        window.alert("Connection Error!");
         // console.log("Error occured : ", err);
       });
   };
 
-
   return (
     <CContainer fluid>
       <CCard>
-        {loading == true && (poster == '' || poster == 'undifined') ? (
+        {loading == true && (poster == "" || poster == "undifined") ? (
           <>
             <br />
             <RingLoader color={color} css={override} size={100} />
@@ -141,9 +143,11 @@ const Layout = (props) => {
           <>
             <CCardHeader>
               <strong>
-                <h3 style={{ 'margin': '20px' }}>{title}</h3>
-                <p style={{ 'margin': '20px' }}>Application Starts: {applicationstart} | Application Deadline: {applicationdeadline}</p>
-
+                <h3 style={{ margin: "20px" }}>{title}</h3>
+                <p style={{ margin: "20px" }}>
+                  Application Starts: {applicationstart} | Application Deadline:{" "}
+                  {applicationdeadline}
+                </p>
               </strong>
             </CCardHeader>
             <CCardBody>
@@ -252,11 +256,18 @@ const Layout = (props) => {
 
                   <CCol md={6}>
                     <CFormLabel htmlFor="formFile">Existing Poster</CFormLabel>
-                    {<CImage fluid src={`http://localhost:5000/getPoster/${imageName}`} />}
+                    {
+                      <CImage
+                        fluid
+                        src={`http://localhost:5000/getPoster/${imageName}`}
+                      />
+                    }
                   </CCol>
 
                   <CCol md={6}>
-                    <CFormLabel htmlFor="formFile">Load Poster Image</CFormLabel>
+                    <CFormLabel htmlFor="formFile">
+                      Load Poster Image
+                    </CFormLabel>
                     <DropzoneArea
                       acceptedFiles={["image/*"]}
                       dropzoneText={"Update image"}
@@ -269,10 +280,18 @@ const Layout = (props) => {
                   <br />
                   <br />
                   <br />
-              {validated == true ? <><span style={{ "font-size": "14px", "color": 'red' }}>*Fill all fields!</span></> : <></>}
+                  {validated == true ? (
+                    <>
+                      <span style={{ "font-size": "14px", color: "red" }}>
+                        *Please fill all fields!
+                      </span>
+                    </>
+                  ) : (
+                    <></>
+                  )}
 
                   <CButton type="submit" color="success">
-                    <span style={{'color':"white"}}>Update Scholarship</span> 
+                    <span style={{ color: "white" }}>Update Scholarship</span>
                   </CButton>
                 </CForm>
               )}

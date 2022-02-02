@@ -43,8 +43,12 @@ const useStyles = makeStyles(styles);
 export default function LoginPage(props) {
   const [token, setToken] = useCookies(["onlineerfa_student_token"]);
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
-  const [userRegID, setUserRegID] = useCookies(["onlineerfa_student_userRegID"]);
-  const [userStudentName, setUserStudentName] = useCookies(["onlineerfa_student_userStudentName"]);
+  const [userRegID, setUserRegID] = useCookies([
+    "onlineerfa_student_userRegID",
+  ]);
+  const [userStudentName, setUserStudentName] = useCookies([
+    "onlineerfa_student_userStudentName",
+  ]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
 
@@ -99,11 +103,15 @@ export default function LoginPage(props) {
             secure: true,
           });
 
-          setUserStudentName("onlineerfa_student_userStudentName", result.data.sendStudentName, {
-            path: "/",
-            maxAge: 1800,
-            secure: true,
-          });
+          setUserStudentName(
+            "onlineerfa_student_userStudentName",
+            result.data.sendStudentName,
+            {
+              path: "/",
+              maxAge: 1800,
+              secure: true,
+            }
+          );
           // window.alert('Welcome to Admin Portal')
           setValid("true");
           alert();
@@ -179,7 +187,7 @@ export default function LoginPage(props) {
             }}
             severity="warning"
           >
-            ALERT — <strong>Please fill all fields!</strong>
+            ALERT — <strong>Please fill all the fields!</strong>
           </Alert>
         );
       }

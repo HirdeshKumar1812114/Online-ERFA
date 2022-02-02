@@ -205,7 +205,7 @@ export default function LoginPage(props) {
             }}
             severity="warning"
           >
-            ALERT — <strong>Please fill all fields!</strong>
+            ALERT — <strong>Please fill all thefields!</strong>
           </Alert>
         );
       }
@@ -752,7 +752,7 @@ export default function LoginPage(props) {
         </div>
         <Footer whiteFont />
       </div>
-      <prev>{JSON.stringify(program, null, 2)}</prev>
+      {/* <prev>{JSON.stringify(program, null, 2)}</prev>
       <prev>{JSON.stringify(regid, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
       <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
@@ -764,7 +764,7 @@ export default function LoginPage(props) {
       <prev>{JSON.stringify(dob, null, 2)}</prev>
       <prev>{JSON.stringify(permanentAddress, null, 2)}</prev>
       <prev>{JSON.stringify(mailingAddress, null, 2)}</prev>
-      <prev>{JSON.stringify(fatherName, null, 2)}</prev>
+      <prev>{JSON.stringify(fatherName, null, 2)}</prev> */}
     </div>
   );
 }

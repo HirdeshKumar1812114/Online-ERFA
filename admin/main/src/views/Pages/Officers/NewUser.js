@@ -223,7 +223,10 @@ const Layout = (props) => {
               severity="warning"
             >
               ALERT —{" "}
-              <strong> Invalid form, please fill all fields proberly!</strong>
+              <strong>
+                {" "}
+                Invalid form, please fill all the fields properly!
+              </strong>
             </Alert>
           </>
         );
