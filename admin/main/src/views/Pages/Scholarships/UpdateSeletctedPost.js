@@ -30,12 +30,13 @@ const Layout = (props) => {
   const [title, setTitle] = useState("");
   const [applicationstart, setApplicationStart] = useState("");
   const [applicationdeadline, setApplicationDeadline] = useState("");
-  const [poster, setPoster] = useState();
+  const [poster, setPoster] = useState([]);
   const [imageName, setImageName] = useState("");
   const [file, setFile] = useState();
   const [description, setDescription] = useState("");
   const [eligibility, setEligibility] = useState("");
-
+  
+  const [isChanged, setIsChanged] = useState(false)
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
@@ -81,7 +82,7 @@ const Layout = (props) => {
   const updateData = () => {
     //  console.log('poster1==>',poster);
     //  console.log('poster.length==>',);
-
+    if(isChanged== true || isPostEmpty(poster)==false){
     var data = new FormData();
     data.append("poster", poster[0]);
     data.append("title", title);
@@ -123,8 +124,14 @@ const Layout = (props) => {
         window.alert("Connection Error!");
         // console.log("Error occured : ", err);
       });
-  };
-
+  }else{
+    window.alert("Nothing Updated!")
+    props.history.push("view-post");
+  }
+}
+const isPostEmpty = (obj)  => {
+  return Object.keys(obj).length === 0;
+}
   return (
     <CContainer fluid>
       <CCard>
@@ -177,6 +184,7 @@ const Layout = (props) => {
                       id="title"
                       onChange={(e) => {
                         setTitle(e.target.value);
+                        setIsChanged(true)
                       }}
                       value={title}
                     />
@@ -193,6 +201,7 @@ const Layout = (props) => {
                       type="date"
                       onChange={(e) => {
                         setApplicationStart(e.target.value);
+                        setIsChanged(true)
                       }}
                     />
                   </CCol>
@@ -208,6 +217,7 @@ const Layout = (props) => {
                       type="date"
                       onChange={(e) => {
                         setApplicationDeadline(e.target.value);
+                        setIsChanged(true)
                       }}
                     />
                   </CCol>
@@ -220,6 +230,8 @@ const Layout = (props) => {
                       rows="5"
                       onChange={(e) => {
                         setDescription(e.target.value);
+                        setIsChanged(true)
+
                       }}
                       value={description}
                     ></CFormTextarea>
@@ -233,6 +245,8 @@ const Layout = (props) => {
                       rows="3"
                       onChange={(e) => {
                         setEligibility(e.target.value);
+                        setIsChanged(true)
+
                       }}
                       value={eligibility}
                     ></CFormTextarea>
@@ -248,6 +262,8 @@ const Layout = (props) => {
                       onChange={(e) => {
                         let next = e.target.value.split(",");
                         setTags(next);
+                        setIsChanged(true)
+
                       }}
                     />
                   </CCol>
@@ -273,7 +289,9 @@ const Layout = (props) => {
                       dropzoneText={"Update image"}
                       onChange={(files) => {
                         // console.log("Files:", files);
-                        setPoster(files);
+                        
+                        setPoster(files) ? setIsChanged(true) : setIsChanged(false);
+                        
                       }}
                     />
                   </CCol>
@@ -300,10 +318,14 @@ const Layout = (props) => {
         )}
       </CCard>
 
-      {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
-      {/* <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
-      <prev>{JSON.stringify(applicationdeadline, null, 2)}</prev>
+      
+      
+      {/* 
+      <prev>{JSON.stringify(isChanged, null, 2)}</prev>
       <prev>{JSON.stringify(poster, null, 2)}</prev>
+      <prev>{JSON.stringify(isPostEmpty(poster), null, 2)}</prev>
+      <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
+      <prev>{JSON.stringify(applicationdeadline, null, 2)}</prev>
       <prev>{JSON.stringify(description, null, 2)}</prev>
       <prev>{JSON.stringify(eligibility, null, 2)}</prev>
       <prev>{JSON.stringify(tags, null, 2)}</prev> */}
