@@ -3,21 +3,37 @@ const db = require("../../models");
 const jwt = require("jsonwebtoken");
 const maxAge = 2 * 24 * 60 * 60;
 const createToken = (user) => {
-  return jwt.sign({ ...user }, "Don't tell", {
+  return jwt.sign({ _id: user._id, regid: user.regid }, "Don't tell", {
     expiresIn: maxAge,
   });
 };
 
+exports.checkToken = (req, res, next) => {
+  const token = req.header("x-auth-token");
+
+  if (!token) res.status(401).json({ msg: "No Token" });
+  try {
+    const decodedToken = jwt.verify(token, "Don't tell");
+    req.user = decodedToken;
+    console.log("Token decoded");
+    next();
+  } catch (e) {
+    console.log("Token invalid decoded");
+    // return res.status(400).json({ msg: "Token is not valid" });
+  }
+};
 exports.studentSignUp = expressAsyncHandler(async (req, res) => {
   const regid = req.body.regid;
+  console.log("Su- signup");
   try {
     const checkStudent = await db.UserStudent.findOne({ regid: regid });
-
+    console.log("Su- try");
     if (checkStudent === null) {
       const newStudent = new db.UserStudent({
         regid: req.body.regid,
         password: req.body.password,
-        name: req.body.name,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         program: req.body.program,
         section: req.body.section,
         cellnumber: req.body.cellnumber,
@@ -29,15 +45,18 @@ exports.studentSignUp = expressAsyncHandler(async (req, res) => {
       });
 
       if (newStudent) {
+        console.log("Su- try success");
         const confirmStudent = await newStudent.save();
-        res.status(200).send(confirmStudent);
-        res.end();
+        console.log(confirmStudent);
+        res.status(200).json({ message: "New Student Successfully Added" });
       }
     } else {
-      res.status(400).send({ message: "User Registration Id already used" });
+      console.log("Su- try else ");
+      res.status(400).json({ message: "User Registration Id already used" });
       res.end();
     }
   } catch {
+    console.log("Su-catch  success");
     res.status(400).send({ message: "Error in adding! In catch block" });
   }
 });
@@ -48,10 +67,18 @@ exports.studentLogin = expressAsyncHandler(async function (req, res, next) {
     const student = await db.UserStudent.login(regid, password);
     const token = createToken({ id: student._id, regid: student.regid });
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    console.log(student);
-    console.log(token);
-  } catch (error) {
-    console.log(error);
+    // console.log(student);
+    // console.log(token);
+    const sendUserId = student._id;
+    const sendRegId = student.regid;
+    const sendStudentName = student.firstname;
+    console.log(sendStudentName);
+    console.log("Works at student verfication and token made.");
+    res.status(200).send({ token, sendUserId, sendRegId, sendStudentName });
+    res.end();
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+    // console.log(error);
   }
 });
 
@@ -113,5 +140,23 @@ exports.updateStudent = expressAsyncHandler(async function (req, res, next) {
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+});
+
+exports.changePassword = expressAsyncHandler(async (req, res) => {
+  const { regid, oldpassword, newpassword } = req.body;
+  const checkPass = await db.UserErfa.checkPassword(regid, oldpassword);
+  if (checkPass) {
+    checkPass.email = regid;
+    checkPass.password = newpassword;
+    try {
+      await checkPass.save();
+      res.status(200).json("Password update");
+      res.end();
+    } catch (error) {
+      res.status(400).json("Password not update");
+    }
+  } else {
+    res.status(400).json("Password not matched");
   }
 });
