@@ -49,8 +49,7 @@ const override = css`
 `;
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
-  timeout: 100000,
+  baseURL: "https://online-erfa.herokuapp.com/",
 });
 
 const useStyles = makeStyles(styles);

@@ -42,7 +42,7 @@ const Layout = (props) => {
   let [color, setColor] = useState("#49A54D");
   const [validated, setValidated] = useState(false);
   const api = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: "https://online-erfa.herokuapp.com/",
   });
 
   useEffect(() => {
@@ -275,7 +275,7 @@ const isPostEmpty = (obj)  => {
                     {
                       <CImage
                         fluid
-                        src={`http://localhost:5000/getPoster/${imageName}`}
+                        src={`https://online-erfa.herokuapp.com/getPoster/${imageName}`}
                       />
                     }
                   </CCol>
