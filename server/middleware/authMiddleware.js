@@ -6,10 +6,10 @@ const requireAuth = (req, res, next) => {
   if (token) {
     jwt.verfiy(token, "Don't tell", (err, decodedToken) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.redirect("/login");
       } else {
-        console.log(decodedToken);
+        // console.log(decodedToken);
         next();
       }
     });
@@ -24,11 +24,11 @@ const checkStudent = (req, res, next) => {
   if (token) {
     jwt.verfiy(token, "Don't tell", (err, decodedToken) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.locals.user = null;
         res.status(400).send("Token is invalid");
       } else {
-        console.log(decodedToken);
+        // console.log(decodedToken);
         res.locals.user = decodedToken.regid;
         res.status(200).send("Token is valid");
         next();
@@ -47,11 +47,11 @@ const checkUserErfa = (req, res, next) => {
   if (token) {
     jwt.verfiy(token, "Don't tell", (err, decodedToken) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.locals.user = null;
         res.status(400).send("Token is invalid");
       } else {
-        console.log(decodedToken);
+        // console.log(decodedToken);
         res.locals.user = decodedToken.username;
         res.status(200).send("Token is valid");
         next();
