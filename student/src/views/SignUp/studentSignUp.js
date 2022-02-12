@@ -82,9 +82,21 @@ export default function LoginPage(props) {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
 
+ 
 
+  const handleSubmit = event => {
 
-
+  event.preventDefault();
+  submitData(event);
+          
+  emailjs.sendForm('service_9lp7w9p', 'template_a0ryztb', event.target, 'user_LHyukq9RbaH7yE5Rz9zIQ')
+         .then((result) => {
+                  console.log(result.text);
+              }, (error) => {
+                  console.log(error.text);
+              });
+              event.target.reset();
+            }
 
   const submitData = (e) => {
     e.preventDefault();
@@ -135,12 +147,7 @@ export default function LoginPage(props) {
             alert();
           } else {
 
-            emailjs.sendForm('service_9lp7w9p', 'template_a0ryztb', e.target, 'user_LHyukq9RbaH7yE5Rz9zIQ')
-            .then((result) => {
-                console.log(result.text);
-            }, (error) => {
-                console.log(error.text);
-            });
+          
             setLoading(false);
             // console.log("In catch block else ");
             // console.log(result);
@@ -287,7 +294,7 @@ export default function LoginPage(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
-                <form className={classes.form}>
+                <form  className={classes.form}  >
                   <CardHeader color="success" className={classes.cardHeader}>
                     <h4>ERFA Student Registration </h4>
                   </CardHeader>
@@ -756,7 +763,7 @@ export default function LoginPage(props) {
                       simple
                       color="primary"
                       size="lg"
-                      onClick={submitData}
+                      onClick={handleSubmit}
                     >
                       {loading == true ? (
                         <RingLoader color={color} css={override} size={25} />
