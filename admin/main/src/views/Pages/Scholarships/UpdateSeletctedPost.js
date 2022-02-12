@@ -5,6 +5,7 @@ import {
   CContainer,
   CButton,
   CCard,
+  CModal,
   CCardBody,
   CCardHeader,
   CImage,
@@ -20,6 +21,7 @@ import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { CBadge } from "@coreui/react";
+import CheckUser from 'components/CheckUser'
 
 const override = css`
   margin: 0 auto;
@@ -35,16 +37,29 @@ const Layout = (props) => {
   const [file, setFile] = useState();
   const [description, setDescription] = useState("");
   const [eligibility, setEligibility] = useState("");
-  
+  const [visible, setVisible] = useState(null);
+
   const [isChanged, setIsChanged] = useState(false)
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#49A54D");
   const [validated, setValidated] = useState(false);
+  const [userValid, setUserValid] = useState(null)
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
-
+ const checkUser= (value)=>{
+   setUserValid(value)
+ }
+ useEffect(()=>{
+   if(userValid==true){
+    updateData();
+   }
+ })
+ const setVis = (value)=>{
+  // console.log({value});
+setVisible(value)
+}
   useEffect(() => {
     api
       .get(
@@ -74,7 +89,7 @@ const Layout = (props) => {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      updateData();
+      setVisible(!visible);
     }
     setValidated(true);
   };
@@ -82,56 +97,56 @@ const Layout = (props) => {
   const updateData = () => {
     //  console.log('poster1==>',poster);
     //  console.log('poster.length==>',);
-    if(isChanged== true || isPostEmpty(poster)==false){
-    var data = new FormData();
-    data.append("poster", poster[0]);
-    data.append("title", title);
-    data.append("applicationstart", applicationstart);
-    data.append("applicationdeadline", applicationdeadline);
-    data.append("eligibility", eligibility);
-    data.append("description", description);
-    data.append("tags", tags);
+    if (isChanged == true || isPostEmpty(poster) == false) {
+      var data = new FormData();
+      data.append("poster", poster[0]);
+      data.append("title", title);
+      data.append("applicationstart", applicationstart);
+      data.append("applicationdeadline", applicationdeadline);
+      data.append("eligibility", eligibility);
+      data.append("description", description);
+      data.append("tags", tags);
 
-    const config = {
-      headers: { "content-type": "multipart/form-data" },
-    };
-    api
-      .put(
-        `scholarship/edit/${localStorage.getItem("viewPostUrl")}`,
-        data,
-        setLoading(true),
-        config
-      )
-      .then((result) => {
-        for (var value of data.values()) {
-          // console.log('Values=>',value);
-        }
+      const config = {
+        headers: { "content-type": "multipart/form-data" },
+      };
+      api
+        .put(
+          `scholarship/edit/${localStorage.getItem("viewPostUrl")}`,
+          data,
+          setLoading(true),
+          config
+        )
+        .then((result) => {
+          for (var value of data.values()) {
+            // console.log('Values=>',value);
+          }
 
-        // console.log("Response==>", result);
-        setLoading(false);
-        if (result.data.message == "alreadExisted") {
-          window.alert("Scholarship with this title already exist!");
-        } else {
+          // console.log("Response==>", result);
           setLoading(false);
+          if (result.data.message == "alreadExisted") {
+            window.alert("Scholarship with this title already exist!");
+          } else {
+            setLoading(false);
 
-          window.alert("Scholarship updated!");
+            // window.alert("Scholarship updated!");
 
-          props.history.push("view-post");
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        window.alert("Connection Error!");
-        // console.log("Error occured : ", err);
-      });
-  }else{
-    window.alert("Nothing Updated!")
-    props.history.push("view-post");
+            props.history.push("view-post");
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          window.alert("Connection Error!");
+          // console.log("Error occured : ", err);
+        });
+    } else {
+      window.alert("Nothing Updated!")
+      props.history.push("view-post");
+    }
   }
-}
-const isPostEmpty = (obj)  => {
-  return Object.keys(obj).length === 0;
-}
+  const isPostEmpty = (obj) => {
+    return Object.keys(obj).length === 0;
+  }
   return (
     <CContainer fluid>
       <CCard>
@@ -289,9 +304,9 @@ const isPostEmpty = (obj)  => {
                       dropzoneText={"Update image"}
                       onChange={(files) => {
                         // console.log("Files:", files);
-                        
+
                         setPoster(files) ? setIsChanged(true) : setIsChanged(false);
-                        
+
                       }}
                     />
                   </CCol>
@@ -313,13 +328,28 @@ const isPostEmpty = (obj)  => {
                   </CButton>
                 </CForm>
               )}
+
+              <CModal
+                alignment="center"
+                scrollable
+                visible={visible}
+                onClose={() => setVisible(false)}
+              >
+                <CheckUser
+                  title="Update Post"
+                  description="Enter password for confirmation to update scholarship post."
+                  action='update'
+                  chkUser={checkUser}
+                  setModel={setVis}
+                />
+              </CModal>
             </CCardBody>
           </>
         )}
       </CCard>
 
-      
-      
+
+
       {/* 
       <prev>{JSON.stringify(isChanged, null, 2)}</prev>
       <prev>{JSON.stringify(poster, null, 2)}</prev>

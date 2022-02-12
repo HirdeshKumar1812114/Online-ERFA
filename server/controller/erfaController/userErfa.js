@@ -37,7 +37,8 @@ exports.erfaLogin = expressAsyncHandler(async (req, res, next) => {
     res.status(200).send({ token, sendUserType, sendUserName, sendUserEmail });
     res.end();
   } catch (err) {
-    // console.log(err);
+    res.status(404).send({ message:'User Not Found'});
+    res.end();
   }
 });
 

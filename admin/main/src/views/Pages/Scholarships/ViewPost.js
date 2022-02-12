@@ -4,10 +4,6 @@ import {
   CButton,
   CCard,
   CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalFooter,
-  CModalBody,
   CCardBody,
   CCardHeader,
   CCol,
@@ -20,18 +16,19 @@ import {
   CTableBody,
 } from "@coreui/react";
 import { CBadge } from '@coreui/react'
+import CheckUser from 'components/CheckUser'
 
 import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
-
 const Layout = (props) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(null);
   const [getPost, setPost] = useState([]);
   const [deleteConfirm, setDelete] = useState(false);
   const [poststoDelete, setpoststoDel] = useState("");
   const [poststoUpdate, setpoststoUpdate] = useState("");
+  const [isDeleted, setIsDeleted] = useState(null);
 
   var posts = [];
 
@@ -43,32 +40,19 @@ const Layout = (props) => {
       // console.log('posts=>', posts)
       setPost(res.data);
     });
-  }, [deleteConfirm, visible]);
-
-  const deleteposts = () => {
-    // console.log('posts to delte: ',poststoDelete)
-    api
-      .delete(`scholarship/delete/${poststoDelete}`)
-      .then((res) => {
-        // console.log(res)
-        // window.alert("posts deleted.")
-        setpoststoDel("");
-        setDelete(false);
-        setVisible(false);
-      })
-      .catch((err) => {
-        // console.log(err)
-        // window.alert("Error Occured");
-        setpoststoDel("");
-        setVisible(false);
-      });
-  };
-
+  }, [visible,isDeleted]);
+  const checkIsDeleted = (value) => {
+    setIsDeleted(value)
+  }
   const postsUpdate = () => {
     props.history.push("update-post");
   };
   const viewPost = () => {
     props.history.push("view-post");
+  }
+  const setVis = (value)=>{
+    // console.log({value});
+setVisible(value)
   }
   return (
     <CContainer>
@@ -142,7 +126,7 @@ const Layout = (props) => {
             </CTableBody>
           </CTable>
 
-          <CModal
+          {/* <CModal
             alignment="center"
             scrollable
             visible={visible}
@@ -171,9 +155,26 @@ const Layout = (props) => {
                 Confirm
               </CButton>
             </CModalFooter>
+          </CModal> */}
+
+          <CModal
+            alignment="center"
+            scrollable
+            visible={visible}
+            onClose={() => setVisible(false)}
+          >
+            <CheckUser 
+            title="Delete Post"
+             description="Enter password for confirmation to delete scholarship post."
+             endPoint='scholarship/delete/'
+             action='delete'
+             toDelete={poststoDelete}
+             setModel={setVis}
+             />
           </CModal>
         </CCardBody>
       </CCard>
+      {/* <prev>{JSON.stringify(isDeleted, null, 2)}</prev> */}
     </CContainer>
   );
 };
