@@ -4,6 +4,7 @@ import {
   CContainer,
   CButton,
   CCard,
+  CModal,
   CCardBody,
   CCardHeader,
   CCol,
@@ -16,6 +17,7 @@ import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
+import CheckUser from 'components/CheckUser'
 
 const override = css`
   margin: 0 auto;
@@ -37,9 +39,50 @@ const Layout = (props) => {
   const [validated, setValidated] = useState(false);
   const [usertoUpdate, setUsertoUpdate] = useState("");
 
+  const [visible, setVisible] = useState(null);
+  const [userValid, setUserValid] = useState(null)
+
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
+  const setVis = (value) => {
+    // console.log({value});
+    setVisible(value)
+  }
+
+  const checkUser= (value)=>{
+    setUserValid(value)
+  }
+  useEffect(()=>{
+    if(userValid==true){
+     updateData();
+    }
+  })
+
+  const updateData=()=>{
+    api
+    .put(
+      `officer/edit/${localStorage.getItem("userUpdate")}`,
+      {
+        designation: Newdesignation,
+        cellnumber: NewcellNumber,
+      },
+      setLoading(true)
+    )
+    .then((result) => {
+      // console.log(result)
+      // window.alert("User Updated");
+      setValid("true");
+      setLoading(false);
+      props.history.push("view-users");
+      // console.log(result)
+    })
+    .catch((err) => {
+      setLoading(false);
+      // console.log(err);
+      setValid("error");
+    });
+  }
 
   useEffect(() => {
     api
@@ -58,28 +101,7 @@ const Layout = (props) => {
     // console.log(Newemail)
     // console.log(NewcellNumber)
 
-    api
-      .put(
-        `officer/edit/${localStorage.getItem("userUpdate")}`,
-        {
-          designation: Newdesignation,
-          cellnumber: NewcellNumber,
-        },
-        setLoading(true)
-      )
-      .then((result) => {
-        // console.log(result)
-        // window.alert("User Updated");
-        setValid("true");
-        setLoading(false);
-        props.history.push("view-users");
-        // console.log(result)
-      })
-      .catch((err) => {
-        setLoading(false);
-        // console.log(err);
-        setValid("error");
-      });
+   setVisible(true)
   };
 
   return (
@@ -203,7 +225,7 @@ const Layout = (props) => {
                   id="inputCellNo"
                   onChange={(e) => {
                     e.target.validity.valid ?
-                    setNewCellNumber(e.target.value)
+                      setNewCellNumber(e.target.value)
                       :
                       setNewCellNumber(NewcellNumber)
                   }}
@@ -228,6 +250,21 @@ const Layout = (props) => {
               </CCol>
             </CForm>
           )}
+
+          <CModal
+            alignment="center"
+            scrollable
+            visible={visible}
+            onClose={() => setVisible(false)}
+          >
+            <CheckUser
+              title="Update User"
+              description="Enter password for confirmation to update user."
+              action='update'
+              chkUser={checkUser}
+              setModel={setVis}
+            />
+          </CModal>
         </CCardBody>
       </CCard>
 

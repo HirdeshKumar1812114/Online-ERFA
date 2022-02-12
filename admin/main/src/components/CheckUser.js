@@ -23,7 +23,6 @@ const CheckUser = ({ props, title, action, description, endPoint, toDelete, setM
     const [email, setEmail] = useState(userEmail.onlineerfa_admin_userEmail)
     const checkPassword = () => {
         if (password != '') {
-            console.log({ email, password });
             api.post('erfa/login', { email, password }).then(result => {
                 setValid("true")
                 alert()
@@ -36,7 +35,6 @@ const CheckUser = ({ props, title, action, description, endPoint, toDelete, setM
 
                 }
             }).catch(err => {
-                window.alert('Invalid Credentials')
                 // console.log(err)
                 setValid("false")
                 alert()
