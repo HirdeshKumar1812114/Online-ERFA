@@ -43,6 +43,7 @@ import Calendar from "@mui/icons-material/CalendarToday";
 import Father from "@mui/icons-material/EscalatorWarningOutlined";
 import MailingAddress from "@mui/icons-material/ContactMailOutlined";
 import Location from "@mui/icons-material/LocationOnOutlined";
+import emailjs from '@emailjs/browser';
 
 const override = css`
   margin: 0 auto;
@@ -80,6 +81,10 @@ export default function LoginPage(props) {
   const [passMessage, setPassMessage] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
+
+
+
+
 
   const submitData = (e) => {
     e.preventDefault();
@@ -124,9 +129,18 @@ export default function LoginPage(props) {
             result.data.message === "User Registration Id already used" ||
             result.data.message === "Student Details not match"
           ) {
+
+
             setValid("false");
             alert();
           } else {
+
+            emailjs.sendForm('service_9lp7w9p', 'template_a0ryztb', e.target, 'user_LHyukq9RbaH7yE5Rz9zIQ')
+            .then((result) => {
+                console.log(result.text);
+            }, (error) => {
+                console.log(error.text);
+            });
             setLoading(false);
             // console.log("In catch block else ");
             // console.log(result);
@@ -146,6 +160,7 @@ export default function LoginPage(props) {
             setFatherName("");
             setValid("true");
             alert();
+       
           }
         })
 
@@ -304,6 +319,7 @@ export default function LoginPage(props) {
                   <CardBody>
                     <CustomInput
                       labelText="Registration Number"
+                      name="regid"
                       id="regid"
                       formControlProps={{
                         fullWidth: true,
@@ -330,6 +346,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Password"
                           id="pass"
+
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -350,6 +367,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Confirm Password"
                           id="confirmpass"
+                          name="confirmpass"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -377,6 +395,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="First Name"
                           id="firstname"
+                          name="firstname"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -397,6 +416,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Last Name"
                           id="lastname"
+                          name="lastname"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -579,6 +599,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Email"
                           id="email"
+                          name="email"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) => checkEmailValidataion(event),
