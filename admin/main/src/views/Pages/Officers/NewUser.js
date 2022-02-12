@@ -92,7 +92,7 @@ const Layout = (props) => {
       setPassmath("");
     } else {
       if (password !== confPass) {
-        setPassmath("Password did not matched with your password");
+        setPassmath("Password did not matched with your password!");
         setpassstats(false);
         setIsMatched(false);
         setValid("invalidPassword");
@@ -338,8 +338,8 @@ const Layout = (props) => {
                 <CFormFeedback
                   style={
                     isEmailMatch !== true
-                      ? { "font-size": "10px", color: "red" }
-                      : { "font-size": "10px", color: "green" }
+                      ? { "font-size": "14px", color: "red" }
+                      : { "font-size": "14px", color: "green" }
                   }
                 >
                   {confirmEmail}
@@ -390,8 +390,8 @@ const Layout = (props) => {
                 <CFormFeedback
                   style={
                     passstats !== true
-                      ? { "font-size": "10px", color: "red" }
-                      : { "font-size": "10px", color: "green" }
+                      ? { "font-size": "14px", color: "red" }
+                      : { "font-size": "14px", color: "green" }
                   }
                 >
                   {passmath}
