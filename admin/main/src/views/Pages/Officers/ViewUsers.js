@@ -19,6 +19,7 @@ import {
   CTableDataCell,
   CTableBody,
 } from "@coreui/react";
+import { useCookies } from 'react-cookie';
 
 import axios from "axios";
 const api = axios.create({
@@ -31,8 +32,61 @@ const Layout = (props) => {
   const [deleteConfirm, setDelete] = useState(false);
   const [usertoDelete, setUsertoDel] = useState("");
   const [usertoUpdate, setUsertoUpdate] = useState("");
+  const [userEmail, setUserEmail] = useCookies(['onlineerfa_admin_userEmail']);
+  const [email, setEmail] = useState(userEmail.onlineerfa_admin_userEmail)
+  const [password, setPassword] = useState('')
+  const [valid, setValid] = useState('')
 
   var users = [];
+
+
+
+  const checkPassword = () => {
+    if (password != '') {
+      console.log({ email, password });
+      api.post('erfa/login', { email, password }).then(result => {
+        setValid("true")
+        alert()
+        deleteUser()
+        
+
+      }).catch(err => {
+        // console.log(err)
+        setValid("false")
+        alert()
+      })
+    } else {
+      setValid("fillForm")
+      alert()
+    }
+
+  }
+  const alert = () => {
+    if (valid != "") {
+      if (valid == "true") {
+        return (
+          <>
+            <strong style={{ 'color': 'green' }}>   OK - User Verified. </strong>
+          </>
+        )
+      }
+      else if (valid == "false") {
+        return (
+          <strong style={{ 'color': 'red' }}> ERROR — Invalid Credentials!</strong>
+        )
+      }
+      else {
+        return (
+          <strong style={{ 'color': 'orange' }}>ALERT — Please fill all fields!</strong>)
+      }
+    }
+    else {
+      return (
+        <>
+        </>)
+    }
+  }
+
 
   useEffect(() => {
     api.get("officer/details").then((res) => {
@@ -42,7 +96,7 @@ const Layout = (props) => {
       // console.log(users)
       setUsers(res.data);
     });
-  }, [deleteConfirm,visible]);
+  }, [deleteConfirm, visible]);
 
   const deleteUser = () => {
     // console.log('user to delte: ',usertoDelete)
@@ -54,6 +108,7 @@ const Layout = (props) => {
         setUsertoDel("");
         setDelete(false);
         setVisible(false);
+        deleteConfirm(true)
       })
       .catch((err) => {
         // console.log(err)
@@ -135,13 +190,28 @@ const Layout = (props) => {
           >
             <CModalHeader>
               <CModalTitle>
-                <strong>User Delete Confirmation</strong>
+                <strong>Delete User</strong>
               </CModalTitle>
             </CModalHeader>
             <CModalBody>
-              Are you sure you want to delete the selected user!
+              <b>
+              Enter password for confirmation to delete this user.
+              </b>
               <br />
-              If yes then press the confirm button.
+              <br />
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Username:</label>
+                <div class="col-sm-10">
+                  <input type="text" readonly class="form-control-plaintext" id="staticEmail" value={email} />
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputPassword" value={password} onChange={(e) => { setPassword(e.target.value) }} />
+                </div>
+              </div>
+              {alert()}
             </CModalBody>
             <CModalFooter>
               <CButton color="secondary" onClick={() => setVisible(false)}>
@@ -150,7 +220,7 @@ const Layout = (props) => {
               <CButton
                 color="primary"
                 onClick={() => {
-                  deleteUser();
+                  checkPassword()
                 }}
               >
                 Confirm

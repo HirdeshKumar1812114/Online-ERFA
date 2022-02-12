@@ -42,6 +42,8 @@ export default function LoginPage(props) {
     const [token, setToken] = useCookies(['onlineerfa_admin_token']);
     const [userID, setUserID] = useCookies(['onlineerfa_admin_userID']);
     const [userType, setUserType] = useCookies(['onlineerfa_admin_userType']);
+    const [userEmail, setUserEmail] = useCookies(['onlineerfa_admin_userEmail']);
+
     const [loading, setLoading] = useState(false)
     let [color, setColor] = useState("#49A54D");
 
@@ -84,6 +86,7 @@ export default function LoginPage(props) {
                 setToken('onlineerfa_admin_token', result.data.token, { path: '/', maxAge: 1800, secure: true })
                 setUserID('onlineerfa_admin_userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
                 setUserType('onlineerfa_admin_userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
+                setUserEmail('onlineerfa_admin_userEmail', result.data.sendUserEmail , { path: '/', maxAge: 1800, secure: true })
                 // window.alert('Welcome to Admin Portal')
                 setValid("true")
                 alert()

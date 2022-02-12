@@ -18,6 +18,7 @@ import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { CBadge } from '@coreui/react'
+import CheckUser from 'components/CheckUser'
 
 const override = css`
   margin: 0 auto;
@@ -34,13 +35,22 @@ const Layout = (props) => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [poststoDelete, setpoststoDel] = useState("");
-  const [visible, setVisible] = useState(false);
-
+  const [visible, setVisible] = useState(null);
+  const [isDeleted, setIsDeleted] = useState(null);
   let [color, setColor] = useState("#49A54D");
 
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
+  const setVis = (value) => {
+    setVisible(value)
+  }
+
+  const checkIsDeleted = (value) => {
+    console.log({value});
+    setIsDeleted(value)
+
+  }
 
   useEffect(() => {
     api
@@ -57,28 +67,16 @@ const Layout = (props) => {
         setEligibilityArr(eligibility.split(/\r/))
       })
       .catch((error) => console.log(error));
-      
+
   }, [eligibility]);
 
-  const deleteposts = () => {
-    // console.log('posts to delte: ',poststoDelete)
-    api
-      .delete(`scholarship/delete/${poststoDelete}`)
-      .then((res) => {
-        // console.log(res)
-        // window.alert("posts deleted.")
-        setpoststoDel("");
-        props.history.push("list-posts");
-        setDelete(false);
-        setVisible(false);
-      })
-      .catch((err) => {
-        // console.log(err)
-        // window.alert("Error Occured");
-        setpoststoDel("");
-        setVisible(false);
-      });
-  };
+  useEffect(() => {
+    if (isDeleted == true) {
+      props.history.push('list-posts')
+      window.location.reload();
+    }
+  },[isDeleted])
+
 
   const postsUpdate = () => {
     props.history.push("update-post");
@@ -120,9 +118,9 @@ const Layout = (props) => {
               <p style={{ 'text-align': 'justify', 'margin': '20px', 'white-space': 'pre-wrap' }}>{description}</p>
               <h3 style={{ 'margin': '20px' }}>Eligliblity</h3>
               <ul style={{ 'text-align': 'justify', 'margin': '10px' }}>
-              {eligibilityArr.map((value,key)=>{
-                 return (<li>{value}</li>)
-              })}
+                {eligibilityArr.map((value, key) => {
+                  return (<li>{value}</li>)
+                })}
               </ul>
               <h3 style={{ 'margin': '20px' }}>Timeline</h3>
               <p style={{ 'margin': '20px', 'font-size': '20px' }}>Start Date: {applicationstart}</p>
@@ -136,8 +134,8 @@ const Layout = (props) => {
               </p>
 
               <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <CButton
-              variant="outline"
+                <CButton
+                  variant="outline"
                   color="warning"
                   onClick={() => {
                     postsUpdate();
@@ -146,7 +144,7 @@ const Layout = (props) => {
                   Edit
                 </CButton>
                 <CButton
-                variant="outline"
+                  variant="outline"
                   color="danger"
                   onClick={() => {
                     setVisible(!visible);
@@ -164,38 +162,24 @@ const Layout = (props) => {
                 visible={visible}
                 onClose={() => setVisible(false)}
               >
-                <CModalHeader>
-                  <CModalTitle>
-                    <strong>posts Delete Confirmation</strong>
-                  </CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-                  Are you sure you want to delete the selected posts!
-                  <br />
-                  If yes then press the confirm button.
-                </CModalBody>
-                <CModalFooter>
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
-                    Close
-                  </CButton>
-                  <CButton
-                    color="primary"
-                    onClick={() => {
-                      deleteposts();
-                    }}
-                  >
-                    Confirm
-                  </CButton>
-                </CModalFooter>
+                <CheckUser
+                  title="Delete Post"
+                  description="Enter password for confirmation to delete scholarship post."
+                  endPoint='scholarship/delete/'
+                  action='delete'
+                  toDelete={poststoDelete}
+                  setModel={setVis}
+                  isDeleted={checkIsDeleted}
+                />
               </CModal>
             </CCardBody>
           </>
         )}
       </CCard>
       {/* 
+      <prev >{JSON.stringify(isDeleted, null, 2)}</prev>
       <prev >{JSON.stringify(eligibilityArr, null, 2)}</prev>
       <prev >{JSON.stringify(password, null, 2)}</prev>
-      <prev >{JSON.stringify(nic, null, 2)}</prev>
       <prev >{JSON.stringify(dob, null, 2)}</prev>
       <prev >{JSON.stringify(re_password, null, 2)}</prev>
       <prev >{JSON.stringify(valid, null, 2)}</prev>
