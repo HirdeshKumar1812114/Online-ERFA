@@ -26,7 +26,7 @@ import image from "assets/img/bg7.jpg";
 import { useCookies } from 'react-cookie';
 import { css } from "@emotion/react";
 import RingLoader from "react-spinners/RingLoader";
-
+import emailjs from '@emailjs/browser';
 const override = css`
   margin: 0 auto;
 `;
@@ -49,34 +49,47 @@ export default function forgetPassword(props) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [valid, setValid] = useState('')
+    const [toSend, setToSend] = useState({
+  
+        sendemail: '',
+
+    });
 
     const submitData = (e) => {
         e.preventDefault();
-        if (username !== '' ) {
-            api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
-                setLoading(false)
-                //  console.log(result.data)
-                // console.log(result.data.token)
-                // window.alert('Welcome to Admin Portal')
-                setValid("true")
-                alert()
-                Auth.login(() => {
-                    props.history.push("/")
-                })
-                // window.alert('Welcome to Admin Portal')
-            }).catch(err => {
-                setLoading(false)
-                // console.log(err)
-                setValid("false")
-                alert()
-            })
+         
+        emailjs.send('service_tjb9xxs', 'template_3951u5n',toSend, 'user_I8LA7r2KdKb8BaZWSCd4g')
+        .then((result) => {
+                 console.log(result.text);
+             }, (error) => {
+                 console.log(error.text);
+             });
+   
+        // if (username !== '' ) {
+        //     api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
+        //         setLoading(false)
+        //         //  console.log(result.data)
+        //         // console.log(result.data.token)
+        //         // window.alert('Welcome to Admin Portal')
+        //         setValid("true")
+        //         alert()
+        //         Auth.login(() => {
+        //             props.history.push("/")
+        //         })
+        //         // window.alert('Welcome to Admin Portal')
+        //     }).catch(err => {
+        //         setLoading(false)
+        //         // console.log(err)
+        //         setValid("false")
+        //         alert()
+        //     })
            
-        } else {
-            // window.alert('Please fill all the fields')
-            setValid("incomplete")
-            alert()
-        }
-        alert()
+        // } else {
+        //     // window.alert('Please fill all the fields')
+        //     setValid("incomplete")
+        //     alert()
+        // }
+        // alert()
     }
     const alert = () => {
         if (valid != "") {
@@ -146,7 +159,9 @@ export default function forgetPassword(props) {
                                                 fullWidth: true,
                                             }}
                                             inputProps={{
-                                                onChange: (event) => setUsername(event.target.value),
+                                                onChange: (event) => {setUsername(event.target.value);
+                                                    setToSend({ sendemail: event.target.value});
+                                                },
                                                 type: "text",
                                                 endAdornment: (
                                                     <InputAdornment position="end">
