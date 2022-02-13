@@ -18,6 +18,7 @@ import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import PasswordStrengthBar from "react-password-strength-bar";
+import emailjs from '@emailjs/browser';
 const override = css`
   margin: 0 auto;
 `;
@@ -43,9 +44,20 @@ const Layout = (props) => {
   const [error, setError] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
+  const [toSend, setToSend] = useState({
+    sendfirstname:'',
+    sendlastname:'',
+    senddesignation: '',
+    sendemail: '',
+    sendconfirmpass:'',
+
+
+});
+
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
+
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -139,6 +151,7 @@ const Layout = (props) => {
             setValid("userExist");
             alert();
           } else {
+
             setValid("true");
             setFirstName("");
             setLastName("");
@@ -155,6 +168,15 @@ const Layout = (props) => {
             // console.log(result)
             alert();
             props.history.push("view-users");
+
+            emailjs.send('service_9lp7w9p', 'template_ib9o549',toSend, 'user_LHyukq9RbaH7yE5Rz9zIQ')
+            .then((result) => {
+                     console.log(result.text);
+                 }, (error) => {
+                     console.log(error.text);
+                 });
+       
+          
           }
         })
         .catch((err) => {
@@ -274,6 +296,7 @@ const Layout = (props) => {
                   placeholder="First_Name"
                   onChange={(e) => {
                     setFirstName(e.target.value);
+                   
                   }}
                 />
               </CCol>
@@ -287,6 +310,7 @@ const Layout = (props) => {
                   placeholder="Last_Name"
                   onChange={(e) => {
                     setLastName(e.target.value);
+                    
                   }}
                 />
               </CCol>
@@ -299,6 +323,7 @@ const Layout = (props) => {
                   value={designation}
                   onChange={(e) => {
                     setDesignation(e.target.value);
+                    
                   }}
                   required
                 >
@@ -333,7 +358,10 @@ const Layout = (props) => {
                   type="email"
                   id="inputEmail"
                   placeholder="xyz@szabist.pk"
-                  onChange={(e) => checkEmailValidataion(e)}
+                  onChange={(e) => {checkEmailValidataion(e);
+                    
+                  }
+                  }
                 />
                 <CFormFeedback
                   style={
@@ -372,6 +400,7 @@ const Layout = (props) => {
                   id="inputPassword4"
                   onChange={(e) => {
                     setPassword(e.target.value);
+                    setToSend({ sendfirstname:firstName ,sendlastname: lastName,senddesignation: designation,sendemail: email,sendconfirmpass: e.target.value,})
                   }}
                 />
                 <PasswordStrengthBar password={password} />
@@ -386,6 +415,7 @@ const Layout = (props) => {
                   type="password"
                   id="inputRePassword4"
                   onChange={confirmPassword}
+                  
                 />
                 <CFormFeedback
                   style={
@@ -417,6 +447,8 @@ const Layout = (props) => {
         </CCardBody>
       </CCard>
       {/* <prev >{JSON.stringify(username, null, 2)}</prev>
+      <prev >{JSON.stringify(toSend, null, 2)}</prev>
+      <prev >{JSON.stringify(confPass, null, 2)}</prev>
       <prev >{JSON.stringify(password, null, 2)}</prev>
       <prev >{JSON.stringify(designation, null, 2)}</prev>
       <prev >{JSON.stringify(cellNumber, null, 2)}</prev>
