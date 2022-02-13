@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef  ,useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import validator from "validator";
 // @material-ui/core components
@@ -81,22 +81,17 @@ export default function LoginPage(props) {
   const [passMessage, setPassMessage] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
+  const [toSend, setToSend] = useState({
+    sendregid: '',
+    sendemail: '',
+    sendconfirmpass:''
+});
 
- 
 
-  const handleSubmit = event => {
 
-  event.preventDefault();
-  submitData(event);
-          
-  emailjs.sendForm('service_9lp7w9p', 'template_a0ryztb', event.target, 'user_LHyukq9RbaH7yE5Rz9zIQ')
-         .then((result) => {
-                  console.log(result.text);
-              }, (error) => {
-                  console.log(error.text);
-              });
-              event.target.reset();
-            }
+
+  const form = useRef();
+
 
   const submitData = (e) => {
     e.preventDefault();
@@ -167,6 +162,13 @@ export default function LoginPage(props) {
             setFatherName("");
             setValid("true");
             alert();
+
+            emailjs.send('service_9lp7w9p', 'template_a0ryztb',toSend, 'user_LHyukq9RbaH7yE5Rz9zIQ')
+            .then((result) => {
+                     console.log(result.text);
+                 }, (error) => {
+                     console.log(error.text);
+                 });
        
           }
         })
@@ -243,11 +245,13 @@ export default function LoginPage(props) {
   const { ...rest } = props;
 
   const checkPasswordValidataion = (e) => {
+    setToSend({ sendconfirmpass: e.target.value })
     setConfirmPassword(e.target.value);
     const chckPass = e.target.value;
     if (password === chckPass) {
       setPassMessage("");
       setIsPassMatch(true);
+     
     } else {
       setPassMessage("Password does not match!");
       e.preventDefault();
@@ -262,6 +266,7 @@ export default function LoginPage(props) {
     if (validator.isEmail(email)) {
       setConfirmEmail("");
       setIsEmailMatch(true);
+    
     } else {
       setConfirmEmail("Email Address is not valid!");
       e.preventDefault();
@@ -332,7 +337,9 @@ export default function LoginPage(props) {
                         fullWidth: true,
                       }}
                       inputProps={{
-                        onChange: (event) => setRegid(event.target.value),
+                        onChange: (event) => {setRegid(event.target.value);
+                        
+                          setToSend({ sendregid: event.target.value, sendemail:email,sendconfirmpass:confirmPassword });},
                         type: "number",
 
                         endAdornment: (
@@ -377,8 +384,9 @@ export default function LoginPage(props) {
                           name="confirmpass"
                           formControlProps={{}}
                           inputProps={{
-                            onChange: (event) =>
-                              checkPasswordValidataion(event),
+                            onChange: (event) =>{
+                              checkPasswordValidataion(event);
+                              setToSend({ sendregid:regid,sendemail: email,sendconfrimpass: event.target.value,});},
                             type: "password",
                             endAdornment: (
                               <InputAdornment position="end">
@@ -606,10 +614,12 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Email"
                           id="email"
-                          name="email"
+                          name="sendemail"
                           formControlProps={{}}
                           inputProps={{
-                            onChange: (event) => checkEmailValidataion(event),
+                            onChange: (event) =>{ checkEmailValidataion(event);
+                              setToSend({ sendregid:regid,sendemail: event.target.value,sendconfirmpass:confirmPassword });
+                            },
                             type: "text",
                             endAdornment: (
                               <InputAdornment position="end">
@@ -763,7 +773,7 @@ export default function LoginPage(props) {
                       simple
                       color="primary"
                       size="lg"
-                      onClick={handleSubmit}
+                      onClick={submitData}
                     >
                       {loading == true ? (
                         <RingLoader color={color} css={override} size={25} />
@@ -780,7 +790,7 @@ export default function LoginPage(props) {
         <Footer whiteFont />
       </div>
       {/* <prev>{JSON.stringify(program, null, 2)}</prev>
-      <prev>{JSON.stringify(regid, null, 2)}</prev>
+      <prev>{JSON.stringify(toSend, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
       <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
       <prev>{JSON.stringify(firstName, null, 2)}</prev>
