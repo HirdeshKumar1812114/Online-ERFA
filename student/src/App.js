@@ -16,6 +16,7 @@ const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 
 import StudentLogin from "views/Login/studentLogin";
 import StudentSignUp from "views/SignUp/studentSignUp";
+import ForgetPassword from "views/Login/forgetPassword";
 
 var hist = createBrowserHistory();
 
@@ -36,6 +37,12 @@ class App extends Component {
               path="/signup"
               name="SignUp"
               component={StudentSignUp}
+            />
+            <Route
+              exact
+              path="/forget-password"
+              name="Forget Password"
+              render={(props) => <ForgetPassword {...props} />}
             />
             <ProtectedRoute path="/" name="Home" component={DefaultLayout} />
             {/* <Route path="/" name="Home" component={DefaultLayout} /> */}

@@ -101,7 +101,8 @@ const Layout = (props) => {
     // console.log(Newemail)
     // console.log(NewcellNumber)
 
-   setVisible(true)
+    setVisible(!visible);
+
   };
 
   return (

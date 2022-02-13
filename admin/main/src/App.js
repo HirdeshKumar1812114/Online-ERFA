@@ -15,6 +15,7 @@ const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 // import "assets/scss/material-kit-react.scss?v=1.10.0";
 
 import AdminLogin from "views/Login/adminLogin";
+import ForgetPassword from "views/Login/forgetPassword";
 
 var hist = createBrowserHistory();
 
@@ -29,6 +30,12 @@ class App extends Component {
               path="/login"
               name="Login"
               render={(props) => <AdminLogin {...props} />}
+            />
+            <Route
+              exact
+              path="/forget-password"
+              name="Forget Password"
+              render={(props) => <ForgetPassword {...props} />}
             />
             <ProtectedRoute path="/" name="Home" component={DefaultLayout} />
           </Switch>
