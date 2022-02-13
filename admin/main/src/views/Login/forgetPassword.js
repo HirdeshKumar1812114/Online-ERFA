@@ -26,7 +26,6 @@ import image from "assets/img/bg7.jpg";
 import { useCookies } from 'react-cookie';
 import { css } from "@emotion/react";
 import RingLoader from "react-spinners/RingLoader";
-import forgetPassword from './forgetPassword';
 
 const override = css`
   margin: 0 auto;
@@ -36,10 +35,9 @@ const api = axios.create({
     baseURL: 'http://localhost:5000/',
 });
 
-
 const useStyles = makeStyles(styles);
 
-export default function LoginPage(props) {
+export default function forgetPassword(props) {
     const [token, setToken] = useCookies(['onlineerfa_admin_token']);
     const [userID, setUserID] = useCookies(['onlineerfa_admin_userID']);
     const [userType, setUserType] = useCookies(['onlineerfa_admin_userType']);
@@ -48,46 +46,17 @@ export default function LoginPage(props) {
     const [loading, setLoading] = useState(false)
     let [color, setColor] = useState("#49A54D");
 
-
-    useEffect(() => {
-        if (token.onlineerfa_admin_token != null) {
-            api.get('erfa/dashboard', {
-                headers: {
-                    'x-auth-token': token.onlineerfa_admin_token
-                }
-            }).then((result) => {
-                // console.log(result.data)
-                Auth.login(() => {
-                    // return (<Redirect to={'/dashboard'} />)
-                    props.history.push('/dashboard')
-                })
-            })
-
-
-        }
-    }, [])
-
-
-
-
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [valid, setValid] = useState('')
 
-
     const submitData = (e) => {
         e.preventDefault();
-        if (username !== '' && password !== '') {
-
-
+        if (username !== '' ) {
             api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
                 setLoading(false)
                 //  console.log(result.data)
                 // console.log(result.data.token)
-                setToken('onlineerfa_admin_token', result.data.token, { path: '/', maxAge: 1800, secure: true })
-                setUserID('onlineerfa_admin_userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
-                setUserType('onlineerfa_admin_userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
-                setUserEmail('onlineerfa_admin_userEmail', result.data.sendUserEmail, { path: '/', maxAge: 1800, secure: true })
                 // window.alert('Welcome to Admin Portal')
                 setValid("true")
                 alert()
@@ -95,53 +64,33 @@ export default function LoginPage(props) {
                     props.history.push("/")
                 })
                 // window.alert('Welcome to Admin Portal')
-
             }).catch(err => {
                 setLoading(false)
                 // console.log(err)
                 setValid("false")
                 alert()
             })
-
-            // if (username == 'admin' && password == 'admin') {
-            //     setValid("true")
-            //     Auth.login(()=>{
-            //     props.history.push("/")   
-            //     })
-            //     // window.alert('Welcome to Admin Portal')
-            //     alert()
-
-
-            // } else {
-            //     setValid("false")
-            //     // window.alert('Invalid Credentials')
-            //     alert()
-
-            // }
-
+           
         } else {
             // window.alert('Please fill all the fields')
             setValid("incomplete")
             alert()
-
-
         }
         alert()
-
     }
     const alert = () => {
         if (valid != "") {
             if (valid == "true") {
                 return (
                     <>
-                        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="success">OK - <strong>Login Successful. </strong></Alert>
+                        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="success">OK - <strong>Email Sent!</strong></Alert>
                         <Redirect to='/' />
                     </>
                 )
             }
             else if (valid == "false") {
 
-                return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="error">ERROR — <strong>Invalid Credentials!</strong></Alert>)
+                return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="error">ERROR — <strong>Email not registered!</strong></Alert>)
             }
             else {
                 return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="warning">ALERT — <strong>Please fill all fields!</strong></Alert>)
@@ -161,13 +110,8 @@ export default function LoginPage(props) {
     const classes = useStyles();
     const { ...rest } = props;
 
-    const forgetPassword = () => {
-        props.history.push('forget-password')
-    }
-
     return (
         <div>
-
             <Header
                 absolute
                 color="transparent"
@@ -175,8 +119,6 @@ export default function LoginPage(props) {
                 rightLinks={<HeaderLinks />}
                 {...rest}
             />
-
-
             <div
                 className={classes.pageHeader}
                 style={{
@@ -185,7 +127,6 @@ export default function LoginPage(props) {
                     backgroundPosition: "top center",
                 }}
             >
-
                 <div className={classes.container}>
                     {alert()}
 
@@ -194,9 +135,9 @@ export default function LoginPage(props) {
                             <Card className={classes[cardAnimaton]}>
                                 <form className={classes.form}>
                                     <CardHeader color="success" className={classes.cardHeader}>
-                                        <h3>ERFA Admin Portal</h3>
+                                        <h3>Forget Password</h3>
                                     </CardHeader>
-                                    <p className={classes.divider}>Enter your Credentials</p>
+                                    <p className={classes.divider}>Enter your registered email</p>
                                     <CardBody>
                                         <CustomInput
                                             labelText="Email"
@@ -214,42 +155,13 @@ export default function LoginPage(props) {
                                                     </InputAdornment>
                                                 ),
                                             }}
-
                                         />
-                                        <CustomInput
-                                            labelText="Password"
-                                            id="pass"
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            inputProps={{
-                                                onChange: (event) => setPassword(event.target.value),
-                                                type: "password",
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <Icon className={classes.inputIconsColor}>
-                                                            lock_outline
-                                                        </Icon>
-                                                    </InputAdornment>
-                                                ),
-                                                autoComplete: "off",
-                                            }}
-                                        />
-
                                     </CardBody>
-
-
-
                                     <br />
                                     <CardFooter className={classes.cardFooter}>
-
                                         <Button simple color="primary" size="lg" onClick={submitData}>
-                                            {loading == true ? <RingLoader color={color} css={override} size={25} /> : <>Login</>}
+                                            {loading == true ? <RingLoader color={color} css={override} size={25} /> : <>Reset password</>}
                                         </Button >
-
-                                        <Button simple onClick={()=>{forgetPassword()}} color="primary">
-                                            Forget Password
-                                        </Button>
                                     </CardFooter>
                                 </form>
                             </Card>
@@ -257,7 +169,6 @@ export default function LoginPage(props) {
                     </GridContainer>
                 </div>
                 <Footer whiteFont />
-
             </div>
             {/* <prev >{JSON.stringify(username, null, 2)}</prev>
             <prev>{JSON.stringify(password, null, 2)}</prev>

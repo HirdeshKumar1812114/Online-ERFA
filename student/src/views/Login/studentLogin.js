@@ -194,7 +194,9 @@ export default function LoginPage(props) {
       return <></>;
     }
   };
-
+  const forgetPassword = () => {
+    props.history.push('forget-password')
+  }
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   setTimeout(function () {
     setCardAnimation("");
@@ -283,6 +285,9 @@ export default function LoginPage(props) {
                         <>Login</>
                       )}
                     </Button>
+                    <Button simple onClick={()=>{forgetPassword()}} color="primary">
+                                            Forget Password
+                                        </Button>
                   </CardFooter>
 
                   <CardFooter className={classes.cardFooter}>
