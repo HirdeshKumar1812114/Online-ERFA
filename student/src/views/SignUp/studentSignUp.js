@@ -43,6 +43,7 @@ import Calendar from "@mui/icons-material/CalendarToday";
 import Father from "@mui/icons-material/EscalatorWarningOutlined";
 import MailingAddress from "@mui/icons-material/ContactMailOutlined";
 import Location from "@mui/icons-material/LocationOnOutlined";
+import emailjs from '@emailjs/browser';
 
 const override = css`
   margin: 0 auto;
@@ -80,6 +81,22 @@ export default function LoginPage(props) {
   const [passMessage, setPassMessage] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
+
+ 
+
+  const handleSubmit = event => {
+
+  event.preventDefault();
+  submitData(event);
+          
+  emailjs.sendForm('service_9lp7w9p', 'template_a0ryztb', event.target, 'user_LHyukq9RbaH7yE5Rz9zIQ')
+         .then((result) => {
+                  console.log(result.text);
+              }, (error) => {
+                  console.log(error.text);
+              });
+              event.target.reset();
+            }
 
   const submitData = (e) => {
     e.preventDefault();
@@ -124,9 +141,13 @@ export default function LoginPage(props) {
             result.data.message === "User Registration Id already used" ||
             result.data.message === "Student Details not match"
           ) {
+
+
             setValid("false");
             alert();
           } else {
+
+          
             setLoading(false);
             // console.log("In catch block else ");
             // console.log(result);
@@ -146,6 +167,7 @@ export default function LoginPage(props) {
             setFatherName("");
             setValid("true");
             alert();
+       
           }
         })
 
@@ -272,7 +294,7 @@ export default function LoginPage(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
-                <form className={classes.form}>
+                <form  className={classes.form}  >
                   <CardHeader color="success" className={classes.cardHeader}>
                     <h4>ERFA Student Registration </h4>
                   </CardHeader>
@@ -304,6 +326,7 @@ export default function LoginPage(props) {
                   <CardBody>
                     <CustomInput
                       labelText="Registration Number"
+                      name="regid"
                       id="regid"
                       formControlProps={{
                         fullWidth: true,
@@ -330,6 +353,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Password"
                           id="pass"
+
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -350,6 +374,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Confirm Password"
                           id="confirmpass"
+                          name="confirmpass"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -377,6 +402,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="First Name"
                           id="firstname"
+                          name="firstname"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -397,6 +423,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Last Name"
                           id="lastname"
+                          name="lastname"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) =>
@@ -579,6 +606,7 @@ export default function LoginPage(props) {
                         <CustomInput
                           labelText="Email"
                           id="email"
+                          name="email"
                           formControlProps={{}}
                           inputProps={{
                             onChange: (event) => checkEmailValidataion(event),
@@ -735,7 +763,7 @@ export default function LoginPage(props) {
                       simple
                       color="primary"
                       size="lg"
-                      onClick={submitData}
+                      onClick={handleSubmit}
                     >
                       {loading == true ? (
                         <RingLoader color={color} css={override} size={25} />
