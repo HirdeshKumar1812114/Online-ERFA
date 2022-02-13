@@ -92,7 +92,7 @@ const Layout = (props) => {
       setPassmath("");
     } else {
       if (password !== confPass) {
-        setPassmath("Password did not matched with your password!");
+        setPassmath("Password did not matched with your password! ");
         setpassstats(false);
         setIsMatched(false);
         setValid("invalidPassword");
