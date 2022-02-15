@@ -20,6 +20,16 @@ userStudentSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
+userStudentSchema.statics.checkPassword = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    return false;
+  }
+};
 
 userStudentSchema.statics.login = async function (regid, password) {
   const student = await this.findOne({ regid });

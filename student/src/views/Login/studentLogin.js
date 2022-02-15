@@ -54,7 +54,7 @@ export default function LoginPage(props) {
   useEffect(() => {
     // console.log('Token=>',token.onlineerfa_student_token);
     if (token.onlineerfa_student_token != null) {
-      api
+      apisdds
         .get("/announcements", {
           headers: {
             "x-auth-token": token.onlineerfa_student_token,
@@ -81,7 +81,7 @@ export default function LoginPage(props) {
         .post("/login", { regid, password }, setLoading(true))
         .then((result) => {
           setLoading(false);
-          // console.log(result.data);
+          console.log(result.data);
           // console.log(result.data.sendUserId);
           // console.log(result.data.sendRegId);
           // console.log(result.data.sendStudentName);

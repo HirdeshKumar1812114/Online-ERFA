@@ -97,9 +97,11 @@ exports.checkUserEmail = expressAsyncHandler(async (req, res)=>{
   console.log(email);
   if(checkEmail){
   res.status(200).json("User Email is OK")
+  res.status(200).send()
+
   res.end();
   }else{
-    res.status(400).json({message:'User not is registered'})
+    res.status(400).json({message:'Userr not is registered'})
   }
   
   }

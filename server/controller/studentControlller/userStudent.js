@@ -145,7 +145,7 @@ exports.updateStudent = expressAsyncHandler(async function (req, res, next) {
 
 exports.changePassword = expressAsyncHandler(async (req, res) => {
   const { regid, oldpassword, newpassword } = req.body;
-  const checkPass = await db.UserErfa.checkPassword(regid, oldpassword);
+  const checkPass = await db.UserStudent.checkPassword(regid, oldpassword);
   if (checkPass) {
     checkPass.email = regid;
     checkPass.password = newpassword;
@@ -168,7 +168,10 @@ try{
 const checkEmail= await db.UserStudent.findOne({email: email});
 console.log(email);
 if(checkEmail){
-res.status(200).json("Student Email is OK")
+  const msg ="Student Email is OK";
+  const stdId=checkEmail.id;
+ 
+res.status(200).send({msg,stdId});
 res.end();
 }else{
   res.status(400).json({message:'Student not is registered'})
@@ -179,3 +182,25 @@ catch(error){
   res.status(400).json({ message: error.message });
 }
 });
+
+exports.checkResetPassword=expressAsyncHandler(async (req,res)=>{
+  const { id} = req.params;
+console.log(id)
+  const checkPass = await db.UserStudent.findOne({_id:id})
+  if (checkPass) {
+    console.log("before"+ checkPass.password)
+    checkPass.password = req.body.password;
+    console.log("after"+ checkPass.password)
+    
+    try {
+      await checkPass.save();
+      res.status(200).json("Password update");
+      res.end();
+    } catch (error) {
+      res.status(400).json("Password not update");
+    }
+  } else {
+    res.status(400).json("Error");
+  }
+  
+})
