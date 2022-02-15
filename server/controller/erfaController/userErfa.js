@@ -88,3 +88,22 @@ exports.changePassword = expressAsyncHandler(async (req, res) => {
     res.status(400).json("Password not matched");
   }
 });
+
+exports.checkUserEmail = expressAsyncHandler(async (req, res)=>{
+  const email = req.body.email;
+  console.log(email);
+  try{
+  const checkEmail= await db.UserErfa.findOne({email: email});
+  console.log(email);
+  if(checkEmail){
+  res.status(200).json("User Email is OK")
+  res.end();
+  }else{
+    res.status(400).json({message:'User not is registered'})
+  }
+  
+  }
+  catch(error){
+    res.status(400).json({ message: error.message });
+  }
+  });
