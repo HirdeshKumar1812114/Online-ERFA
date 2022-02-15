@@ -54,7 +54,7 @@ export default function LoginPage(props) {
   useEffect(() => {
     // console.log('Token=>',token.onlineerfa_student_token);
     if (token.onlineerfa_student_token != null) {
-      apisdds
+      api
         .get("/announcements", {
           headers: {
             "x-auth-token": token.onlineerfa_student_token,

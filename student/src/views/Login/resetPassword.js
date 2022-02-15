@@ -52,13 +52,7 @@ export default function forgetPassword(props) {
     const [isPassMatch, setIsPassMatch] = useState(false);
     const [passMessage, setPassMessage] = useState("");
     const [valid, setValid] = useState('')
-    const [toSend, setToSend] = useState({
-    
-        
 
-        sendemail: '',
-
-    });
     const checkPasswordValidataion = (e) => {
   
         setConfirmPassword(e.target.value);
@@ -77,51 +71,46 @@ export default function forgetPassword(props) {
     
     const submitData = (e) => {
         e.preventDefault();
-        emailjs.send('service_tjb9xxs', 'template_j1clt0n',toSend, 'user_I8LA7r2KdKb8BaZWSCd4g')
-        .then((result) => {
-                 console.log(result.text);
-             }, (error) => {
-                 console.log(error.text);
-             });
-        // if (username !== '' ) {
-        //     api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
-        //         setLoading(false)
-        //         //  console.log(result.data)
-        //         // console.log(result.data.token)
-        //         // window.alert('Welcome to Admin Portal')
-        //         setValid("true")
-        //         alert()
-        //         Auth.login(() => {
-        //             props.history.push("/")
-        //         })
-        //         // window.alert('Welcome to Admin Portal')
-        //     }).catch(err => {
-        //         setLoading(false)
-        //         // console.log(err)
-        //         setValid("false")
-        //         alert()
-        //     })
+   
+        if (password !== '' ) {
+            api.post('student/rest-password/:id', {  password }, setLoading(true)).then(result => {
+                setLoading(false)
+                //  console.log(result.data)
+                // console.log(result.data.token)
+                // window.alert('Welcome to Admin Portal')
+                setValid("true")
+                alert()
+                Auth.login(() => {
+                    props.history.push("/")
+                })
+                // window.alert('Welcome to Admin Portal')
+            }).catch(err => {
+                setLoading(false)
+                // console.log(err)
+                setValid("false")
+                alert()
+            })
            
-        // } else {
-        //     // window.alert('Please fill all the fields')
-        //     setValid("incomplete")
-        //     alert()
-        // }
-        // alert()
+        } else {
+            // window.alert('Please fill all the fields')
+            setValid("incomplete")
+            alert()
+        }
+        alert()
     }
     const alert = () => {
         if (valid != "") {
             if (valid == "true") {
                 return (
                     <>
-                        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="success">OK - <strong>Email Sent!</strong></Alert>
+                        <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="success">OK - <strong>Password Changed!</strong></Alert>
                         <Redirect to='/' />
                     </>
                 )
             }
             else if (valid == "false") {
 
-                return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="error">ERROR — <strong>Email not registered!</strong></Alert>)
+                return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="error">ERROR — <strong>Password Not Changed!</strong></Alert>)
             }
             else {
                 return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="warning">ALERT — <strong>Please fill all fields!</strong></Alert>)
@@ -184,8 +173,8 @@ export default function forgetPassword(props) {
                                     <CardBody>
                                     <CustomInput
                           labelText="Password"
-                          id="pass"
-
+                          id="password"
+                          name="password"
                           formControlProps={{
                             fullWidth: true,
                           }}
