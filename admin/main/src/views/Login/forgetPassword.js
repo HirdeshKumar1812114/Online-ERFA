@@ -85,11 +85,11 @@ export default function forgetPassword(props) {
         
 
         if (username !== '' ) {
-            api.post('student/checkemail', { email: username}, setLoading(true))
+            api.post('erfa/checkemail', { email: username}, setLoading(true))
             .then(result => {
                 setLoading(false)
-           
-                if(result.data.msg === 'Student Email is OK'){
+                console.log(result.data)
+                if(result.data.msg === 'User Email is OK'){
 
                     setIsEmailVerified(true)
                     console.log(result.data.stdId)
@@ -105,7 +105,7 @@ export default function forgetPassword(props) {
                          console.log("Check state:"+username)
                          console.log(toSend)
                         console.log(isEmailVerified)
-                        emailjs.send('service_tjb9xxs', 'template_j1clt0n',{sendemail:username,
+                        emailjs.send('service_tjb9xxs', 'template_3951u5n',{sendemail:username,
                             sendlink:link}, 'user_I8LA7r2KdKb8BaZWSCd4g')
                             .then((result) => {
                                      console.log(result.text);
