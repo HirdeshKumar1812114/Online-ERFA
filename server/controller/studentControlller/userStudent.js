@@ -184,7 +184,7 @@ catch(error){
 });
 
 exports.checkResetPassword=expressAsyncHandler(async (req,res)=>{
-  const { id} = req.params;
+  const  id = req.params.id;
 console.log(id)
   const checkPass = await db.UserStudent.findOne({_id:id})
   if (checkPass) {

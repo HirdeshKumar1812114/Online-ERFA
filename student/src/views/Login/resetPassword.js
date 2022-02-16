@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -52,7 +52,7 @@ export default function forgetPassword(props) {
     const [isPassMatch, setIsPassMatch] = useState(false);
     const [passMessage, setPassMessage] = useState("");
     const [valid, setValid] = useState('')
-
+    const {id} = useParams();
     const checkPasswordValidataion = (e) => {
   
         setConfirmPassword(e.target.value);
@@ -73,7 +73,7 @@ export default function forgetPassword(props) {
         e.preventDefault();
    
         if (password !== '' ) {
-            api.post('student/rest-password/:id', {  password }, setLoading(true)).then(result => {
+            api.post(`student/rest-password/${id}`, {  password }, setLoading(true)).then(result => {
                 setLoading(false)
                 //  console.log(result.data)
                 // console.log(result.data.token)
@@ -104,7 +104,7 @@ export default function forgetPassword(props) {
                 return (
                     <>
                         <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="success">OK - <strong>Password Changed!</strong></Alert>
-                        <Redirect to='/' />
+                        <Redirect to='/login' />
                     </>
                 )
             }
@@ -227,7 +227,8 @@ export default function forgetPassword(props) {
                 </div>
                 <Footer whiteFont />
             </div>
-            {/* <prev >{JSON.stringify(username, null, 2)}</prev>
+            {/*
+            <prev >{JSON.stringify(id, null, 2)}</prev>
             <prev>{JSON.stringify(password, null, 2)}</prev>
             <prev>{JSON.stringify(valid, null, 2)}</prev> */}
         </div>

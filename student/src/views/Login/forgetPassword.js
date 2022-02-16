@@ -49,7 +49,8 @@ export default function forgetPassword(props) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [valid, setValid] = useState('')
- 
+    const [isEmailVerified, setIsEmailVerified] = useState(false)
+    const [sendLink, setSendLink] = useState('')
     const [toSend, setToSend] = useState({
     
         
@@ -58,8 +59,27 @@ export default function forgetPassword(props) {
         sendlink:''
 
     });
+//     useEffect(()=>{
+//  console.log('In useEffect')
 
+//         if(isEmailVerified === true ){
+//             sendEmail()
+
+//         }
+//     },[isEmailVerified])
     
+    // const sendEmail=()=>{ 
+       
+    //     console.log(toSend)
+        
+    //          emailjs.send('service_tjb9xxs', 'template_j1clt0n',{sendemail:username,
+    //          sendlink:sendLink}, 'user_I8LA7r2KdKb8BaZWSCd4g')
+    //          .then((result) => {
+    //                   console.log(result.text);
+    //               }, (error) => {
+    //                   console.log(error.text);
+    //               });
+    // }
     const submitData = (e) => {
          e.preventDefault();
         
@@ -68,25 +88,34 @@ export default function forgetPassword(props) {
             api.post('student/checkemail', { email: username}, setLoading(true))
             .then(result => {
                 setLoading(false)
-                 console.log(result.data.stdId)
-                 const temp=result.data.stdId;
-                // console.log(result.data.token).
-                // window.alert('Welcome to Admin Portal')
-                const link=`http://localhost:3000/student/restpassword/${temp}`
+           
+                if(result.data.msg === 'Student Email is OK'){
+
+                    setIsEmailVerified(true)
+                    console.log(result.data.stdId)
+                    const temp=result.data.stdId;
+                    
+                        const link=`http://localhost:3000/#/rest-password/${temp}`
+                    
+                       
+                        
+                         console.log(link);
+                         console.log("Check state:"+sendLink)
+                 
+                         console.log("Check state:"+username)
+                         console.log(toSend)
+                        console.log(isEmailVerified)
+                        emailjs.send('service_tjb9xxs', 'template_j1clt0n',{sendemail:username,
+                            sendlink:link}, 'user_I8LA7r2KdKb8BaZWSCd4g')
+                            .then((result) => {
+                                     console.log(result.text);
+                                 }, (error) => {
+                                     console.log(error.text);
+                                 });
                 
-                
-                
-                setToSend({sendemail:username,sendlink:link});
-                console.log(toSend)
-                
-                     emailjs.send('service_tjb9xxs', 'template_j1clt0n',toSend, 'user_I8LA7r2KdKb8BaZWSCd4g')
-                     .then((result) => {
-                              console.log(result.text);
-                          }, (error) => {
-                              console.log(error.text);
-                          });
+               
         
-      
+                        }
                 //;
                 
                 setValid("true")
@@ -201,8 +230,10 @@ export default function forgetPassword(props) {
                 </div>
                 <Footer whiteFont />
             </div>
+            <prev >{JSON.stringify(username, null, 2)}</prev>
+            <prev >{JSON.stringify(isEmailVerified, null, 2)}</prev>
+            <prev >{JSON.stringify(sendLink, null, 2)}</prev>
             {/* 
-            <prev >{JSON.stringify(toSend, null, 2)}</prev>
             <prev>{JSON.stringify(password, null, 2)}</prev>
             <prev>{JSON.stringify(valid, null, 2)}</prev> */}
         </div>

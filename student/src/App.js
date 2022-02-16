@@ -1,7 +1,7 @@
 import * as serviceWorker from "./serviceWorker";
 import React, { Component } from "react";
 import { createBrowserHistory } from "history";
-import { HashRouter, Route, Switch, Router } from "react-router-dom";
+import { HashRouter, Route, Switch, Router,useParams } from "react-router-dom";
 import "./scss/style.scss";
 import ProtectedRoute from "./Auth/protectedRoute";
 const loading = (
