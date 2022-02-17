@@ -28,6 +28,7 @@
     "emailjs-com": "^3.2.0",
     "enzyme": "^3.11.0",
     "history": "^5.1.0",
+    "js-cookie": "^3.0.1",
     "material-ui-dropzone": "^3.5.0",
     "moment": "2.29.1",
     "node-sass": "6.0.0",

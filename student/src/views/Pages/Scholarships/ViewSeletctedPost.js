@@ -15,12 +15,14 @@ import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { CBadge } from '@coreui/react'
+import { useCookies } from "react-cookie";
 
 const override = css`
   margin: 0 auto;
 `;
 
 const Layout = (props) => {
+  const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
   const [title, setTitle] = useState("");
   const [applicationstart, setApplicationStart] = useState("");
   const [applicationdeadline, setApplicationDeadline] = useState("");
@@ -32,6 +34,7 @@ const Layout = (props) => {
   const [loading, setLoading] = useState(false);
   const [poststoDelete, setpoststoDel] = useState("");
   const [visible, setVisible] = useState(false);
+  
 
   let [color, setColor] = useState("#49A54D");
 
@@ -148,8 +151,9 @@ const Layout = (props) => {
           </>
         )}
       </CCard>
-
+      <prev >{JSON.stringify(userID.onlineerfa_student_userID, null, 2)}</prev>
       {/* <prev >{JSON.stringify(username, null, 2)}</prev>
+
       <prev >{JSON.stringify(password, null, 2)}</prev>
       <prev >{JSON.stringify(nic, null, 2)}</prev>
       <prev >{JSON.stringify(dob, null, 2)}</prev>
