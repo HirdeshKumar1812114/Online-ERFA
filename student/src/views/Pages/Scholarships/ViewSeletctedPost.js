@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useCookies } from "react-cookie";
 import {
   CContainer,
   CCard,
@@ -15,14 +15,12 @@ import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { CBadge } from '@coreui/react'
-import { useCookies } from "react-cookie";
 
 const override = css`
   margin: 0 auto;
 `;
 
 const Layout = (props) => {
-  const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
   const [title, setTitle] = useState("");
   const [applicationstart, setApplicationStart] = useState("");
   const [applicationdeadline, setApplicationDeadline] = useState("");
@@ -33,8 +31,12 @@ const Layout = (props) => {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [poststoDelete, setpoststoDel] = useState("");
+  const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
   const [visible, setVisible] = useState(false);
-  
+  const [scholarshipId, setScholarshipId]= useState("");
+  const [studentId, setStudentId] = useState("");
+  const [studentProgram,setStudentProgram] = useState("");
+  const [studentEligibility, setStudentEligibility] = useState(false);
 
   let [color, setColor] = useState("#49A54D");
 
@@ -46,6 +48,8 @@ const Layout = (props) => {
     api
       .get(`scholarship/view/${localStorage.getItem("viewPostUrl")}`, setLoading(true))
       .then((res) => {
+        setScholarshipId(res.data._id)
+        setStudentId(userID.onlineerfa_student_userID)
         setTitle(res.data.title)
         setDescription(res.data.description)
         setEligibility(res.data.eligibility)
@@ -55,12 +59,29 @@ const Layout = (props) => {
         setTags(res.data.tags)
         setLoading(false)
         setEligibilityArr(eligibility.split(/\r/))
-
+        getStudentProgram()
       })
       .catch((error) =>  console.log(error));
 
   }, [eligibility]);
 
+  const checkStudentScholarshipEligibilty=()=>{
+    api
+    .post(`student_scholarship/check_eligibility`,{program:studentProgram,scholarship:scholarshipId})
+    .then((result)=>{
+
+ if(result.data.message==='User is Eligible')
+{
+  console.log('User is Eligible')
+  setStudentEligibility(true)
+  console.log(studentEligibility)
+}else{
+  setStudentEligibility(false)
+  console.log(studentEligibility)
+}
+    })
+    .catch((error) => console.log(error));
+  }
   const deleteposts = () => {
     // // console.log('posts to delte: ',poststoDelete)
     api
@@ -80,7 +101,19 @@ const Layout = (props) => {
         setVisible(false);
       });
   };
-
+  
+  const getStudentProgram = ()=>{
+    api
+    .get(`/student/find/${studentId}`)
+    .then((result)=>{
+      console.log(studentId)
+      console.log(result.data.program)
+      setStudentProgram(result.data.program)
+    })
+    .catch((err)=>{
+      console.log(studentId)
+      console.log(err)})
+  }
   const postsUpdate = () => {
     props.history.push("update-post");
   };
@@ -144,16 +177,18 @@ const Layout = (props) => {
             <CCardFooter>
               <br></br>
               <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-                <CButton color="success" size="lg" variant="outline">Apply to this Scholarship</CButton>
+                <CButton color="success" size="lg" variant="outline" onClick={checkStudentScholarshipEligibilty}>Apply to this Scholarship</CButton>
               </div>
               <br></br>
             </CCardFooter>
           </>
         )}
       </CCard>
-      <prev >{JSON.stringify(userID.onlineerfa_student_userID, null, 2)}</prev>
+      <prev >{JSON.stringify(studentId, null, 2)}</prev>
+      <prev >{JSON.stringify(studentProgram, null, 2)}</prev>
+      <prev >{JSON.stringify(scholarshipId, null, 2)}</prev>
+      <prev>{JSON.stringify(studentEligibility, null, 2)}</prev>
       {/* <prev >{JSON.stringify(username, null, 2)}</prev>
-
       <prev >{JSON.stringify(password, null, 2)}</prev>
       <prev >{JSON.stringify(nic, null, 2)}</prev>
       <prev >{JSON.stringify(dob, null, 2)}</prev>
