@@ -11,13 +11,13 @@ import {
   CFormInput,
   CFormLabel,
   CFormTextarea,
+  CFormCheck
 } from "@coreui/react";
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { DropzoneArea } from "material-ui-dropzone";
-
 const override = css`
   margin: 0 auto;
 `;
@@ -36,7 +36,9 @@ const Layout = (props) => {
   const [poster, setPoster] = useState();
   const [description, setDescription] = useState("");
   const [eligibility, setEligibility] = useState("");
+  const [checkedPrograms, setPorgrams] = useState([]);
   const [tags, setTags] = useState([]);
+  const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -62,6 +64,7 @@ const Layout = (props) => {
       data.append("eligibility", eligibility);
       data.append("description", description);
       data.append("tags", tags);
+      data.append("checkedPrograms", checkedPrograms)
 
       // console.log("FormData ==>", data);
       // for (var value of data.values()) {
@@ -195,6 +198,20 @@ const Layout = (props) => {
                   }}
                   value={eligibility}
                 ></CFormTextarea>
+                <CFormLabel htmlFor="description">Check only those programs which are elegible for this scholarship</CFormLabel>
+                <br></br>
+                {programs.map((values) => {
+                  return (
+                    <>
+                      <CFormCheck inline id="inlineCheckbox1" value={values} label={values} onChange={(e) => {
+                        setPorgrams((checkedPrograms) => ([...checkedPrograms, e.target.value]))
+                      }} />
+                    </>
+                  )
+                })}
+
+
+
               </CCol>
 
               <CCol md={12}>
@@ -244,6 +261,7 @@ const Layout = (props) => {
           )}
         </CCardBody>
       </CCard>
+      {/* <prev>{JSON.stringify(checkedPrograms, null, 2)}</prev> */}
 
       {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
       {/* <prev>{JSON.stringify(applicationstart, null, 2)}</prev>

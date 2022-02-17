@@ -47,6 +47,7 @@ exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
       poster: req.file.filename,
       eligibility: req.body.eligibility,
       tags: tags,
+      checkedPrograms : req.body.checkedPrograms
     });
 
     await newPost.save((err, checkTitle) => {

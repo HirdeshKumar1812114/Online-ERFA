@@ -1,4 +1,4 @@
-import React, { useRef  ,useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import validator from "validator";
 // @material-ui/core components
@@ -84,9 +84,10 @@ export default function LoginPage(props) {
   const [toSend, setToSend] = useState({
     sendregid: '',
     sendemail: '',
-    sendconfirmpass:''
-});
+    sendconfirmpass: ''
+  });
 
+  const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
 
 
 
@@ -142,7 +143,7 @@ export default function LoginPage(props) {
             alert();
           } else {
 
-          
+
             setLoading(false);
             // console.log("In catch block else ");
             // console.log(result);
@@ -163,13 +164,13 @@ export default function LoginPage(props) {
             setValid("true");
             alert();
 
-            emailjs.send('service_9lp7w9p', 'template_a0ryztb',toSend, 'user_LHyukq9RbaH7yE5Rz9zIQ')
-            .then((result) => {
-                     console.log(result.text);
-                 }, (error) => {
-                     console.log(error.text);
-                 });
-       
+            emailjs.send('service_9lp7w9p', 'template_a0ryztb', toSend, 'user_LHyukq9RbaH7yE5Rz9zIQ')
+              .then((result) => {
+                console.log(result.text);
+              }, (error) => {
+                console.log(error.text);
+              });
+
           }
         })
 
@@ -251,7 +252,7 @@ export default function LoginPage(props) {
     if (password === chckPass) {
       setPassMessage("");
       setIsPassMatch(true);
-     
+
     } else {
       setPassMessage("Password does not match!");
       e.preventDefault();
@@ -266,7 +267,7 @@ export default function LoginPage(props) {
     if (validator.isEmail(email)) {
       setConfirmEmail("");
       setIsEmailMatch(true);
-    
+
     } else {
       setConfirmEmail("Email Address is not valid!");
       e.preventDefault();
@@ -299,7 +300,7 @@ export default function LoginPage(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={6}>
               <Card className={classes[cardAnimaton]}>
-                <form  className={classes.form}  >
+                <form className={classes.form}  >
                   <CardHeader color="success" className={classes.cardHeader}>
                     <h4>ERFA Student Registration </h4>
                   </CardHeader>
@@ -307,7 +308,7 @@ export default function LoginPage(props) {
                   <p
                     className={classes.divider}
                     style={{
-                      color: "red" ,
+                      color: "red",
                       position: "relative",
                       fontSize: "10px",
                       top: "218px",
@@ -337,9 +338,11 @@ export default function LoginPage(props) {
                         fullWidth: true,
                       }}
                       inputProps={{
-                        onChange: (event) => {setRegid(event.target.value);
-                        
-                          setToSend({ sendregid: event.target.value, sendemail:email,sendconfirmpass:confirmPassword });},
+                        onChange: (event) => {
+                          setRegid(event.target.value);
+
+                          setToSend({ sendregid: event.target.value, sendemail: email, sendconfirmpass: confirmPassword });
+                        },
                         type: "number",
 
                         endAdornment: (
@@ -384,9 +387,10 @@ export default function LoginPage(props) {
                           name="confirmpass"
                           formControlProps={{}}
                           inputProps={{
-                            onChange: (event) =>{
+                            onChange: (event) => {
                               checkPasswordValidataion(event);
-                              setToSend({ sendregid:regid,sendemail: email,sendconfrimpass: event.target.value,});},
+                              setToSend({ sendregid: regid, sendemail: email, sendconfrimpass: event.target.value, });
+                            },
                             type: "password",
                             endAdornment: (
                               <InputAdornment position="end">
@@ -509,57 +513,12 @@ export default function LoginPage(props) {
                             }}
                             label="Age"
                           >
-                            <MenuItem value="">
-                              <em>Select Your Program</em>
-                            </MenuItem>
-                            <MenuItem value={"BABS"}>BABS</MenuItem>
-                            <MenuItem value={"BBA"}>BBA</MenuItem>
-                            <MenuItem value={"BEME"}>BEME</MenuItem>
-                            <MenuItem value={"BABS"}>BABS</MenuItem>
-                            <MenuItem value={"BS BIO Science"}>
-                              BS BIO Science
-                            </MenuItem>
-                            <MenuItem value={"BS Biotechnology"}>
-                              BS Biotechnology
-                            </MenuItem>
-                            <MenuItem value={"BS Entre"}>BS Entre </MenuItem>
-                            <MenuItem value={"BSAF"}>BSAF</MenuItem>
-                            <MenuItem value={"BSCS"}>BSCS</MenuItem>
-                            <MenuItem value={"BSAI"}>BSAI</MenuItem>
-                            <MenuItem value={"BSMS"}>BSMS</MenuItem>
-                            <MenuItem value={"BSSS"}>BSSS</MenuItem>
-                            <MenuItem value={"MA Education"}>
-                              MA Education
-                            </MenuItem>
-                            <MenuItem value={"MBA Evening 36"}>
-                              MBA Evening 36
-                            </MenuItem>
-                            <MenuItem value={"MBA Evening 72"}>
-                              MBA Evening 72
-                            </MenuItem>
-                            <MenuItem value={"MoA"}>MoA</MenuItem>
-                            <MenuItem value={"MSMD"}>MSMD</MenuItem>
-                            <MenuItem value={"MPM"}>MPM</MenuItem>
-                            <MenuItem value={"MSPM"}>MSPM</MenuItem>
 
-                            <MenuItem value={"MS-BIO"}>MS-BIO</MenuItem>
-                            <MenuItem value={"MS-BIOTECH"}>MS-BIOTECH</MenuItem>
-                            <MenuItem value={"PhD BIO Sciences"}>
-                              PhD BIO Sciences
-                            </MenuItem>
-                            <MenuItem value={"MS-Mechatronics"}>
-                              MS-Mechatronics
-                            </MenuItem>
-                            <MenuItem value={"MSCS"}>MSCS</MenuItem>
-                            <MenuItem value={"PhDCS"}>PhDCS </MenuItem>
-
-                            <MenuItem value={"MSELM"}>MSELM</MenuItem>
-                            <MenuItem value={"PhD ELM"}>PhD ELM</MenuItem>
-                            <MenuItem value={"MSMS"}>MSMS</MenuItem>
-                            <MenuItem value={"PhDMS"}>PhDMS</MenuItem>
-                            <MenuItem value={"MSPH"}>MSPH</MenuItem>
-                            <MenuItem value={"MSSS"}>MSSS</MenuItem>
-                            <MenuItem value={"PhDSS"}>PhDSS</MenuItem>
+                            {programs.map((values) => {
+                             return ( <MenuItem value={values}>
+                                {values}
+                              </MenuItem>)
+                            })}
                           </Select>
                         </FormControl>
                       </span>
@@ -617,8 +576,9 @@ export default function LoginPage(props) {
                           name="sendemail"
                           formControlProps={{}}
                           inputProps={{
-                            onChange: (event) =>{ checkEmailValidataion(event);
-                              setToSend({ sendregid:regid,sendemail: event.target.value,sendconfirmpass:confirmPassword });
+                            onChange: (event) => {
+                              checkEmailValidataion(event);
+                              setToSend({ sendregid: regid, sendemail: event.target.value, sendconfirmpass: confirmPassword });
                             },
                             type: "text",
                             endAdornment: (

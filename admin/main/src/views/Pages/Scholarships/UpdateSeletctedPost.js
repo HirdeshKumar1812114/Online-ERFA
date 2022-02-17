@@ -15,6 +15,7 @@ import {
   CFormLabel,
   CFormTextarea,
   CFormSelect,
+  CFormCheck
 } from "@coreui/react";
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
@@ -38,6 +39,8 @@ const Layout = (props) => {
   const [description, setDescription] = useState("");
   const [eligibility, setEligibility] = useState("");
   const [visible, setVisible] = useState(null);
+  const [checkedPrograms, setPorgrams] = useState([]);
+  const [checkedProgramsGet, setPorgramsGet] = useState('');
 
   const [isChanged, setIsChanged] = useState(false)
   const [tags, setTags] = useState([]);
@@ -45,21 +48,23 @@ const Layout = (props) => {
   let [color, setColor] = useState("#49A54D");
   const [validated, setValidated] = useState(false);
   const [userValid, setUserValid] = useState(null)
+  const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
+
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
- const checkUser= (value)=>{
-   setUserValid(value)
- }
- useEffect(()=>{
-   if(userValid==true){
-    updateData();
-   }
- })
- const setVis = (value)=>{
-  // console.log({value});
-setVisible(value)
-}
+  const checkUser = (value) => {
+    setUserValid(value)
+  }
+  useEffect(() => {
+    if (userValid == true) {
+      updateData();
+    }
+  })
+  const setVis = (value) => {
+    // console.log({value});
+    setVisible(value)
+  }
   useEffect(() => {
     api
       .get(
@@ -78,6 +83,7 @@ setVisible(value)
         setImageName(res.data.poster);
         setTags(res.data.tags);
         setLoading(false);
+        setPorgramsGet(res.data.checkedPrograms)
       })
       .catch((error) => console.log(error));
     // console.log('Image=>', imageName);
@@ -265,8 +271,24 @@ setVisible(value)
                       }}
                       value={eligibility}
                     ></CFormTextarea>
-                  </CCol>
 
+                    <CFormLabel htmlFor="description">Check only those programs which are elegible for this scholarship</CFormLabel>
+                    <br></br>
+
+                    {programs.map((values) => {
+                      return (
+                        <>
+                          <CFormCheck inline id="inlineCheckbox1" value={values} label={values} onChange={(e) => {
+                            setPorgrams((checkedPrograms) => ([...checkedPrograms, e.target.value]))
+                          }} 
+                         
+                          />
+                        </>
+                      )
+                    })}
+
+
+                  </CCol>
                   <CCol md={12}>
                     <CFormLabel htmlFor="inputDob">Tags</CFormLabel>
                     <CFormInput
