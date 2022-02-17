@@ -41,7 +41,7 @@ class App extends Component {
             <Route
               exact
               path="/reset-password/:id"
-              name="Forget Password"
+              name="Reset Password"
               render={(props) => <RestPassword {...props} />}
             />
             <ProtectedRoute path="/" name="Home" component={DefaultLayout} />

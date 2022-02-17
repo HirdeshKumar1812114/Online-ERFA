@@ -73,16 +73,14 @@ export default function forgetPassword(props) {
         e.preventDefault();
    
         if (password !== '' ) {
-            api.post(`student/rest-password/${id}`, {  password }, setLoading(true)).then(result => {
+            api.post(`student/reset-password/${id}`, {  password }, setLoading(true)).then(result => {
                 setLoading(false)
                 //  console.log(result.data)
                 // console.log(result.data.token)
                 // window.alert('Welcome to Admin Portal')
                 setValid("true")
                 alert()
-                Auth.login(() => {
-                    props.history.push("/")
-                })
+                props.history.push("/login")
                 // window.alert('Welcome to Admin Portal')
             }).catch(err => {
                 setLoading(false)

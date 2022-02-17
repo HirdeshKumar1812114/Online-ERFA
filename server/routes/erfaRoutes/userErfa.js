@@ -17,6 +17,6 @@ router.get("/dashboard", erfaController.checkToken, function (req, res, next) {
 router.post("/checkemail", erfaController.checkUserEmail);
 router.post("/login", erfaController.erfaLogin);
 router.post("/signup", erfaController.erfaSignUp);
-router.post("/rest-password/:id",erfaController.checkResetPassword)
+router.post("/reset-password/:id",erfaController.checkResetPassword)
 router.post("/changepassword", erfaController.changePassword);
 module.exports = router;

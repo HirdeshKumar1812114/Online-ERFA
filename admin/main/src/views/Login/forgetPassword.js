@@ -95,7 +95,7 @@ export default function forgetPassword(props) {
                     console.log(result.data.stdId)
                     const temp=result.data.stdId;
                     
-                        const link=`http://localhost:3000/#/rest-password/${temp}`
+                        const link=`http://localhost:3000/#/reset-password/${temp}`
                     
                        
                         
