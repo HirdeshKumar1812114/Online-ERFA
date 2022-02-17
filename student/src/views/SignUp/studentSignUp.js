@@ -81,13 +81,16 @@ export default function LoginPage(props) {
   const [passMessage, setPassMessage] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
+  const [passQualityMsg, setPassQualityMsg] = useState(false)
   const [toSend, setToSend] = useState({
     sendregid: '',
     sendemail: '',
     sendconfirmpass: ''
   });
 
-  const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
+
+const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
+  const emailSubString ="@szabist.pk";
 
 
 
@@ -108,7 +111,10 @@ export default function LoginPage(props) {
       dob !== "" &&
       permanentAddress !== "" &&
       mailingAddress !== "" &&
-      fatherName !== ""
+      fatherName !== ""&&
+      passQualityMsg ===true &&
+      isPassMatch ===true && 
+      isEmailMatch ===true
     ) {
       api
         .post(
@@ -229,7 +235,7 @@ export default function LoginPage(props) {
             }}
             severity="warning"
           >
-            ALERT — <strong>Please fill all thefields!</strong>
+            ALERT — <strong>Please fill all the fields accordingly!</strong>
           </Alert>
         );
       }
@@ -244,6 +250,23 @@ export default function LoginPage(props) {
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+
+
+const checkPasswordQuality =(e)=>{
+  const givePassword= e.target.value
+  console.log("Check passvalue:"+givePassword)
+ const checkAns=validator.isStrongPassword(givePassword,{minLength:8,minLowercase:1,minUpperCase:1,minNumber:1,minSymbols:1})
+ console.log("ans:"+ checkAns)
+  if(checkAns){
+ 
+    
+    setPassQualityMsg(true)
+  }
+  else{
+    setPassQualityMsg(false)
+
+  }
+}
 
   const checkPasswordValidataion = (e) => {
     setToSend({ sendconfirmpass: e.target.value })
@@ -263,8 +286,8 @@ export default function LoginPage(props) {
 
   const checkEmailValidataion = (e) => {
     setEmail(e.target.value);
-
-    if (validator.isEmail(email)) {
+const checkEmailValue= e.target.value;
+    if (validator.isEmail(email) || checkEmailValue.includes(emailSubString) ) {
       setConfirmEmail("");
       setIsEmailMatch(true);
 
@@ -305,26 +328,57 @@ export default function LoginPage(props) {
                     <h4>ERFA Student Registration </h4>
                   </CardHeader>
                   <p className={classes.divider}>Enter the following details</p>
+                  
+              
+                    
+                   <p style={{color:'red'}} className={classes.divider}>{passQualityMsg ? ' ': 'Your Password must be atleast of 8 characters. It should contain,'}</p>
+                {passQualityMsg ? ' ':
+                     <ul style={{ marginLeft: "46px",color:'red' }}>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 Uppercase Letter like A'}
+                     </li>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 Lowercase Letter like a'}
+           
+                     </li>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 AlphaNumber like 4'}
+                    
+                     </li>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 Special Character like @'}
+                     
+                     </li>
+                   </ul>  
+                }  
+                {      isPassMatch ? ' ' :
                   <p
                     className={classes.divider}
-                    style={{
+                    style={(passQualityMsg|| isEmailMatch) ? {
+                    color: "red",
+                      position: "absolute",
+                      fontSize: "12px",
+                      top: "258px",
+                      left: "300px",
+                    } :{
                       color: "red",
-                      position: "relative",
-                      fontSize: "10px",
-                      top: "218px",
-                      left: "131px",
+                      position: "absolute",
+                      fontSize: "12px",
+                      top: "393px",
+                      left: "300px",
                     }}
                   >
                     {passMessage}
                   </p>
-                  <p
+}
+                 <p
                     className={classes.divider}
                     style={{
                       color: "red",
                       position: "relative",
-                      fontSize: "10px",
-                      top: "406px",
-                      left: "136px",
+                      fontSize: "12px",
+                      top: "402px",
+                      left: "100px",
                     }}
                   >
                     {confirmEmail}
@@ -366,8 +420,10 @@ export default function LoginPage(props) {
 
                           formControlProps={{}}
                           inputProps={{
-                            onChange: (event) =>
-                              setPassword(event.target.value),
+                            onChange: (event) =>{
+                              setPassword(event.target.value);
+                              checkPasswordQuality(event);
+                            },
                             type: "password",
                             endAdornment: (
                               <InputAdornment position="end">
@@ -750,8 +806,9 @@ export default function LoginPage(props) {
         <Footer whiteFont />
       </div>
       {/* <prev>{JSON.stringify(program, null, 2)}</prev>
-      <prev>{JSON.stringify(toSend, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
+      <prev>{JSON.stringify(passQualityMsg, null, 2)}</prev>
+      <prev>{JSON.stringify(toSend, null, 2)}</prev>
       <prev>{JSON.stringify(confirmPassword, null, 2)}</prev>
       <prev>{JSON.stringify(firstName, null, 2)}</prev>
       <prev>{JSON.stringify(lastName, null, 2)}</prev>

@@ -44,6 +44,7 @@ const Layout = (props) => {
   const [error, setError] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
+  const [passQualityMsg, setPassQualityMsg] = useState(false)
   const [toSend, setToSend] = useState({
     sendfirstname:'',
     sendlastname:'',
@@ -53,6 +54,7 @@ const Layout = (props) => {
 
 
 });
+const emailSubString ="@szabist.pk";
 
   const api = axios.create({
     baseURL: "http://localhost:5000/",
@@ -86,8 +88,8 @@ const Layout = (props) => {
   };
   const checkEmailValidataion = (e) => {
     setEmail(e.target.value);
-
-    if (validator.isEmail(email)) {
+    const checkEmailValue= e.target.value;
+    if (validator.isEmail(email) || checkEmailValue.includes(emailSubString)) {
       setConfirmEmail("");
       setIsEmailMatch(true);
     } else {
@@ -119,6 +121,21 @@ const Layout = (props) => {
       }
     }
   };
+  const checkPasswordQuality =(e)=>{
+    const givePassword= e.target.value
+    console.log("Check passvalue:"+givePassword)
+   const checkAns=validator.isStrongPassword(givePassword,{minLength:8,minLowercase:1,minUpperCase:1,minNumber:1,minSymbols:1})
+   console.log("ans:"+ checkAns)
+    if(checkAns){
+   
+      
+      setPassQualityMsg(true)
+    }
+    else{
+      setPassQualityMsg(false)
+  
+    }
+  }
 
   const submitData = () => {
     if (
@@ -127,7 +144,9 @@ const Layout = (props) => {
         cellNumber !== "" &&
         email !== "" &&
         nic !== "" &&
-        dob != "")
+        dob != "" &&
+        isEmailMatch ===true && isMatched===true && passQualityMsg===true
+        )
     ) {
       api
         .post(
@@ -400,6 +419,7 @@ const Layout = (props) => {
                   id="inputPassword4"
                   onChange={(e) => {
                     setPassword(e.target.value);
+                    checkPasswordQuality(e);
                     setToSend({ sendfirstname:firstName ,sendlastname: lastName,senddesignation: designation,sendemail: email,sendconfirmpass: e.target.value,})
                   }}
                 />
@@ -439,6 +459,32 @@ const Layout = (props) => {
                   }}
                 />
               </CCol>
+              <CCol md={6}>
+                <CFormLabel htmlFor="passQuality" style={{color:'red'}}>{passQualityMsg ? ' ': 'Your Password must be atleast of 8 characters. It should contain,'}</CFormLabel>
+                
+                {passQualityMsg ? ' ':
+                     <ul style={{ marginLeft: "-6px",color:'red' }}>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 Uppercase Letter like A'}
+                     </li>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 Lowercase Letter like a'}
+           
+                     </li>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 AlphaNumber like 4'}
+                    
+                     </li>
+                     <li>
+                     {passQualityMsg ? ' ' : '1 Special Character like @'}
+                     
+                     </li>
+                   </ul>  
+                }  
+               
+                
+              </CCol>
+              
               <CCol xs={12}>
                 <CButton type="submit">Add User</CButton>
               </CCol>
