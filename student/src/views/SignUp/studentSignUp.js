@@ -307,7 +307,7 @@ export default function LoginPage(props) {
                   <p
                     className={classes.divider}
                     style={{
-                      color: "red",
+                      color: "red" ,
                       position: "relative",
                       fontSize: "10px",
                       top: "218px",

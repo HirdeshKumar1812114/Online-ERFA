@@ -19,6 +19,8 @@ router.get(
   }
 );
 router.post("/checksignup", verfiStudentController.verfiStudent);
+router.post("/checkemail", studentController.checkStudentEmail);
+router.post("/rest-password/:id", studentController.checkResetPassword)
 router.post("/signup", studentController.studentSignUp);
 router.get("/getallstudents", studentController.getAllStudent);
 router.post("/login", studentController.studentLogin);

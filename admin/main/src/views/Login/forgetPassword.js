@@ -32,7 +32,7 @@ const override = css`
 `;
 
 const api = axios.create({
-    baseURL: 'https://online-erfa.herokuapp.com/',
+    baseURL: 'http://localhost:5000',
 });
 
 const useStyles = makeStyles(styles);
@@ -49,47 +49,92 @@ export default function forgetPassword(props) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [valid, setValid] = useState('')
+    const [isEmailVerified, setIsEmailVerified] = useState(false)
+    const [sendLink, setSendLink] = useState('')
     const [toSend, setToSend] = useState({
-  
+    
+        
+
         sendemail: '',
+        sendlink:''
 
     });
+//     useEffect(()=>{
+//  console.log('In useEffect')
 
+//         if(isEmailVerified === true ){
+//             sendEmail()
+
+//         }
+//     },[isEmailVerified])
+    
+    // const sendEmail=()=>{ 
+       
+    //     console.log(toSend)
+        
+    //          emailjs.send('service_tjb9xxs', 'template_j1clt0n',{sendemail:username,
+    //          sendlink:sendLink}, 'user_I8LA7r2KdKb8BaZWSCd4g')
+    //          .then((result) => {
+    //                   console.log(result.text);
+    //               }, (error) => {
+    //                   console.log(error.text);
+    //               });
+    // }
     const submitData = (e) => {
-        e.preventDefault();
-         
-        emailjs.send('service_tjb9xxs', 'template_3951u5n',toSend, 'user_I8LA7r2KdKb8BaZWSCd4g')
-        .then((result) => {
-                 console.log(result.text);
-             }, (error) => {
-                 console.log(error.text);
-             });
-   
-        // if (username !== '' ) {
-        //     api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
-        //         setLoading(false)
-        //         //  console.log(result.data)
-        //         // console.log(result.data.token)
-        //         // window.alert('Welcome to Admin Portal')
-        //         setValid("true")
-        //         alert()
-        //         Auth.login(() => {
-        //             props.history.push("/")
-        //         })
-        //         // window.alert('Welcome to Admin Portal')
-        //     }).catch(err => {
-        //         setLoading(false)
-        //         // console.log(err)
-        //         setValid("false")
-        //         alert()
-        //     })
+         e.preventDefault();
+        
+
+        if (username !== '' ) {
+            api.post('erfa/checkemail', { email: username}, setLoading(true))
+            .then(result => {
+                setLoading(false)
+                console.log(result.data)
+                if(result.data.msg === 'User Email is OK'){
+
+                    setIsEmailVerified(true)
+                    console.log(result.data.stdId)
+                    const temp=result.data.stdId;
+                    
+                        const link=`http://localhost:3000/#/rest-password/${temp}`
+                    
+                       
+                        
+                         console.log(link);
+                         console.log("Check state:"+sendLink)
+                 
+                         console.log("Check state:"+username)
+                         console.log(toSend)
+                        console.log(isEmailVerified)
+                        emailjs.send('service_tjb9xxs', 'template_3951u5n',{sendemail:username,
+                            sendlink:link}, 'user_I8LA7r2KdKb8BaZWSCd4g')
+                            .then((result) => {
+                                     console.log(result.text);
+                                 }, (error) => {
+                                     console.log(error.text);
+                                 });
+                
+               
+        
+                        }
+                //;
+                
+                setValid("true")
+                alert()
+             
+                // window.alert('Welcome to Admin Portal')
+            }).catch(err => {
+                setLoading(false)
+                // console.log(err)
+                setValid("false")
+                alert()
+            })
            
-        // } else {
-        //     // window.alert('Please fill all the fields')
-        //     setValid("incomplete")
-        //     alert()
-        // }
-        // alert()
+        } else {
+            // window.alert('Please fill all the fields')
+            setValid("incomplete")
+            alert()
+        }
+        alert()
     }
     const alert = () => {
         if (valid != "") {
@@ -97,7 +142,7 @@ export default function forgetPassword(props) {
                 return (
                     <>
                         <Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="success">OK - <strong>Email Sent!</strong></Alert>
-                        <Redirect to='/' />
+                       
                     </>
                 )
             }
@@ -160,7 +205,7 @@ export default function forgetPassword(props) {
                                             }}
                                             inputProps={{
                                                 onChange: (event) => {setUsername(event.target.value);
-                                                    setToSend({ sendemail: event.target.value});
+                                                    
                                                 },
                                                 type: "text",
                                                 endAdornment: (
@@ -185,7 +230,10 @@ export default function forgetPassword(props) {
                 </div>
                 <Footer whiteFont />
             </div>
-            {/* <prev >{JSON.stringify(username, null, 2)}</prev>
+            {/* 
+            <prev >{JSON.stringify(username, null, 2)}</prev>
+            <prev >{JSON.stringify(isEmailVerified, null, 2)}</prev>
+            <prev >{JSON.stringify(sendLink, null, 2)}</prev>
             <prev>{JSON.stringify(password, null, 2)}</prev>
             <prev>{JSON.stringify(valid, null, 2)}</prev> */}
         </div>

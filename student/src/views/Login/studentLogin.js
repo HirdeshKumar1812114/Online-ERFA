@@ -81,7 +81,7 @@ export default function LoginPage(props) {
         .post("/login", { regid, password }, setLoading(true))
         .then((result) => {
           setLoading(false);
-          // console.log(result.data);
+          console.log(result.data);
           // console.log(result.data.sendUserId);
           // console.log(result.data.sendRegId);
           // console.log(result.data.sendStudentName);

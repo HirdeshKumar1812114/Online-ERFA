@@ -88,3 +88,57 @@ exports.changePassword = expressAsyncHandler(async (req, res) => {
     res.status(400).json("Password not matched");
   }
 });
+
+exports.checkUserEmail = expressAsyncHandler(async (req, res)=>{
+  const email = req.body.email;
+  console.log(email);
+  try{
+  const checkEmail= await db.UserErfa.findOne({email: email});
+  console.log(email);
+  if(checkEmail){
+
+    const msg ="User Email is OK";
+    const stdId=checkEmail.id;
+  res.status(200).json({msg,stdId})
+  res.status(200).send()
+
+  res.end();
+  }else{
+    res.status(400).json({message:'User not is registered'})
+  }
+  
+  }
+  catch(error){
+    res.status(400).json({ message: error.message });
+  }
+  });
+
+
+  exports.checkResetPassword=expressAsyncHandler(async (req,res)=>{
+    const  id = req.params.id;
+  // console.log(id)
+    const checkPass = await db.UserErfa.findOne({_id:id})
+    const checkErfaDetails = await db.ErfaOfficer.findOne({email:checkPass.email})
+    // console.log(checkPass)
+    // console.log("Erfa detail:")
+    // console.log(checkErfaDetails)
+    if (checkPass && checkErfaDetails) {
+
+      // console.log("before"+ checkPass.password)
+      checkPass.password = req.body.password;
+      // console.log("after erfa user:"+ checkPass.password)
+      const checkPass2 =await checkPass.save();
+      checkErfaDetails.password = checkPass2.password;
+      // console.log("after erfa details:"+ checkErfaDetails.password)
+      try {
+        const checkErfaDetails2 =await checkErfaDetails.save();
+        res.status(200).json("Password update");
+        res.end();
+      } catch (error) {
+        res.status(400).json("Password not update");
+      }
+    } else {
+      res.status(400).json("Error");
+    }
+  
+  })

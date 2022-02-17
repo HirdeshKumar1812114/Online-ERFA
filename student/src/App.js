@@ -1,7 +1,7 @@
 import * as serviceWorker from "./serviceWorker";
 import React, { Component } from "react";
 import { createBrowserHistory } from "history";
-import { HashRouter, Route, Switch, Router } from "react-router-dom";
+import { HashRouter, Route, Switch, Router,useParams } from "react-router-dom";
 import "./scss/style.scss";
 import ProtectedRoute from "./Auth/protectedRoute";
 const loading = (
@@ -17,6 +17,7 @@ const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 import StudentLogin from "views/Login/studentLogin";
 import StudentSignUp from "views/SignUp/studentSignUp";
 import ForgetPassword from "views/Login/forgetPassword";
+import RestPassword from "views/Login/resetPassword";
 
 var hist = createBrowserHistory();
 
@@ -43,6 +44,12 @@ class App extends Component {
               path="/forget-password"
               name="Forget Password"
               render={(props) => <ForgetPassword {...props} />}
+            />
+              <Route
+              exact
+              path="/reset-password/:id"
+              name="Forget Password"
+              render={(props) => <RestPassword {...props} />}
             />
             <ProtectedRoute path="/" name="Home" component={DefaultLayout} />
             {/* <Route path="/" name="Home" component={DefaultLayout} /> */}
