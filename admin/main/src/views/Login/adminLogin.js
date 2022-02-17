@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Redirect } from 'react-router-dom';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,7 +27,6 @@ import { useCookies } from 'react-cookie';
 import { css } from "@emotion/react";
 import RingLoader from "react-spinners/RingLoader";
 import forgetPassword from './forgetPassword';
-
 const override = css`
   margin: 0 auto;
 `;
@@ -44,8 +43,9 @@ export default function LoginPage(props) {
     const [userID, setUserID] = useCookies(['onlineerfa_admin_userID']);
     const [userType, setUserType] = useCookies(['onlineerfa_admin_userType']);
     const [userEmail, setUserEmail] = useCookies(['onlineerfa_admin_userEmail']);
-
     const [loading, setLoading] = useState(false)
+    const [showTimer, setShowTimer] = useState(false)
+
     let [color, setColor] = useState("#49A54D");
 
 
@@ -73,59 +73,61 @@ export default function LoginPage(props) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [valid, setValid] = useState('')
-
+    const [count, setCount] = useState(0)
 
     const submitData = (e) => {
+
         e.preventDefault();
+        console.log({ count });
         if (username !== '' && password !== '') {
 
+            if (count < 4) {
+                api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
+                    setLoading(false)
+                    //  console.log(result.data)
+                    // console.log(result.data.token)
+                    setToken('onlineerfa_admin_token', result.data.token, { path: '/', maxAge: 1800, secure: true })
+                    setUserID('onlineerfa_admin_userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
+                    setUserType('onlineerfa_admin_userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
+                    setUserEmail('onlineerfa_admin_userEmail', result.data.sendUserEmail, { path: '/', maxAge: 1800, secure: true })
+                    // window.alert('Welcome to Admin Portal')
+                    setValid("true")
+                    alert()
+                    Auth.login(() => {
+                        props.history.push("/")
+                    })
+                    // window.alert('Welcome to Admin Portal')
 
-            api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
-                setLoading(false)
-                //  console.log(result.data)
-                // console.log(result.data.token)
-                setToken('onlineerfa_admin_token', result.data.token, { path: '/', maxAge: 1800, secure: true })
-                setUserID('onlineerfa_admin_userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
-                setUserType('onlineerfa_admin_userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
-                setUserEmail('onlineerfa_admin_userEmail', result.data.sendUserEmail, { path: '/', maxAge: 1800, secure: true })
-                // window.alert('Welcome to Admin Portal')
-                setValid("true")
-                alert()
-                Auth.login(() => {
-                    props.history.push("/")
+                }).catch(err => {
+                    setCount(count + 1)
+                    setLoading(false)
+                    // console.log(err)
+                    setValid("false")
+                    alert()
                 })
-                // window.alert('Welcome to Admin Portal')
+            } else {
 
-            }).catch(err => {
-                setLoading(false)
-                // console.log(err)
-                setValid("false")
+                // window.alert('Multiple attempts')
+                setValid("multi")
                 alert()
-            })
+                setShowTimer(true)
+                onClickReset()
+                setTimeout(() => {
+                    setCount(0)
+                    setShowTimer(false)
+                    setValid("")
+                    alert()
+                }, 30000)
 
-            // if (username == 'admin' && password == 'admin') {
-            //     setValid("true")
-            //     Auth.login(()=>{
-            //     props.history.push("/")   
-            //     })
-            //     // window.alert('Welcome to Admin Portal')
-            //     alert()
-
-
-            // } else {
-            //     setValid("false")
-            //     // window.alert('Invalid Credentials')
-            //     alert()
-
-            // }
+            }
 
         } else {
             // window.alert('Please fill all the fields')
             setValid("incomplete")
             alert()
 
-
         }
+
         alert()
 
     }
@@ -142,6 +144,10 @@ export default function LoginPage(props) {
             else if (valid == "false") {
 
                 return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="error">ERROR — <strong>Invalid Credentials!</strong></Alert>)
+            }
+            else if (valid == "multi") {
+
+                return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} severity="error">ALERT — <strong>Multiple failed attempts please re-try after {timer} seconds!</strong></Alert>)
             }
             else {
                 return (<Alert style={{ "margin-top": "-40px", "margin-bottom": "15px" }} onClose={() => { setValid("") }} severity="warning">ALERT — <strong>Please fill all fields!</strong></Alert>)
@@ -164,7 +170,62 @@ export default function LoginPage(props) {
     const forgetPassword = () => {
         props.history.push('forget-password')
     }
+    // Timmer 
+    const Ref = useRef(null);
 
+    // The state for our timer
+    const [timer, setTimer] = useState('00');
+
+
+    const getTimeRemaining = (e) => {
+        const total = Date.parse(e) - Date.parse(new Date());
+        const seconds = Math.floor((total / 1000) % 60);
+        const minutes = Math.floor((total / 1000 / 60) % 60);
+        const hours = Math.floor((total / 1000 * 60 * 60) % 24);
+        return {
+            total, hours, minutes, seconds
+        };
+    }
+
+
+    const startTimer = (e) => {
+        let { total, hours, minutes, seconds }
+            = getTimeRemaining(e);
+        if (total >= 0) {
+
+            setTimer(
+                (seconds > 9 ? seconds : '0' + seconds)
+            )
+        }
+    }
+
+
+    const clearTimer = (e) => {
+        setTimer('30');
+
+
+        if (Ref.current) clearInterval(Ref.current);
+        const id = setInterval(() => {
+            startTimer(e);
+        }, 1000)
+        Ref.current = id;
+    }
+
+    const getDeadTime = () => {
+        let deadline = new Date();
+
+        deadline.setSeconds(deadline.getSeconds() + 30);
+        return deadline;
+    }
+
+    useEffect(() => {
+        clearTimer(getDeadTime());
+    }, []);
+
+
+    const onClickReset = () => {
+        clearTimer(getDeadTime());
+    }
     return (
         <div>
 
@@ -241,13 +302,23 @@ export default function LoginPage(props) {
 
 
                                     <br />
+
+
+
+
                                     <CardFooter className={classes.cardFooter}>
+                                        {showTimer == true ?
+                                            <Button color="danger" variant="ghost" disabled onClick={submitData}>
+                                                Locked
+                                            </Button >
+                                            :
+                                            <Button simple color="primary" size="lg" onClick={submitData}>
+                                                {loading == true ? <RingLoader color={color} css={override} size={25} /> : <>Login</>}
+                                            </Button >
+                                        }
 
-                                        <Button simple color="primary" size="lg" onClick={submitData}>
-                                            {loading == true ? <RingLoader color={color} css={override} size={25} /> : <>Login</>}
-                                        </Button >
 
-                                        <Button simple onClick={()=>{forgetPassword()}} color="primary">
+                                        <Button simple onClick={() => { forgetPassword() }} color="primary">
                                             Forget Password
                                         </Button>
                                     </CardFooter>
@@ -257,11 +328,12 @@ export default function LoginPage(props) {
                     </GridContainer>
                 </div>
                 <Footer whiteFont />
-
             </div>
             {/* <prev >{JSON.stringify(username, null, 2)}</prev>
-            <prev>{JSON.stringify(password, null, 2)}</prev>
-            <prev>{JSON.stringify(valid, null, 2)}</prev> */}
+            <prev>{JSON.stringify(valid, null, 2)}</prev>
+            <prev>{JSON.stringify(count, null, 2)}</prev>
+            
+            */}
         </div>
     );
 }
