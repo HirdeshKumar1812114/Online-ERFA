@@ -329,9 +329,9 @@ const checkEmailValue= e.target.value;
                   
               
                     
-                   <p style={{}} className={classes.divider}>{passQualityMsg ? ' ': 'Your Password must be atleast of 8 character. It should contain,'}</p>
+                   <p style={{color:'red'}} className={classes.divider}>{passQualityMsg ? ' ': 'Your Password must be atleast of 8 characters. It should contain,'}</p>
                 {passQualityMsg ? ' ':
-                     <ul style={{ marginLeft: "46px" }}>
+                     <ul style={{ marginLeft: "46px",color:'red' }}>
                      <li>
                      {passQualityMsg ? ' ' : '1 Uppercase Letter like A'}
                      </li>
