@@ -55,7 +55,7 @@ const Layout = (props) => {
 
   //Scholarship Form
   const [regNo,setRegNo]=useState('');
-  const [firstName,setFastName]=useState('');
+  const [firstName,setFirstName]=useState('');
   const [lastName,setLastName]=useState('');
   const [dob,setDob]=useState('');
   const [fatherName,setFatherName]=useState('');
@@ -189,6 +189,9 @@ const Layout = (props) => {
                 <CFormInput
                   required
                   type="text"
+                  placeholder="1812XXX"
+                  pattern="[0-9]*"
+                  maxlength="7"
                   id="regNo"
                   onChange={(e) => {
                     setRegNo(e.target.value);
@@ -295,6 +298,9 @@ const Layout = (props) => {
                   value={nic}
                   id="nic"
                   type="text"
+                  maxlength="13"
+                  pattern="[0-9]*"
+                  placeholder="XXXXXXXXXXXX (13-digits without dashes)"
                   onChange={(e) => {
                     setNic(e.target.value);
                   }}
@@ -310,6 +316,9 @@ const Layout = (props) => {
                   value={cellNumber}
                   id="cellNumber"
                   type="text"
+                  placeholder="0303XXXXXXX"
+                  pattern="[0-9]*"
+                  maxlength="11"
                   onChange={(e) => {
                     setCellNumber(e.target.value);
                   }}

@@ -81,7 +81,7 @@ export default function LoginPage(props) {
   const [passMessage, setPassMessage] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [isEmailMatch, setIsEmailMatch] = useState(false);
-  const [passQualityMsg, setPassQualityMsg] = useState(false)
+  const [passQualityMsg, setPassQualityMsg] = useState(true)
   const [toSend, setToSend] = useState({
     sendregid: '',
     sendemail: '',
@@ -255,8 +255,14 @@ const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BS
 const checkPasswordQuality =(e)=>{
   const givePassword= e.target.value
   console.log("Check passvalue:"+givePassword)
- const checkAns=validator.isStrongPassword(givePassword,{minLength:8,minLowercase:1,minUpperCase:1,minNumber:1,minSymbols:1})
- console.log("ans:"+ checkAns)
+
+  
+  if(givePassword.length===0){
+
+ setPassQualityMsg(true)
+}else{
+  const checkAns=validator.isStrongPassword(givePassword,{minLength:8,minLowercase:1,minUpperCase:1,minNumber:1,minSymbols:1})
+  console.log("ans:"+ checkAns)
   if(checkAns){
  
     
@@ -266,6 +272,9 @@ const checkPasswordQuality =(e)=>{
     setPassQualityMsg(false)
 
   }
+ 
+}
+
 }
 
   const checkPasswordValidataion = (e) => {
