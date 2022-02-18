@@ -127,15 +127,17 @@ const Layout = (props) => {
       <CCard>
 
               <CCardBody>
+              <a style={{'text-decoration': 'none'}} onClick={() => {
+                        localStorage.setItem("viewPostUrl", posts._id);
+                        viewPost()
+                      }}>
               <CRow>
                 <CCol sm={10}>
-                 
-                    <CButton color="link" onClick={() => {
-                      localStorage.setItem("viewPostUrl", posts._id);
-                      viewPost()
-                    }}>
-                      <h3>{posts.title}</h3> 
-                    </CButton>
+                <h3>
+
+                        {posts.title}
+                </h3>
+                      
                   <p style={{'font-size': '18px', 'margin': '20px' }}>
                     Start Date: {posts.applicationstart} | 
                   <span style={{ 'color': 'red' }}> End Date: {posts.applicationdeadline}</span>
@@ -151,6 +153,7 @@ const Layout = (props) => {
 
                 </CCol>
               </CRow>
+                </a>
         </CCardBody>
 </CCard>
 <br/>

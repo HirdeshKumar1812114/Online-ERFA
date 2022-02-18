@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DropzoneArea } from "material-ui-dropzone";
+import Checkbox from 'rc-checkbox';
 
 import {
   CContainer,
@@ -40,7 +41,8 @@ const Layout = (props) => {
   const [eligibility, setEligibility] = useState("");
   const [visible, setVisible] = useState(null);
   const [checkedPrograms, setPorgrams] = useState([]);
-  const [checkedProgramsGet, setPorgramsGet] = useState('');
+  const [checkedProgramsGet, setPorgramsGet] = useState([]);
+  const [disabled, setDisabled] = useState(false);
 
   const [isChanged, setIsChanged] = useState(false)
   const [tags, setTags] = useState([]);
@@ -53,18 +55,8 @@ const Layout = (props) => {
   const api = axios.create({
     baseURL: "http://localhost:5000/",
   });
-  const checkUser = (value) => {
-    setUserValid(value)
-  }
-  useEffect(() => {
-    if (userValid == true) {
-      updateData();
-    }
-  })
-  const setVis = (value) => {
-    // console.log({value});
-    setVisible(value)
-  }
+
+
   useEffect(() => {
     api
       .get(
@@ -83,27 +75,68 @@ const Layout = (props) => {
         setImageName(res.data.poster);
         setTags(res.data.tags);
         setLoading(false);
-        setPorgramsGet(res.data.checkedPrograms)
+        setPorgramsGet(res.data.checkedPrograms.split(","))
       })
       .catch((error) => console.log(error));
-    // console.log('Image=>', imageName);
   }, []);
+
+
+  const checkUser = (value) => {
+    setUserValid(value)
+  }
+
+  useEffect(() => {
+    if (userValid == true) {
+      updateData();
+    }
+  })
+
+  const setVis = (value) => {
+    // console.log({value});
+    setVisible(value)
+  }
+
+  const onChange = (e) => {
+    let { checked, value } = e.target
+    // console.log('Checkbox checked:', (checked));
+    // console.log('Value', value);
+
+    if (checked == true) {
+      setPorgramsGet((checkedProgramsGet) => ([...checkedProgramsGet, e.target.value]))
+      setIsChanged(true)
+    }
+    else {
+      const arr = checkedProgramsGet.filter((item) => item !== value);
+      setPorgramsGet(arr);
+      setIsChanged(true)
+
+    }
+  }
+
+  const toggle = () => {
+    setDisabled(!disabled)
+  }
+
+  const handleOnChange = () => {
+    setIsChecked(!isChecked);
+  };
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
+    event.preventDefault();
     if (form.checkValidity() === false) {
-      event.preventDefault();
+      setValidated(true);
       event.stopPropagation();
     } else {
+      setValidated(false);
       setVisible(!visible);
     }
-    setValidated(true);
   };
 
   const updateData = () => {
     //  console.log('poster1==>',poster);
     //  console.log('poster.length==>',);
-    if (isChanged == true || isPostEmpty(poster) == false) {
+    if (isChanged == true || isPostEmpty(poster) == false || checkedPrograms.length != 0) {
       var data = new FormData();
       data.append("poster", poster[0]);
       data.append("title", title);
@@ -112,6 +145,7 @@ const Layout = (props) => {
       data.append("eligibility", eligibility);
       data.append("description", description);
       data.append("tags", tags);
+      data.append("checkedPrograms", checkedProgramsGet)
 
       const config = {
         headers: { "content-type": "multipart/form-data" },
@@ -154,7 +188,12 @@ const Layout = (props) => {
     return Object.keys(obj).length === 0;
   }
   return (
+
     <CContainer fluid>
+      {
+        console.log('CheckProg=>', checkedProgramsGet)
+
+      }
       <CCard>
         {loading == true && (poster == "" || poster == "undifined") ? (
           <>
@@ -275,17 +314,51 @@ const Layout = (props) => {
                     <CFormLabel htmlFor="description">Check only those programs which are elegible for this scholarship</CFormLabel>
                     <br></br>
 
-                    {programs.map((values) => {
-                      return (
-                        <>
-                          <CFormCheck inline id="inlineCheckbox1" value={values} label={values} onChange={(e) => {
-                            setPorgrams((checkedPrograms) => ([...checkedPrograms, e.target.value]))
-                          }} 
-                         
-                          />
-                        </>
-                      )
-                    })}
+                    {
+                      checkedProgramsGet.length !== 0 ?
+                        programs.map((values) => {
+
+                          if (checkedProgramsGet.find(val => val === values)) {
+
+                            return (
+                              <>
+                                <label>
+                                  <Checkbox
+                                    name="my-checkbox"
+                                    defaultChecked
+                                    onChange={onChange}
+                                    disabled={disabled}
+                                    value={values}
+                                  />
+                                  &nbsp; {values}&nbsp;&nbsp;&nbsp;
+                                </label>
+                              </>
+                            )
+
+                          } else {
+                            return (
+                              <>
+                                <label>
+                                  <Checkbox
+                                    name="my-checkbox"
+                                    // defaultChecked
+                                    onChange={onChange}
+                                    disabled={disabled}
+                                    value={values}
+                                  />
+                                  &nbsp; {values}&nbsp;&nbsp;&nbsp;
+                                </label>
+                              </>
+                            )
+                          }
+                        }
+
+
+                        )
+
+                        :
+                        <></>
+                    }
 
 
                   </CCol>
@@ -373,6 +446,8 @@ const Layout = (props) => {
 
 
       {/* 
+      <prev>{JSON.stringify(validated, null, 2)}</prev>
+      <prev>{JSON.stringify(checkedProgramsGet, null, 2)}</prev>
       <prev>{JSON.stringify(isChanged, null, 2)}</prev>
       <prev>{JSON.stringify(poster, null, 2)}</prev>
       <prev>{JSON.stringify(isPostEmpty(poster), null, 2)}</prev>

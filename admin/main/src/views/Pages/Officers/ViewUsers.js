@@ -166,7 +166,7 @@ const Layout = (props) => {
                         </CButton>
                         <CButton
                           color="danger"
-                          style={{ width: "100px" }}
+                          style={{ width: "100px" , "color":"white"}}
                           onClick={() => {
                             setVisible(!visible);
                             setUsertoDel(user._id);
