@@ -4,12 +4,18 @@ const Scholarship = React.lazy(() =>
   import("./views/Pages/Scholarships/NewPost")
 );
 
+
+
 // Scholarships
 const ViewPost = React.lazy(() =>
   import("./views/Pages/Scholarships/ViewPost")
 );
 const ViewSeletctedPost = React.lazy(() =>
   import("./views/Pages/Scholarships/ViewSeletctedPost")
+);
+
+const ScholarshipForm = React.lazy(() =>
+import("./views/Pages/Scholarships/ScholarshipForm")
 );
 
 // ROUTES
@@ -31,6 +37,11 @@ const routes = [
     name: "View Posts",
     component: ViewSeletctedPost,
   },
+  {
+    path: "/scholarship/scholarship-form",
+    name: "Scholarship Form",
+    component: ScholarshipForm,
+  }
 ];
 
 export default routes;

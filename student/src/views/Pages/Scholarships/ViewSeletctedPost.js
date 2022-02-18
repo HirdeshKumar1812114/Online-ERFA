@@ -65,6 +65,7 @@ const Layout = (props) => {
         setLoading(false)
         setEligibilityArr(eligibility.split(/\r/))
         getStudentProgram()
+        localStorage.setItem('ScholarshipTitle', res.data.title);
       })
       .catch((error) =>  console.log(error));
 
@@ -84,7 +85,7 @@ if(studentEligibility===true){
       >
         ELIGIBLE - <strong>You can apply for the {title}.</strong>
       </Alert>
-      <Redirect to='/scholarship-form' />
+      <Redirect to='/scholarship/scholarship-form' />
     </>
   )
 }else{
