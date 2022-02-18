@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import Checkbox from 'rc-checkbox';
+// import 'rc-checkbox/assets/index.css';
+
 import {
   CContainer,
   CButton,
@@ -13,19 +16,25 @@ import {
   CFormTextarea,
   CFormCheck
 } from "@coreui/react";
+
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { DropzoneArea } from "material-ui-dropzone";
+
 const override = css`
   margin: 0 auto;
 `;
 
+
+
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
+
 const Layout = (props) => {
+
   let [color, setColor] = useState("#49A54D");
 
   const [loading, setLoading] = useState(false);
@@ -38,24 +47,49 @@ const Layout = (props) => {
   const [eligibility, setEligibility] = useState("");
   const [checkedPrograms, setPorgrams] = useState([]);
   const [tags, setTags] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
+    event.preventDefault();
+    if (form.checkValidity() === false || checkedPrograms.length == 0) {
       event.stopPropagation();
+      setValidated(true);
     } else {
+      setValidated(false);
       submitData();
     }
-    setValidated(true);
+  };
+
+  const onChange = (e) => {
+    let { checked, value } = e.target
+    // console.log('Checkbox checked:', (checked));
+    // console.log('Value', value);
+
+    if (checked == true) {
+      setPorgrams((checkedPrograms) => ([...checkedPrograms, e.target.value]))
+    }
+    else {
+      const arr = checkedPrograms.filter((item) => item !== value);
+      setPorgrams(arr);
+    }
+  }
+
+  const toggle = () => {
+    setDisabled(!disabled)
+  }
+
+  const handleOnChange = () => {
+    setIsChecked(!isChecked);
   };
 
   const submitData = () => {
     //  console.log('poster1==>',poster);
     // console.log('poster.length==>',);
-
-    if (poster.length !== 0) {
+    // console.log(checkedPrograms.length);
+    if (poster.length !== 0 ) {
       var data = new FormData();
       data.append("poster", poster[0]);
       data.append("title", title);
@@ -70,9 +104,11 @@ const Layout = (props) => {
       // for (var value of data.values()) {
       //   console.log('loop values==>', value);
       // }
+
       const config = {
         headers: { "content-type": "multipart/form-data" },
       };
+
       api
         .post("scholarship/add", data, setLoading(true), config)
         .then((result) => {
@@ -100,8 +136,9 @@ const Layout = (props) => {
           // console.log("Error occured : ", err);
         });
     } else {
+      setValidated(true);
       setLoading(false);
-      window.alert("Please upload poster.");
+      // window.alert("Please upload poster.");
     }
   };
   return (
@@ -203,14 +240,31 @@ const Layout = (props) => {
                 {programs.map((values) => {
                   return (
                     <>
-                      <CFormCheck inline id="inlineCheckbox1" value={values} label={values} onChange={(e) => {
-                        setPorgrams((checkedPrograms) => ([...checkedPrograms, e.target.value]))
-                      }} />
+                      <label>
+                        <Checkbox
+                          name="my-checkbox"
+                          // defaultChecked
+                          onChange={onChange}
+                          disabled={disabled}
+                          value={values}
+                        />
+                        &nbsp; {values}&nbsp;&nbsp;&nbsp;
+                      </label>
                     </>
                   )
                 })}
+                {/* <label>
+                <Checkbox
+                  name="my-checkbox"
+                  // defaultChecked
+                  onChange={onChange}
+                  disabled={disabled}
+                  value="BBA"
+                />
+                &nbsp; BBA
+                </label> */}
 
-
+                {/* <button onClick={toggle}>Check and Uncheck all</button> */}
 
               </CCol>
 
@@ -248,7 +302,7 @@ const Layout = (props) => {
               {validated == true ? (
                 <>
                   <span style={{ "font-size": "14px", color: "red" }}>
-                    *Please fill all the fields!
+                    *Please fill all the fields and upload a poster!
                   </span>
                 </>
               ) : (

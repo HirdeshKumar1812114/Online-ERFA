@@ -102,7 +102,7 @@ exports.updateScholarship = async (req, res) => {
   const chk = req.file;
   let tagsRemoveSpaces = req.body.tags.replace(/\s/g, "");
   let tags = tagsRemoveSpaces.split(",");
-  console.log(tags);
+  console.log(req.body.checkedPrograms);
   if (chk) {
     const fetchDetails = await db.ScholarshipPost.findOne({
       _id: req.params.id,
@@ -118,6 +118,7 @@ exports.updateScholarship = async (req, res) => {
           poster: req.file.filename,
           eligibility: req.body.eligibility,
           tags: tags,
+          checkedPrograms : req.body.checkedPrograms
         }
       );
       if (updateDetails) {
@@ -150,6 +151,7 @@ exports.updateScholarship = async (req, res) => {
           applicationdeadline: req.body.applicationdeadline,
           eligibility: req.body.eligibility,
           tags: tags,
+          checkedPrograms : req.body.checkedPrograms
         }
       );
       if (updateDetails) {

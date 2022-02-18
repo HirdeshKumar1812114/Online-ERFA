@@ -78,12 +78,12 @@ setVisible(value)
                 return (
                   <CTableRow>
                     <CTableHeaderCell scope="row">
-                      <CButton color="link" onClick={() => {
+                      <a style={{'color':'blue','text-decoration': 'underline'}} onClick={() => {
                         localStorage.setItem("viewPostUrl", posts._id);
                         viewPost()
                       }}>
                         {posts.title}
-                      </CButton>
+                      </a>
                     </CTableHeaderCell>
                     <CTableDataCell>
                       {posts.tags.map((tag, i) => {
@@ -110,7 +110,7 @@ setVisible(value)
                         </CButton>
                         <CButton
                           color="danger"
-                          style={{ width: "100px" }}
+                          style={{ width: "100px","color":"white" }}
                           onClick={() => {
                             setVisible(!visible);
                             setpoststoDel(posts._id);
