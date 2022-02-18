@@ -37,6 +37,12 @@ const Layout = (props) => {
   const [eligibility, setEligibility] = useState('');
   const [tags, setTags] = useState([])
   
+  // Scholarship the
+  const [applicationFormId,setApplicationFormId] = useState('');
+  const [studentName, setStudentName] = useState('');
+  const [regNo,setRegNo]= useState('')
+  const [program,SetProgram] = useState('')
+
 
   const handleSubmit = (event) => {
       event.preventDefault();
