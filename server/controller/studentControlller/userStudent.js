@@ -115,7 +115,7 @@ exports.getStudent = expressAsyncHandler(async function (req, res, next) {
   try {
     const student = await db.UserStudent.findOne({ _id: req.params.id });
     if (student) {
-      res.status(200).json({ message: "Details" });
+      res.status(200).json(student);
       res.end();
     } else {
       res.status(400).json({ message: "Not found" });
