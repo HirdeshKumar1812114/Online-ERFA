@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import {
   CContainer,
@@ -15,6 +16,9 @@ import RingLoader from "react-spinners/RingLoader";
 import { css } from "@emotion/react";
 import axios from "axios";
 import { CBadge } from '@coreui/react'
+import Alert from "@mui/material/Alert";
+
+
 
 const override = css`
   margin: 0 auto;
@@ -37,6 +41,7 @@ const Layout = (props) => {
   const [studentId, setStudentId] = useState("");
   const [studentProgram,setStudentProgram] = useState("");
   const [studentEligibility, setStudentEligibility] = useState(false);
+  const [showAlert,setShowAlert] = useState("")
 
   let [color, setColor] = useState("#49A54D");
 
@@ -65,9 +70,48 @@ const Layout = (props) => {
 
   }, [eligibility]);
 
+ const alert = () => {
+if (showAlert != "") {
+if(studentEligibility===true){
+  return (
+    <>
+      <Alert
+        style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+        onClose={() => {
+          setShowAlert("")
+        }}
+        severity="success"
+      >
+        ELIGIBLE - <strong>You can apply for the {title}.</strong>
+      </Alert>
+      <Redirect to='/scholarship-form' />
+    </>
+  )
+}else{
+  return (
+    <Alert
+      style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+      onClose={() => {
+        setShowAlert("");
+      }}
+      severity="error"
+    >
+     INELIGIBLE — <strong>You can not apply for the {title}.</strong>
+    </Alert>
+  )
+}
+}else {
+  return <></>;
+}
+ }
   const checkStudentScholarshipEligibilty=()=>{
     api
-    .post(`student_scholarship/check_eligibility`,{program:studentProgram,scholarship:scholarshipId})
+    .post(`student_scholarship/check_eligibility`,
+    {program:studentProgram,
+     scholarship:scholarshipId},
+     setLoading(true)
+    
+    )
     .then((result)=>{
 
  if(result.data.message==='User is Eligible')
@@ -75,9 +119,13 @@ const Layout = (props) => {
   console.log('User is Eligible')
   setStudentEligibility(true)
   console.log(studentEligibility)
+  setShowAlert("Yes")
+  setLoading(false)
 }else{
   setStudentEligibility(false)
   console.log(studentEligibility)
+  setShowAlert("Yes")
+  setLoading(false)
 }
     })
     .catch((error) => console.log(error));
@@ -119,11 +167,13 @@ const Layout = (props) => {
   };
 
   return (
+
     <CContainer fluid>
+     
       <CCard>
+      {alert()}
 
-
-        {loading == true && poster == '' ? (
+        {loading == true || poster == '' ? (
           <>
             <br />
             <RingLoader color={color} css={override} size={100} />
@@ -144,7 +194,7 @@ const Layout = (props) => {
               </strong>
             </CCardHeader>
             <CCardBody>
-
+        
               {poster != '' ? <CImage fluid src={`http://localhost:5000/getPoster/${poster}`} /> : <>Loading</>}
               <br></br>
 
@@ -183,12 +233,13 @@ const Layout = (props) => {
             </CCardFooter>
           </>
         )}
+       
       </CCard>
+      {/* <prev >{JSON.stringify(username, null, 2)}</prev>
       <prev >{JSON.stringify(studentId, null, 2)}</prev>
       <prev >{JSON.stringify(studentProgram, null, 2)}</prev>
       <prev >{JSON.stringify(scholarshipId, null, 2)}</prev>
       <prev>{JSON.stringify(studentEligibility, null, 2)}</prev>
-      {/* <prev >{JSON.stringify(username, null, 2)}</prev>
       <prev >{JSON.stringify(password, null, 2)}</prev>
       <prev >{JSON.stringify(nic, null, 2)}</prev>
       <prev >{JSON.stringify(dob, null, 2)}</prev>
