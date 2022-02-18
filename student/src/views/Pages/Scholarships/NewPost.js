@@ -105,7 +105,6 @@ const Layout = (props) => {
               />
             </CCol>
 
-
             <CCol md={12}>
               <CFormLabel htmlFor="description">Description</CFormLabel>
               <CFormTextarea id="description" rows="5"

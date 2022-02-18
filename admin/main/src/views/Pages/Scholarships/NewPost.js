@@ -50,7 +50,10 @@ const Layout = (props) => {
   const [isChecked, setIsChecked] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
+ 
 
+
+   
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     event.preventDefault();
