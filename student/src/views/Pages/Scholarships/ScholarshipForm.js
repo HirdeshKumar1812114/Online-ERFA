@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState,useEffect } from "react";
+import { useCookies } from "react-cookie";
 import Checkbox from 'rc-checkbox';
 // import 'rc-checkbox/assets/index.css';
 
@@ -65,7 +65,29 @@ const Layout = (props) => {
   const [cellNumber,setCellNumber]=useState('');
   const [mailingAddress, setMailingAddress]=useState('');
   const [permanentAddress, setPermanentAddress]=useState('');
+  const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
+  const [email, setEmail] =useState('');
 
+  useEffect(() => {
+    api
+      .get(`student/find/${userID.onlineerfa_student_userID}`, setLoading(true))
+      .then((res) => {
+       setRegNo(res.data.regid)
+       setFirstName(res.data.firstname)
+setLastName(res.data.lastname)
+setFatherName(res.data.fathername)
+setDob(res.data.dob) 
+setSection(res.data.section)
+setProgram(res.data.program)
+setPermanentAddress(res.data.permanentaddress)
+setMailingAddress(res.data.mailingaddress)
+setEmail(res.data.email)
+setCellNumber(res.data.cellnumber)
+setLoading(false)
+      })
+      .catch((error) =>  console.log(error));
+
+  }, [regNo]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -184,7 +206,7 @@ const Layout = (props) => {
               validated={validated}
               onSubmit={handleSubmit}
             >
-              <CCol md={12}>
+              <CCol md={6}>
                 <CFormLabel htmlFor="regNo">Registration Number</CFormLabel>
                 <CFormInput
                   required
@@ -198,6 +220,21 @@ const Layout = (props) => {
                   }}
                   value={regNo}
                 />
+              </CCol>
+              <CCol xs={6}>
+                <CFormLabel htmlFor="inputEmail">Email</CFormLabel>
+                <CFormInput
+                  required
+                  value={email}
+                  type="email"
+                  id="inputEmail"
+                  placeholder="xyz@szabist.pk"
+                  onChange={(e) => {checkEmailValidataion(e);
+                    
+                  }
+                  }
+                />
+             
               </CCol>
 
               <CCol md={6}>
@@ -469,6 +506,7 @@ const Layout = (props) => {
       <prev>{JSON.stringify(cellNumber, null, 2)}</prev>
       <prev>{JSON.stringify(mailingAddress, null, 2)}</prev>
       <prev>{JSON.stringify(permanentAddress, null, 2)}</prev>
+      <prev>{JSON.stringify(userID.onlineerfa_student_userID, null, 2)}</prev>
 
       {/* <prev>{JSON.stringify(checkedPrograms, null, 2)}</prev> */}
 
