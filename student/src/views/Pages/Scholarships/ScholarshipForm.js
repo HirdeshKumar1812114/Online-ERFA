@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import Checkbox from 'rc-checkbox';
 // import 'rc-checkbox/assets/index.css';
@@ -16,6 +16,7 @@ import {
   CFormTextarea,
   CFormCheck
 } from "@coreui/react";
+import { saveAs } from "file-saver";
 
 import Alert from "@mui/material/Alert";
 import RingLoader from "react-spinners/RingLoader";
@@ -27,14 +28,22 @@ const override = css`
   margin: 0 auto;
 `;
 
-
+import ExampleDoc from 'assets/files/need-based.pdf'
 
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
 
 const Layout = (props) => {
-
+  const downloadFile = () => {
+    window.location.href = ExampleDoc
+  }
+  const saveFile = () => {
+    saveAs(
+      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "example.pdf"
+    );
+  }
   let [color, setColor] = useState("#49A54D");
 
   const [loading, setLoading] = useState(false);
@@ -50,42 +59,42 @@ const Layout = (props) => {
   const [isChecked, setIsChecked] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  
+
   const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
 
   //Scholarship Form
-  const [regNo,setRegNo]=useState('');
-  const [firstName,setFirstName]=useState('');
-  const [lastName,setLastName]=useState('');
-  const [dob,setDob]=useState('');
-  const [fatherName,setFatherName]=useState('');
-  const [program,setProgram]=useState('');
-  const [section,setSection]=useState('');
-  const [nic,setNic]=useState('');
-  const [cellNumber,setCellNumber]=useState('');
-  const [mailingAddress, setMailingAddress]=useState('');
-  const [permanentAddress, setPermanentAddress]=useState('');
+  const [regNo, setRegNo] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dob, setDob] = useState('');
+  const [fatherName, setFatherName] = useState('');
+  const [program, setProgram] = useState('');
+  const [section, setSection] = useState('');
+  const [nic, setNic] = useState('');
+  const [cellNumber, setCellNumber] = useState('');
+  const [mailingAddress, setMailingAddress] = useState('');
+  const [permanentAddress, setPermanentAddress] = useState('');
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
-  const [email, setEmail] =useState('');
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     api
       .get(`student/find/${userID.onlineerfa_student_userID}`, setLoading(true))
       .then((res) => {
-       setRegNo(res.data.regid)
-       setFirstName(res.data.firstname)
-setLastName(res.data.lastname)
-setFatherName(res.data.fathername)
-setDob(res.data.dob) 
-setSection(res.data.section)
-setProgram(res.data.program)
-setPermanentAddress(res.data.permanentaddress)
-setMailingAddress(res.data.mailingaddress)
-setEmail(res.data.email)
-setCellNumber(res.data.cellnumber)
-setLoading(false)
+        setRegNo(res.data.regid)
+        setFirstName(res.data.firstname)
+        setLastName(res.data.lastname)
+        setFatherName(res.data.fathername)
+        setDob(res.data.dob)
+        setSection(res.data.section)
+        setProgram(res.data.program)
+        setPermanentAddress(res.data.permanentaddress)
+        setMailingAddress(res.data.mailingaddress)
+        setEmail(res.data.email)
+        setCellNumber(res.data.cellnumber)
+        setLoading(false)
       })
-      .catch((error) =>  console.log(error));
+      .catch((error) => console.log(error));
 
   }, [regNo]);
 
@@ -127,7 +136,7 @@ setLoading(false)
     //  console.log('poster1==>',poster);
     // console.log('poster.length==>',);
     // console.log(checkedPrograms.length);
-    if (poster.length !== 0 ) {
+    if (poster.length !== 0) {
       var data = new FormData();
       data.append("poster", poster[0]);
       data.append("title", title);
@@ -206,295 +215,161 @@ setLoading(false)
               validated={validated}
               onSubmit={handleSubmit}
             >
+
+              <CCol md={6}>
+                <CFormLabel htmlFor="firstName">
+                  Student Name
+                </CFormLabel>
+                <CFormInput
+                  readOnly
+                  value={firstName}
+                  id="firstName"
+                  type="text"
+
+                />
+              </CCol>
+
+
+              <CCol md={6}>
+                <CFormLabel htmlFor="">
+                  Father Name
+                </CFormLabel>
+                <CFormInput
+                  readOnly
+                  value={fatherName}
+                  id="fatherName"
+                  type="text"
+
+                />
+              </CCol>
+
+
               <CCol md={6}>
                 <CFormLabel htmlFor="regNo">Registration Number</CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   type="text"
                   placeholder="1812XXX"
                   pattern="[0-9]*"
                   maxlength="7"
                   id="regNo"
-                  onChange={(e) => {
-                    setRegNo(e.target.value);
-                  }}
+
                   value={regNo}
                 />
               </CCol>
               <CCol xs={6}>
                 <CFormLabel htmlFor="inputEmail">Email</CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   value={email}
                   type="email"
                   id="inputEmail"
                   placeholder="xyz@szabist.pk"
-                  onChange={(e) => {checkEmailValidataion(e);
-                    
-                  }
-                  }
                 />
-             
+
               </CCol>
 
-              <CCol md={6}>
-                <CFormLabel htmlFor="firstName">
-                First Name
-                </CFormLabel>
-                <CFormInput
-                  required
-                  value={firstName}
-                  id="firstName"
-                  type="text"
-                  onChange={(e) => {
-                    setFirstName(e.target.value);
-                  }}
-                />
-              </CCol>
 
-              <CCol md={6}>
-                <CFormLabel htmlFor="lastName">
-              Last Name
-                </CFormLabel>
-                <CFormInput
-                  required
-                  value={lastName}
-                  id="lastName"
-                  type="text"
-                  onChange={(e) => {
-                    setLastName(e.target.value);
-                  }}
-                />
-              </CCol>
+
               <CCol md={6}>
                 <CFormLabel htmlFor="dob">
-               Date of Birth
+                  Date of Birth
                 </CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   value={dob}
                   id="dob"
                   type="date"
-                  onChange={(e) => {
-                   setDob(e.target.value);
-                  }}
+
                 />
               </CCol>
 
               <CCol md={6}>
-                <CFormLabel htmlFor="">
-                Father Name
-                </CFormLabel>
-                <CFormInput
-                  required
-                  value={fatherName}
-                  id="fatherName"
-                  type="text"
-                  onChange={(e) => {
-                    setFatherName(e.target.value);
-                  }}
-                />
-              </CCol>
-              <CCol md={6}>
                 <CFormLabel htmlFor="program">
-                Program
+                  Program
                 </CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   value={program}
                   id="program"
                   type="text"
-                  onChange={(e) => {
-                    setProgram(e.target.value);
-                  }}
+
                 />
               </CCol>
 
               <CCol md={6}>
                 <CFormLabel htmlFor="section">
-               Section 
+                  Section
                 </CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   value={section}
                   id="section"
                   type="text"
-                  onChange={(e) => {
-                    setSection(e.target.value);
-                  }}
-                />
-              </CCol>
-              
 
-              <CCol md={6}>
-                <CFormLabel htmlFor="nic">
-                NIC
-                </CFormLabel>
-                <CFormInput
-                  required
-                  value={nic}
-                  id="nic"
-                  type="text"
-                  maxlength="13"
-                  pattern="[0-9]*"
-                  placeholder="XXXXXXXXXXXX (13-digits without dashes)"
-                  onChange={(e) => {
-                    setNic(e.target.value);
-                  }}
                 />
               </CCol>
 
               <CCol md={6}>
                 <CFormLabel htmlFor="cellNumber">
-              Cell Number
+                  Cell Number
                 </CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   value={cellNumber}
                   id="cellNumber"
                   type="text"
                   placeholder="0303XXXXXXX"
                   pattern="[0-9]*"
                   maxlength="11"
-                  onChange={(e) => {
-                    setCellNumber(e.target.value);
-                  }}
+
                 />
               </CCol>
 
               <CCol md={6}>
                 <CFormLabel htmlFor="mailingAddress">
-                Mailing Address
+                  Mailing Address
                 </CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   value={mailingAddress}
                   id="mailingAddress"
                   type="text"
-                  onChange={(e) => {
-                    setMailingAddress(e.target.value);
-                  }}
+
                 />
               </CCol>
 
               <CCol md={6}>
                 <CFormLabel htmlFor=" permanentAddress}">
-              Permanent Address
+                  Permanent Address
                 </CFormLabel>
                 <CFormInput
-                  required
+                  readOnly
                   value={permanentAddress}
                   id="permanentAddress"
                   type="text"
-                  onChange={(e) => {
-                    setPermanentAddress(e.target.value);
-                  }}
+
                 />
               </CCol>
-              <CCol md={12}>
-                <CFormLabel htmlFor="description">Description</CFormLabel>
-                <CFormTextarea
-                  required
-                  id="description"
-                  rows="5"
-                  onChange={(e) => {
-                    setDescription(e.target.value);
-                  }}
-                  value={description}
-                ></CFormTextarea>
+              <CFormCheck id="flexCheckChecked" label="Confirm that all the details are updated!" defaultChecked />
+              <CCol md={12} >
+                <a href={ExampleDoc} download="MyExampleDoc" target='_blank'>
+                  <CButton color="primary">
+                    Download Applicaion Form
+                  </CButton>
+                </a>
               </CCol>
 
-              <CCol md={12}>
-                <CFormLabel htmlFor="description">Eligibility</CFormLabel>
-                <CFormTextarea
-                  required
-                  id="description"
-                  rows="3"
-                  onChange={(e) => {
-                    setEligibility(e.target.value);
-                  }}
-                  value={eligibility}
-                ></CFormTextarea>
-                <CFormLabel htmlFor="description">Check only those programs which are elegible for this scholarship</CFormLabel>
-                <br></br>
-                {programs.map((values) => {
-                  return (
-                    <>
-                      <label>
-                        <Checkbox
-                          name="my-checkbox"
-                          // defaultChecked
-                          onChange={onChange}
-                          disabled={disabled}
-                          value={values}
-                        />
-                        &nbsp; {values}&nbsp;&nbsp;&nbsp;
-                      </label>
-                    </>
-                  )
-                })}
-                {/* <label>
-                <Checkbox
-                  name="my-checkbox"
-                  // defaultChecked
-                  onChange={onChange}
-                  disabled={disabled}
-                  value="BBA"
-                />
-                &nbsp; BBA
-                </label> */}
-
-                {/* <button onClick={toggle}>Check and Uncheck all</button> */}
-
-              </CCol>
-
-              <CCol md={12}>
-                <CFormLabel htmlFor="inputDob">Tags</CFormLabel>
-                <CFormInput
-                  required
-                  value={tags}
-                  id="inputStartDate"
-                  type="text"
-                  onChange={(e) => {
-                    let next = e.target.value.split(",");
-                    setTags(next);
-                  }}
-                />
-              </CCol>
-              <br />
-              <br />
-
-              <CCol md={12}>
-                <CFormLabel htmlFor="formFile">Load Poster Image</CFormLabel>
-                <DropzoneArea
-                  required
-                  acceptedFiles={["image/*"]}
-                  dropzoneText={"Drag and drop an image here or click"}
-                  onChange={(files) => {
-                    // console.log("Files:", files);
-                    setPoster(files);
-                  }}
-                />
-              </CCol>
-              <br />
-              <br />
-              <br />
-              {validated == true ? (
-                <>
-                  <span style={{ "font-size": "14px", color: "red" }}>
-                    *Please fill all the fields and upload a poster!
-                  </span>
-                </>
-              ) : (
-                <></>
-              )}
-              <CButton type="submit" color="primary">
-                Post Scholarship
-              </CButton>
             </CForm>
           )}
         </CCardBody>
       </CCard>
+
+
+      {/* <prev>{JSON.stringify(checkedPrograms, null, 2)}</prev> */}
+      {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
+      {/*
+      
       <prev>{JSON.stringify(regNo, null, 2)}</prev>
       <prev>{JSON.stringify(firstName, null, 2)}</prev>
       <prev>{JSON.stringify(lastName, null, 2)}</prev>
@@ -507,11 +382,8 @@ setLoading(false)
       <prev>{JSON.stringify(mailingAddress, null, 2)}</prev>
       <prev>{JSON.stringify(permanentAddress, null, 2)}</prev>
       <prev>{JSON.stringify(userID.onlineerfa_student_userID, null, 2)}</prev>
-
-      {/* <prev>{JSON.stringify(checkedPrograms, null, 2)}</prev> */}
-
-      {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
-      {/* <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
+      
+      <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
       <prev>{JSON.stringify(applicationdeadline, null, 2)}</prev>
       <prev>{JSON.stringify(poster, null, 2)}</prev>
       <prev>{JSON.stringify(description, null, 2)}</prev>

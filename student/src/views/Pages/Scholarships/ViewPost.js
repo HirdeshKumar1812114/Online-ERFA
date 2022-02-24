@@ -54,13 +54,13 @@ const Layout = (props) => {
   }
   return (
     <CContainer>
-        {/* <CCardHeader>
+      {/* <CCardHeader>
           <strong>
             <h3>Scholarship Posts</h3>
           </strong>
         </CCardHeader> */}
-        
-          {/* <CTable striped hover responsive>
+
+      {/* <CTable striped hover responsive>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">Title</CTableHeaderCell>
@@ -121,48 +121,45 @@ const Layout = (props) => {
               })}
             </CTableBody>
           </CTable> */}
-          {getPost.map((posts, key) => {
-            return (
-              <>
-      <CCard>
-
+      {getPost.map((posts, key) => {
+        return (
+          <>
+            <CCard>
               <CCardBody>
-              <a style={{'text-decoration': 'none'}} onClick={() => {
-                        localStorage.setItem("viewPostUrl", posts._id);
-                        viewPost()
-                      }}>
-              <CRow>
-                <CCol sm={10}>
-                <h3>
+                <a style={{ 'text-decoration': 'none' }} onClick={() => {
+                  localStorage.setItem("viewPostUrl", posts._id);
+                  viewPost()
+                }}>
+                  <CRow>
+                    <CCol sm={10}>
+                      <h3>
 
                         {posts.title}
-                </h3>
-                      
-                  <p style={{'font-size': '18px', 'margin': '20px' }}>
-                    Start Date: {posts.applicationstart} | 
-                  <span style={{ 'color': 'red' }}> End Date: {posts.applicationdeadline}</span>
-                  </p>
-                  {posts.tags.map((tag, i) => {
+                      </h3>
+
+                      <p style={{ 'font-size': '18px', 'margin': '20px' }}>
+                        Start Date: {posts.applicationstart} |
+                        <span style={{ 'color': 'red' }}> End Date: {posts.applicationdeadline}</span>
+                      </p>
+                      {posts.tags.map((tag, i) => {
                         return (<CBadge color="info" shape="rounded-pill" style={{ 'margin': '4px' }}>{tag}</CBadge>)
                       })
                       }
-                </CCol>
+                    </CCol>
+                    <CCol sm={2}>
+                      <CImage fluid src={`http://localhost:5000/getPoster/${posts.poster}`} />
 
-                <CCol sm={2}>
-                  <CImage fluid src={`http://localhost:5000/getPoster/${posts.poster}`} />
-
-                </CCol>
-              </CRow>
+                    </CCol>
+                  </CRow>
                 </a>
-        </CCardBody>
-</CCard>
-<br/>
+              </CCardBody>
+            </CCard>
+            <br />
+          </>
+        )
+      })}
 
-</>
-            )
-          })}
-  
-      
+
     </CContainer>
   );
 };
