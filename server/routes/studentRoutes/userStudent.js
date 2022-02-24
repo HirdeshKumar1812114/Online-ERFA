@@ -28,5 +28,5 @@ router.post("/announcements");
 router.delete("/delete/:id", studentController.deleteStudent);
 router.get("/find/:id", studentController.getStudent);
 router.put("/edit/:id", studentController.updateStudent);
-router.post("/applyscholarship/:id",studentController.applyForScholarship)
+router.post("/applyscholarship",studentController.applyForScholarship)
 module.exports = router;

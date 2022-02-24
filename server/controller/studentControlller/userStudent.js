@@ -205,18 +205,29 @@ exports.checkResetPassword = expressAsyncHandler(async (req, res) => {
 
 })
 
-exports.applyForScholarship= expressAsyncHandler( async (req,res)=>{
 
+exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
+  console.log(req.body.regid)
+  console.log(req.body.scholarship)
+  const fetchRegid=req.body.regid;
+  const fetchScholarship=req.body.scholarship;
+  
+  try{
+    const addScholarshipToStudent= await db.UserStudent.findOneAndUpdate({regid:fetchRegid},{$push:{scholarship:fetchScholarship}})
 
-  console.log(req.params.id);
+    if(addScholarshipToStudent){
 
-  console.log(req.body.regid);
-  console.log(req.body.scholarship);
-try{
+      res.status(200).send(addScholarshipToStudent)
+      res.end();
+    }else{
 
-}
-catch (error){
-  res.status(500).send({message: error.message})
-}
+      res.status(400).send({message:'Error in Saving!'})
+    }
+
+    
+  }
+  catch(error){
+    res.status(500).send("Error");
+  }
 
 })
