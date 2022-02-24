@@ -204,3 +204,19 @@ exports.checkResetPassword = expressAsyncHandler(async (req, res) => {
   }
 
 })
+
+exports.applyForScholarship= expressAsyncHandler( async (req,res)=>{
+
+
+  console.log(req.params.id);
+
+  console.log(req.body.regid);
+  console.log(req.body.scholarship);
+try{
+
+}
+catch (error){
+  res.status(500).send({message: error.message})
+}
+
+})

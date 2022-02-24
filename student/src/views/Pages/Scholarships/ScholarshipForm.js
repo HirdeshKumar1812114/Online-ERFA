@@ -14,7 +14,9 @@ import {
   CFormInput,
   CFormLabel,
   CFormTextarea,
-  CFormCheck
+  CFormCheck,
+  CProgress,
+  CProgressBar
 } from "@coreui/react";
 
 import Alert from "@mui/material/Alert";
@@ -183,6 +185,7 @@ setLoading(false)
     <CContainer fluid>
       <CCard>
         <CCardHeader>
+     
           <strong>
             <h3>{localStorage.getItem('ScholarshipTitle')} Form</h3>
           </strong>
