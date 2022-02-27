@@ -14,7 +14,9 @@ import {
   CFormInput,
   CFormLabel,
   CFormTextarea,
-  CFormCheck
+  CFormCheck,
+  CProgress,
+  CProgressBar
 } from "@coreui/react";
 import { saveAs } from "file-saver";
 
@@ -192,6 +194,7 @@ const Layout = (props) => {
     <CContainer fluid>
       <CCard>
         <CCardHeader>
+     
           <strong>
             <h3>{localStorage.getItem('ScholarshipTitle')} Form</h3>
           </strong>
