@@ -24,7 +24,7 @@ import { css } from "@emotion/react";
 import axios from "axios";
 import { DropzoneArea } from "material-ui-dropzone";
 
-const override = css`
+const override = css` y
   margin: 0 auto;
 `;
 
