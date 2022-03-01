@@ -16,5 +16,8 @@ module.exports = {
   UserPanelist: require("./panelistModels/userPanelist"),
   UserStudent: require("./studentModels/userStudent"),
   VerificationStudent: require("./studentModels/verificationStudent"),
-  Interview: require("./erfaModels/interview")
+  Interview: require("./erfaModels/interview"),
+  Token: require("./erfaModels/token"),
+  ScholarshipForm: require("./studentModels/scholarshipForm")
+
 };

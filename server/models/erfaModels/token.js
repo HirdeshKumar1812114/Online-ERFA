@@ -6,5 +6,5 @@ date:{type:String,required:true},
 venue:{type:String,required:true}
 })
 
-const Token = mongoose.model('Token',TokenSchema)
-module.exports=Token;
+const token = mongoose.model('Token',TokenSchema)
+module.exports=token;
