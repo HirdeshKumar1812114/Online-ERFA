@@ -231,3 +231,26 @@ exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
   }
 
 })
+
+exports.getStudentAppliedScholarship= expressAsyncHandler(async function (req, res, next){
+  console.log(req.body.regid);
+  try{
+
+const fetchDocumenets=await db.UserStudent.findOne({regid:req.body.regid})
+if(fetchDocumenets){
+console.log(fetchDocumenets.scholarship);
+res.status(200).send(fetchDocumenets.scholarship)
+res.end();
+
+
+}else{
+  res.status(400).send({message:'Unable to fetch Students Applied Scholarship!'})
+}
+
+  }
+  catch (error){
+
+    res.status(500).send({message:error.message});
+    res.end();
+  }
+})
