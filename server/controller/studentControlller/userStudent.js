@@ -214,7 +214,7 @@ exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
   
 
 
-  const checkScholarship= await db.UserStudent.find({regid:regid})
+  const checkScholarship= await db.UserStudent.find({regid:fetchRegid})
   console.log(checkScholarship)
   try{
 
@@ -229,7 +229,8 @@ exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
     //   res.end();
     // }
     if(checkScholarship){
-       res.status(200).send({message:checkScholarship})
+console.log(checkScholarship.scholarship[0])
+      res.status(200).send({message:checkScholarship})
        res.end();
     }
 
