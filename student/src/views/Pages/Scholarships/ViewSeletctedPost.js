@@ -36,6 +36,7 @@ const Layout = (props) => {
   const [loading, setLoading] = useState(false);
   const [poststoDelete, setpoststoDel] = useState("");
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
+  const [regID, setRegID] = useState(["onlineerfa_student_userID"]);
   const [visible, setVisible] = useState(false);
   const [scholarshipId, setScholarshipId]= useState("");
   const [studentId, setStudentId] = useState("");
@@ -109,7 +110,9 @@ if(studentEligibility===true){
     api
     .post(`student_scholarship/check_eligibility`,
     {program:studentProgram,
-     scholarship:scholarshipId},
+     scholarship:scholarshipId,
+     regid:userID.onlineerfa_student_userRegID
+    },
      setLoading(true)
     
     )
@@ -237,7 +240,7 @@ if(studentEligibility===true){
        
       </CCard>
       {/* <prev >{JSON.stringify(username, null, 2)}</prev>
-      <prev >{JSON.stringify(studentId, null, 2)}</prev>
+      <prev >{JSON.stringify(userID.onlineerfa_student_userRegID, null, 2)}</prev>
       <prev >{JSON.stringify(studentProgram, null, 2)}</prev>
       <prev >{JSON.stringify(scholarshipId, null, 2)}</prev>
       <prev>{JSON.stringify(studentEligibility, null, 2)}</prev>

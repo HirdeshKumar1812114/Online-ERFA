@@ -212,14 +212,29 @@ exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
   const fetchRegid=req.body.regid;
   const fetchScholarship=req.body.scholarship;
   
+
+
+  const checkScholarship= await db.UserStudent.find({regid:fetchRegid})
+  console.log(checkScholarship)
   try{
-    const addScholarshipToStudent= await db.UserStudent.findOneAndUpdate({regid:fetchRegid},{$push:{scholarship:fetchScholarship}})
 
-    if(addScholarshipToStudent){
 
-      res.status(200).send(addScholarshipToStudent)
-      res.end();
-    }else{
+
+
+    // const addScholarshipToStudent= await db.UserStudent.findOneAndUpdate({regid:fetchRegid},{$push:{scholarship:fetchScholarship}})
+
+    // if(addScholarshipToStudent){
+
+    //   res.status(200).send({message:'User is Eligible'})
+    //   res.end();
+    // }
+    if(checkScholarship){
+console.log(checkScholarship.scholarship[0])
+      res.status(200).send({message:checkScholarship})
+       res.end();
+    }
+
+    else{
 
       res.status(400).send({message:'Error in Saving!'})
     }

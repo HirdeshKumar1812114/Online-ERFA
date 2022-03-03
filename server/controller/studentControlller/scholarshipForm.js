@@ -227,3 +227,28 @@ exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
     res.status(400).a
   }
 })
+
+
+exports.fetchStudentScholarshipForm= expressAsyncHandler(async (req, res, next) => {
+
+  const scholarship=req.body.scholarship;
+  const student=req.body.student;
+  console.log(student);
+  console.log(scholarship);
+  try{
+const fetchApplication= await db.ScholarshipForm.findOne({scholarship:scholarship,student:student});
+if(fetchApplication){
+res.status(200).send(fetchApplication);
+res.end();
+
+} else{
+
+  res.status(404).send({message:"Not Found!"})
+  res.end();
+} 
+}
+  catch(error){
+res.status(500).send({message: error.message })
+res.end();
+  }
+})
