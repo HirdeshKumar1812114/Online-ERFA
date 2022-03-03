@@ -214,23 +214,24 @@ exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
   
 
 
-  const checkScholarship= await db.UserStudent.find({regid:fetchRegid})
-  console.log(checkScholarship)
+  const checkScholarship= await db.UserStudent.find({regid:fetchRegid,scholarship:{$elemMatch:{$eq:fetchScholarship}}})
   try{
-
-
-
-
+    
+    
+    
+    
     // const addScholarshipToStudent= await db.UserStudent.findOneAndUpdate({regid:fetchRegid},{$push:{scholarship:fetchScholarship}})
-
+    
     // if(addScholarshipToStudent){
-
-    //   res.status(200).send({message:'User is Eligible'})
-    //   res.end();
-    // }
-    if(checkScholarship){
-console.log(checkScholarship.scholarship[0])
-      res.status(200).send({message:checkScholarship})
+      
+      //   res.status(200).send({message:'User is Eligible'})
+      //   res.end();
+      // }
+      if(checkScholarship=== null){
+        
+        console.log(checkScholarship)
+      res.status(200).send(checkScholarship)
+      
        res.end();
     }
 
