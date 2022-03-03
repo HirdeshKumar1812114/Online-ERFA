@@ -9,6 +9,8 @@ router.post(
 router.get("/all", scholarshipFormController.getAllScholarshipForm);
 router.get("/view/:id", scholarshipFormController.getScholarshipForm);
 router.delete("/delete/:id", scholarshipFormController.deleteScholarshipForm);
+router.put("/sendstudentmessage/:id",scholarshipFormController.updateMessageStudent)
+router.put("/sendofficermessage/:id",scholarshipFormController.updateMessageOfficer)
 router.put(
     "/edit/:id",
     scholarshipFormController.uploadForm,

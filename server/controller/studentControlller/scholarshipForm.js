@@ -48,6 +48,9 @@ exports.addScholarshipForm = expressAsyncHandler(async (req, res, next) => {
   // console.log('uploadFile=>',uploadFilePath);
 console.log(req.body.student)
 console.log(req.body.scholarship)
+console.log(req.body.status)
+console.log(req.body.messageStudent)
+console.log(req.body.messageOfficer)
 
  checkTitle=req.body.student
   if (checkTitle) {
@@ -55,6 +58,9 @@ console.log(req.body.scholarship)
       student: req.body.student,
       scholarship:req.body.scholarship,
       form: req.file.filename,
+      status: req.body.status,
+      messageStudent: req.body.messageStudent,
+      messageOfficer:req.body.messageOfficer
      
     });
 
@@ -123,6 +129,9 @@ exports.updateScholarshipForm = async (req, res) => {
           student: req.body.student,
           scholarship:req.body.scholarship,
           form: req.file.filename,
+          status: req.body.status,
+          messageStudent: req.body.messageStudent,
+          messageOfficer:req.body.messageOfficer
         }
       );
       if (updateDetails) {
@@ -151,6 +160,9 @@ exports.updateScholarshipForm = async (req, res) => {
         {
           student: req.body.student,
           scholarship:req.body.scholarship,
+          status: req.body.status,
+          messageStudent: req.body.messageStudent,
+          messageOfficer:req.body.messageOfficer
           
         }
       );
@@ -168,3 +180,50 @@ exports.updateScholarshipForm = async (req, res) => {
     }
   }
 };
+
+exports.updateMessageStudent= expressAsyncHandler(async (req, res, next) => {
+  const getId=req.params.id;
+  try{
+    console.log(getId)
+    const getMessageStudent = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
+      messageStudent: req.body.messageStudent
+    })
+    if(getMessageStudent){
+      console.log(getMessageStudent)
+      res.status(200).send({message:"Student sent message success!"})
+      res.end()
+    }
+    else{
+      res.status(400).send({message: "No message from Student."})
+      res.end()
+    }
+
+  }
+  catch(error){
+    res.status(400).a
+  }
+})
+
+
+exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
+  const getId=req.params.id;
+  try{
+    console.log(getId)
+    const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
+      messageOfficer:req.body.messageOfficer
+    })
+    if(getMessageOfficer){
+      console.log(getMessageOfficer)
+      res.status(200).send({message:"Officer sent message success!"})
+      res.end()
+    }
+    else{
+      res.status(400).send({message: "No message from Student."})
+      res.end()
+    }
+
+  }
+  catch(error){
+    res.status(400).a
+  }
+})
