@@ -94,7 +94,7 @@ const Layout = (props) => {
         setEmail(res.data.email)
         setCellNumber(res.data.cellnumber)
         // setStudentData(res.data)
-        localStorage.setItem('student_info', JSON.stringify(res.data) )
+        localStorage.setItem('student_id', JSON.stringify(res.data.regid))
         setLoading(false)
       })
       .catch((error) => console.log(error));

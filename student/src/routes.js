@@ -22,6 +22,9 @@ const MyScholarship = React.lazy(() =>
 import("./views/Pages/Scholarships/MyScholarship")
 );
 
+const MySelectedScholarship = React.lazy(() =>
+import("./views/Pages/Scholarships/MySelectedScholarship")
+);
 
 // ROUTES
 
@@ -51,7 +54,13 @@ const routes = [
     path: "/scholarship/my-applications",
     name: "My Applications",
     component: MyScholarship,
+  },
+  {
+    path: "/scholarship/selected-applications",
+    name: "Selected Application",
+    component: MySelectedScholarship,
   }
+   
    
 
 ];
