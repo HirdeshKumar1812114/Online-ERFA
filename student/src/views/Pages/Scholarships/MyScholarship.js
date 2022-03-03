@@ -30,16 +30,14 @@ const override = css` y
   margin: 0 auto;
 `;
 
+import ExampleDoc from 'assets/files/need-based.pdf'
 
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
 
 const Layout = (props) => {
-  const downloadFile = () => {
-    window.location.href = ExampleDoc
-  }
- 
+  
   let [color, setColor] = useState("#49A54D");
 
   const [loading, setLoading] = useState(false);
@@ -56,10 +54,10 @@ const Layout = (props) => {
   const [disabled, setDisabled] = useState(false);
 
 
+  const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
 
   //Scholarship Form
   const [regNo, setRegNo] = useState('');
-  const [appliedScholarships, setAppliedScholarships] = useState([])
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [dob, setDob] = useState('');
@@ -72,26 +70,17 @@ const Layout = (props) => {
   const [permanentAddress, setPermanentAddress] = useState('');
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
   const [email, setEmail] = useState('');
-
+  const [studentData, setStudentData] =useState('')
   useEffect(() => {
+   setStudentData(localStorage.getItem('student_info')))
+   console.log(JSON.parse(JSON.stringify(studentData)))
     api
-      .get(`student/appliedscholarships`, {regid:regNo},setLoading(true))
+      .post('student/appliedscholarships',{regid:regNo}, setLoading(true))
       .then((res) => {
-        setRegNo(res.data.regid)
-        setFirstName(res.data.firstname)
-        setLastName(res.data.lastname)
-        setFatherName(res.data.fathername)
-        setDob(res.data.dob)
-        setSection(res.data.section)
-        setProgram(res.data.program)
-        setPermanentAddress(res.data.permanentaddress)
-        setMailingAddress(res.data.mailingaddress)
-        setEmail(res.data.email)
-        setCellNumber(res.data.cellnumber)
         setLoading(false)
       })
       .catch((error) => console.log(error));
-
+      
   }, [regNo]);
 
   const handleSubmit = (event) => {
@@ -186,11 +175,12 @@ const Layout = (props) => {
   };
   return (
     <CContainer fluid>
+        {console.log(localStorage.getItem('student_info'))}
       <CCard>
         <CCardHeader>
      
           <strong>
-            <h3>{localStorage.getItem('My Applications')} Form</h3>
+            <h3> My Scholarship</h3>
           </strong>
         </CCardHeader>
         <CCardBody>
@@ -206,11 +196,8 @@ const Layout = (props) => {
               <br />
             </>
           ) : (
-           <>
-           <h1>
-               
-           </h1>
-           </>
+            <>
+            </>
           )}
         </CCardBody>
       </CCard>

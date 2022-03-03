@@ -62,7 +62,6 @@ const Layout = (props) => {
   const [disabled, setDisabled] = useState(false);
 
 
-  const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
 
   //Scholarship Form
   const [regNo, setRegNo] = useState('');
@@ -78,7 +77,7 @@ const Layout = (props) => {
   const [permanentAddress, setPermanentAddress] = useState('');
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
   const [email, setEmail] = useState('');
-
+  const [studentData, setStudentData] =useState('')
   useEffect(() => {
     api
       .get(`student/find/${userID.onlineerfa_student_userID}`, setLoading(true))
@@ -94,102 +93,16 @@ const Layout = (props) => {
         setMailingAddress(res.data.mailingaddress)
         setEmail(res.data.email)
         setCellNumber(res.data.cellnumber)
+        // setStudentData(res.data)
+        localStorage.setItem('student_info', JSON.stringify(res.data) )
         setLoading(false)
       })
       .catch((error) => console.log(error));
-
+      
   }, [regNo]);
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    event.preventDefault();
-    if (form.checkValidity() === false || checkedPrograms.length == 0) {
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      setValidated(false);
-      submitData();
-    }
-  };
 
-  const onChange = (e) => {
-    let { checked, value } = e.target
-    // console.log('Checkbox checked:', (checked));
-    // console.log('Value', value);
 
-    if (checked == true) {
-      setPorgrams((checkedPrograms) => ([...checkedPrograms, e.target.value]))
-    }
-    else {
-      const arr = checkedPrograms.filter((item) => item !== value);
-      setPorgrams(arr);
-    }
-  }
-
-  const toggle = () => {
-    setDisabled(!disabled)
-  }
-
-  const handleOnChange = () => {
-    setIsChecked(!isChecked);
-  };
-
-  const submitData = () => {
-    //  console.log('poster1==>',poster);
-    // console.log('poster.length==>',);
-    // console.log(checkedPrograms.length);
-    if (poster.length !== 0) {
-      var data = new FormData();
-      data.append("poster", poster[0]);
-      data.append("title", title);
-      data.append("applicationstart", applicationstart);
-      data.append("applicationdeadline", applicationdeadline);
-      data.append("eligibility", eligibility);
-      data.append("description", description);
-      data.append("tags", tags);
-      data.append("checkedPrograms", checkedPrograms)
-
-      // console.log("FormData ==>", data);
-      // for (var value of data.values()) {
-      //   console.log('loop values==>', value);
-      // }
-
-      const config = {
-        headers: { "content-type": "multipart/form-data" },
-      };
-
-      api
-        .post("scholarship/add", data, setLoading(true), config)
-        .then((result) => {
-          // console.log("Data Posted in DB");
-          // console.log("Response==>", result);
-          setLoading(false);
-          if (result.data.message == "alreadExisted") {
-            window.alert("Scholarship with this title already exist!");
-          } else {
-            window.alert("Scholarship posted!");
-            setTitle("");
-            setApplicationStart("");
-            setApplicationEnd("");
-            setPoster("");
-            setDescription("");
-            setEligibility("");
-            setTags("");
-            setValidated(false);
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-          window.alert("Connection Error!");
-
-          // console.log("Error occured : ", err);
-        });
-    } else {
-      setValidated(true);
-      setLoading(false);
-      // window.alert("Please upload poster.");
-    }
-  };
   return (
     <CContainer fluid>
       <CCard>
@@ -214,9 +127,6 @@ const Layout = (props) => {
           ) : (
             <CForm
               className="row g-3 needs-validation"
-              noValidate
-              validated={validated}
-              onSubmit={handleSubmit}
             >
 
               <CCol md={6}>
