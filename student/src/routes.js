@@ -30,7 +30,9 @@ import("./views/Pages/Scholarships/MySelectedScholarship")
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
-  { path: "/announcements", name: "Announcements", component: Dashboard },
+  { path: "/announcements", 
+  name: "Announcements", 
+  component: Dashboard },
 
   // Scholarships Routes
   {
@@ -39,7 +41,9 @@ const routes = [
     component: Scholarship,
     exact: true,
   },
-  { path: "/scholarship/list-posts", name: "List Posts", component: ViewPost },
+  { path: "/scholarship/list-posts",
+    name: "List Posts", 
+    component: ViewPost },
   {
     path: "/scholarship/view-post",
     name: "View Posts",

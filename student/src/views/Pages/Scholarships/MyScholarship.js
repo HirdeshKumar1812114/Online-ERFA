@@ -33,16 +33,15 @@ const override = css` y
   margin: 0 auto;
 `;
 
-import ExampleDoc from 'assets/files/need-based.pdf'
 
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
-const viewPost = () => {
-  props.history.push("selected-application");
-}
 const Layout = (props) => {
-  
+  const viewPost = () => {
+    props.history.push("selected-applications");
+  }
+
   let [color, setColor] = useState("#49A54D");
   const [loading, setLoading] = useState(false);
   const [regNo, setRegNo] = useState('');
@@ -50,11 +49,11 @@ const Layout = (props) => {
   const [scholarships, setScholarships] = useState([]);
 
   useEffect(() => {
-   var regNo = localStorage.getItem('student_id')
-   // console.log(JSON.stringify(regNo))
-  //  // console.log('regid=>',studentData.regid)
+    var regNo = localStorage.getItem('student_id')
+    // console.log(JSON.stringify(regNo))
+    //  // console.log('regid=>',studentData.regid)
     api
-      .post('student/appliedscholarships',{regid:JSON.parse(regNo)})
+      .post('student/appliedscholarships', { regid: JSON.parse(regNo) })
       .then((res) => {
         setLoading(false)
         setApplied(res.data)
@@ -64,95 +63,83 @@ const Layout = (props) => {
 
         // console.log(error)
       });
-      
+
   }, [regNo]);
 
   useEffect(() => {
     let lengthofarry = applied.length
     // console.log(lengthofarry)
-    for(let i = 0; i< lengthofarry; i++){
-     // console.log( applied[i])
-     api
-      .get(`scholarship/view/${applied[i]}`, setLoading(true))
-      .then((res) => {
-        setLoading(false)
+    for (let i = 0; i < lengthofarry; i++) {
+      // console.log( applied[i])
+      api
+        .get(`scholarship/view/${applied[i]}`, setLoading(true))
+        .then((res) => {
+          setLoading(false)
 
-        setScholarships((scholarships) => ([...scholarships, res.data]))
-      })
-      .catch((error) => {
-        setLoading(false)
-        
-        // console.log(error)
-      });
+          setScholarships((scholarships) => ([...scholarships, res.data]))
+        })
+        .catch((error) => {
+          setLoading(false)
+
+          // console.log(error)
+        });
     }
 
   }, [applied]);
-  
+
   return (
     <CContainer fluid>
-     
-      <CCard>
-        <CCardHeader>
-     
-          <strong>
-            <h3> My Scholarship</h3>
-          </strong>
-        </CCardHeader>
-        <CCardBody>
-          {loading == true ? (
-            <>
-              <br />
-              <RingLoader color={color} css={override} size={100} />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-            </>
-          ) : (
-            <>
-            {scholarships.map((posts, key) => {
-        return (
-          <>
-            <CCard>
-              <CCardBody>
-                <a style={{ 'text-decoration': 'none' }} onClick={() => {
-                  localStorage.setItem("viewPostUrl", posts._id);
-                  viewPost()
-                }}>
-                  <CRow>
-                    <CCol sm={10}>
-                      <h3>
 
-                        {posts.title}
-                      </h3>
+      {loading == true ? (
+        <>
+          <br />
+          <RingLoader color={color} css={override} size={100} />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </>
+      ) : (
+        <>
+          {scholarships.map((posts, key) => {
+            return (
+              <a style={{ 'text-decoration': 'none' }} onClick={() => {
+                localStorage.setItem("viewPostUrl", posts._id);
+                viewPost()
+              }}>
+                <CCard>
+                  <CCardBody>
+                    <CRow>
+                      <CCol sm={10}>
+                        <h3>
+                          {posts.title}
+                        </h3>
+                        <p style={{ 'font-size': '18px', 'margin': '20px' }}>
+                          Start Date: {posts.applicationstart} |
+                          <span style={{ 'color': 'red' }}> End Date: {posts.applicationdeadline}</span>
+                        </p>
+                        {posts.tags.map((tag, i) => {
+                          return (<CBadge color="info" shape="rounded-pill" style={{ 'margin': '4px' }}>{tag}</CBadge>)
+                        })
+                        }
+                      </CCol>
+                      <CCol sm={2}>
+                        <CImage fluid src={`http://localhost:5000/getPoster/${posts.poster}`} />
 
-                      <p style={{ 'font-size': '18px', 'margin': '20px' }}>
-                        Start Date: {posts.applicationstart} |
-                        <span style={{ 'color': 'red' }}> End Date: {posts.applicationdeadline}</span>
-                      </p>
-                      {posts.tags.map((tag, i) => {
-                        return (<CBadge color="info" shape="rounded-pill" style={{ 'margin': '4px' }}>{tag}</CBadge>)
-                      })
-                      }
-                    </CCol>
-                    <CCol sm={2}>
-                      <CImage fluid src={`http://localhost:5000/getPoster/${posts.poster}`} />
+                      </CCol>
+                    </CRow>
+                  </CCardBody>
+                </CCard>
+                <br />
+              </a>
+            )
+          })}
+        </>
+      )}
 
-                    </CCol>
-                  </CRow>
-                </a>
-              </CCardBody>
-            </CCard>
-            <br />
-          </>
-        )
-      })}
-            </>
-          )}
-        </CCardBody>
-      </CCard>
+
 
 
       {/* <prev>{JSON.stringify(checkedPrograms, null, 2)}</prev> */}
