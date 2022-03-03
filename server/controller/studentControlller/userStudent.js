@@ -207,37 +207,45 @@ exports.checkResetPassword = expressAsyncHandler(async (req, res) => {
 
 
 exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
-  console.log(req.body.regid)
-  console.log(req.body.scholarship)
+  // // console.log(req.body.regid)
+  // // console.log(req.body.scholarship)
   const fetchRegid=req.body.regid;
   const fetchScholarship=req.body.scholarship;
   
 
 
-  const checkScholarship= await db.UserStudent.find({regid:fetchRegid,scholarship:{$elemMatch:{$eq:fetchScholarship}}})
+  const checkScholarship= await db.UserStudent.findOne({regid:fetchRegid,scholarship:{$elemMatch:{$eq:fetchScholarship}}})
   try{
     
     
     
+ 
+ 
+      console.log(checkScholarship)
     
-    // const addScholarshipToStudent= await db.UserStudent.findOneAndUpdate({regid:fetchRegid},{$push:{scholarship:fetchScholarship}})
+      if(checkScholarship===null){
+        const addScholarshipToStudent= await db.UserStudent.findOneAndUpdate({regid:fetchRegid},{$push:{scholarship:fetchScholarship}})
     
-    // if(addScholarshipToStudent){
-      
-      //   res.status(200).send({message:'User is Eligible'})
-      //   res.end();
-      // }
-      if(checkScholarship !== null){
-        
-        console.log(checkScholarship)
-      res.status(200).send(checkScholarship)
-      
-       res.end();
+        if(addScholarshipToStudent){
+          
+            res.status(200).send({message:'User is Eligible'})
+            res.end();
+          }
+          else{
+            res.status(400).send({message:'Error in Saving!'})
+            res.end()
+          }
     }
 
     else{
+      res.status(200).send({message:'User has already applied for scholarship'})
+      res.end()
 
-      res.status(400).send({message:'Error in Saving!'})
+
+
+    
+
+
     }
 
     

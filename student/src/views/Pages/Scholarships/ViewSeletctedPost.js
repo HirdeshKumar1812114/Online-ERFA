@@ -118,7 +118,7 @@ if(studentEligibility===true){
     )
     .then((result)=>{
 
- if(result.data.message==='User is Eligible')
+ if(result.data.message==='User is Eligible' || 'User has already applied for scholarship')
 {
   console.log('User is Eligible')
   setStudentEligibility(true)

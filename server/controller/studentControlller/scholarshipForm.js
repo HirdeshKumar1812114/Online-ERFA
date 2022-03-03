@@ -4,7 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const posterPath = "public/uploadScholarshipForm";
 const fs = require("fs");
-const maxSize = 2 * 1024 * 1024; // for 1MB
+const maxSize = 10 * 1024 * 1024; // for 10MB
 
 const uploadFilePath = path.resolve(__dirname, "../..", posterPath);
 
