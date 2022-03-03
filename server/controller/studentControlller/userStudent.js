@@ -227,7 +227,7 @@ exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
       //   res.status(200).send({message:'User is Eligible'})
       //   res.end();
       // }
-      if(checkScholarship=== null){
+      if(checkScholarship !== null){
         
         console.log(checkScholarship)
       res.status(200).send(checkScholarship)
