@@ -38,9 +38,7 @@ import ExampleDoc from 'assets/files/need-based.pdf'
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
-const viewPost = () => {
-  props.history.push("selected-application");
-}
+
 const Layout = (props) => {
   
   let [color, setColor] = useState("#49A54D");
@@ -95,7 +93,7 @@ const Layout = (props) => {
         <CCardHeader>
      
           <strong>
-            <h3> My Scholarship</h3>
+            <h3> Scholarship Dashboard</h3>
           </strong>
         </CCardHeader>
         <CCardBody>
@@ -112,43 +110,7 @@ const Layout = (props) => {
             </>
           ) : (
             <>
-            {scholarships.map((posts, key) => {
-        return (
-          <>
-            <CCard>
-              <CCardBody>
-                <a style={{ 'text-decoration': 'none' }} onClick={() => {
-                  localStorage.setItem("viewPostUrl", posts._id);
-                  viewPost()
-                }}>
-                  <CRow>
-                    <CCol sm={10}>
-                      <h3>
-
-                        {posts.title}
-                      </h3>
-
-                      <p style={{ 'font-size': '18px', 'margin': '20px' }}>
-                        Start Date: {posts.applicationstart} |
-                        <span style={{ 'color': 'red' }}> End Date: {posts.applicationdeadline}</span>
-                      </p>
-                      {posts.tags.map((tag, i) => {
-                        return (<CBadge color="info" shape="rounded-pill" style={{ 'margin': '4px' }}>{tag}</CBadge>)
-                      })
-                      }
-                    </CCol>
-                    <CCol sm={2}>
-                      <CImage fluid src={`http://localhost:5000/getPoster/${posts.poster}`} />
-
-                    </CCol>
-                  </CRow>
-                </a>
-              </CCardBody>
-            </CCard>
-            <br />
-          </>
-        )
-      })}
+           
             </>
           )}
         </CCardBody>
