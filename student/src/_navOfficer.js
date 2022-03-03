@@ -39,6 +39,11 @@ const _navOfficer = [
         name: 'List Posts',
         to: '/scholarship/list-posts',
       },
+      {
+        component: CNavItem,
+        name: 'My Applications',
+        to: '/scholarship/my-applications',
+      },
     ],
   },
   ]
