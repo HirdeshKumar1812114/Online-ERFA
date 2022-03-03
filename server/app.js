@@ -12,7 +12,9 @@ var panelistRouter = require("./routes/panelistRoutes/userPanelist");
 var erfaOfficerRouter = require("./routes/erfaRoutes/erfaOfficerDetails");
 var scholarshipPostRouter = require("./routes/erfaRoutes/scholarshipPost");
 var studentScholarship = require("./routes/studentRoutes/scholarship");
-
+var interview = require("./routes/erfaRoutes/interview")
+var token = require("./routes/erfaRoutes/token")
+var scholarshipForm= require("./routes/studentRoutes/scholarshipForm")
 
 var cors = require("cors");
 var app = express();
@@ -43,7 +45,11 @@ app.use("/panelist", panelistRouter);
 app.use("/officer", erfaOfficerRouter);
 app.use("/scholarship", scholarshipPostRouter);
 app.use('/student_scholarship',studentScholarship)
+app.use('/interview',interview);
+app.use('/token',token);
+app.use('/scholarship-form',scholarshipForm);
 app.use("/getPoster", express.static("public/uploadScholarshipPoster/"));
+app.use("/getForm", express.static("public/uploadScholarshipForm/"));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

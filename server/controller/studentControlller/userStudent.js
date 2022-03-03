@@ -204,3 +204,53 @@ exports.checkResetPassword = expressAsyncHandler(async (req, res) => {
   }
 
 })
+
+
+exports.applyForScholarship= expressAsyncHandler(async (req, res)=>{
+  console.log(req.body.regid)
+  console.log(req.body.scholarship)
+  const fetchRegid=req.body.regid;
+  const fetchScholarship=req.body.scholarship;
+  
+  try{
+    const addScholarshipToStudent= await db.UserStudent.findOneAndUpdate({regid:fetchRegid},{$push:{scholarship:fetchScholarship}})
+
+    if(addScholarshipToStudent){
+
+      res.status(200).send(addScholarshipToStudent)
+      res.end();
+    }else{
+
+      res.status(400).send({message:'Error in Saving!'})
+    }
+
+    
+  }
+  catch(error){
+    res.status(500).send("Error");
+  }
+
+})
+
+exports.getStudentAppliedScholarship= expressAsyncHandler(async function (req, res, next){
+  console.log(req.body.regid);
+  try{
+
+const fetchDocumenets=await db.UserStudent.findOne({regid:req.body.regid})
+if(fetchDocumenets){
+console.log(fetchDocumenets.scholarship);
+res.status(200).send(fetchDocumenets.scholarship)
+res.end();
+
+
+}else{
+  res.status(400).send({message:'Unable to fetch Students Applied Scholarship!'})
+}
+
+  }
+  catch (error){
+
+    res.status(500).send({message:error.message});
+    res.end();
+  }
+})
