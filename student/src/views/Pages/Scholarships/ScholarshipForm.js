@@ -77,7 +77,7 @@ const Layout = (props) => {
   const [permanentAddress, setPermanentAddress] = useState('');
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
   const [email, setEmail] = useState('');
-  const [studentData, setStudentData] =useState('')
+  const [studentData, setStudentData] = useState('')
   useEffect(() => {
     api
       .get(`student/find/${userID.onlineerfa_student_userID}`, setLoading(true))
@@ -98,16 +98,27 @@ const Layout = (props) => {
         setLoading(false)
       })
       .catch((error) => console.log(error));
-      
+
   }, [regNo]);
 
-
+  const creatApplication = () => {
+    let scholarshipID = localStorage.getItem("viewPostUrl")
+    // console.log('scholarship_id=>',JSON.parse(JSON.stringify(scholarshipID)));
+    // console.log('student_id=>',userID.onlineerfa_student_userID)
+    api.
+      post('scholarship-form/add', {student:userID.onlineerfa_student_userID, scholarship:JSON.parse(JSON.stringify(scholarshipID)) }, setLoading(true))
+      .then((res) => {
+        window.alert('Application Created')
+        props.history.push('my-applications')
+      })
+      .catch((error) => console.log(error))
+  }
 
   return (
     <CContainer fluid>
       <CCard>
         <CCardHeader>
-     
+
           <strong>
             <h3>{localStorage.getItem('ScholarshipTitle')} Form</h3>
           </strong>
@@ -265,9 +276,10 @@ const Layout = (props) => {
                 />
               </CCol>
               <CFormCheck id="flexCheckChecked" label="Confirm that all the details are updated!" defaultChecked />
-              <CCol md={12} >
+
+              <CCol md={6} >
                 <a href={ExampleDoc} download="MyExampleDoc" target='_blank'>
-                  <CButton color="primary">
+                  <CButton color="primary" onClick={() => { creatApplication() }}>
                     Download Applicaion Form
                   </CButton>
                 </a>
