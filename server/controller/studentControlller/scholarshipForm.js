@@ -154,13 +154,11 @@ exports.updateScholarshipForm = async (req, res) => {
       const updateDetails = await db.ScholarshipForm.findOneAndUpdate(
         { _id: fetchDetails.id },
         {
-          student: req.body.student,
-          scholarship:req.body.scholarship,
+        
           form: req.file.filename,
-          status: req.body.status,
+        
           messageStudent: req.body.messageStudent,
-          messageOfficer:req.body.messageOfficer,
-          applicationComplete:req.body.applicationComplete
+       
         }
       );
       if (updateDetails) {
@@ -187,12 +185,9 @@ exports.updateScholarshipForm = async (req, res) => {
       const updateDetails = await db.ScholarshipForm.findOneAndUpdate(
         { _id: fetchDetails.id },
         {
-          student: req.body.student,
-          scholarship:req.body.scholarship,
-          status: req.body.status,
+     
           messageStudent: req.body.messageStudent,
-          messageOfficer:req.body.messageOfficer,
-          applicationComplete:req.body.applicationComplete
+       
           
         }
       );
