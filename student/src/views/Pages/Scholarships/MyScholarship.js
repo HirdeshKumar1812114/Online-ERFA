@@ -107,6 +107,8 @@ const Layout = (props) => {
             return (
               <a style={{ 'text-decoration': 'none' }} onClick={() => {
                 localStorage.setItem("viewPostUrl", posts._id);
+                localStorage.setItem('ScholarshipTitle', posts.title);
+
                 viewPost()
               }}>
                 <CCard>
