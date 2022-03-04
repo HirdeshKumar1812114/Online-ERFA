@@ -51,7 +51,9 @@ console.log(req.body.scholarship)
 console.log(req.body.status)
 console.log(req.body.messageStudent)
 console.log(req.body.messageOfficer)
-
+console.log(req.body.applicationComplete)
+const chk = req.file;
+if(chk){
  checkTitle=req.body.student
   if (checkTitle) {
     let newForm = new db.ScholarshipForm({
@@ -60,8 +62,8 @@ console.log(req.body.messageOfficer)
       form: req.file.filename,
       status: req.body.status,
       messageStudent: req.body.messageStudent,
-      messageOfficer:req.body.messageOfficer
-     
+      messageOfficer:req.body.messageOfficer,
+      applicationComplete:req.body.applicationComplete
     });
 
     await newForm.save((err, checkTitle) => {
@@ -72,7 +74,33 @@ console.log(req.body.messageOfficer)
     fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
     return res.json({ message: "alreadExisted" });
   }
-});
+}else{
+  checkTitle=req.body.student
+  if (checkTitle) {
+    let newForm = new db.ScholarshipForm({
+      student: req.body.student,
+      scholarship:req.body.scholarship,
+      status: req.body.status,
+      messageStudent: req.body.messageStudent,
+      messageOfficer:req.body.messageOfficer,
+      applicationComplete:req.body.applicationComplete
+    });
+
+    await newForm.save((err, checkTitle) => {
+      if (err) return res.json({ Error: err });
+      return res.json(newForm);
+    });
+  } else {
+  
+    return res.json({ message: "alreadExisted" });
+  }
+}
+
+}
+
+
+
+);
 
    
 exports.getAllScholarshipForm = expressAsyncHandler(async (req, res, next) => {
@@ -131,7 +159,8 @@ exports.updateScholarshipForm = async (req, res) => {
           form: req.file.filename,
           status: req.body.status,
           messageStudent: req.body.messageStudent,
-          messageOfficer:req.body.messageOfficer
+          messageOfficer:req.body.messageOfficer,
+          applicationComplete:req.body.applicationComplete
         }
       );
       if (updateDetails) {
@@ -162,7 +191,8 @@ exports.updateScholarshipForm = async (req, res) => {
           scholarship:req.body.scholarship,
           status: req.body.status,
           messageStudent: req.body.messageStudent,
-          messageOfficer:req.body.messageOfficer
+          messageOfficer:req.body.messageOfficer,
+          applicationComplete:req.body.applicationComplete
           
         }
       );

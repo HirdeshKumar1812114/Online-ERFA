@@ -7,6 +7,7 @@ form:{type: String},
 status: { type: String },
 messageStudent:{type: String},
 messageOfficer:{type: String},
+applicationComplete:{type: String},
 })
 
 const scholarshipForm = mongoose.model('Scholarshipform',scholarshipFormSchema);
