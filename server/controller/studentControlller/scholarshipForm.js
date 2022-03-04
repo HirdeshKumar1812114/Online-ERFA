@@ -45,38 +45,11 @@ exports.uploadForm = multer({
 }).single("form");
 
 exports.addScholarshipForm = expressAsyncHandler(async (req, res, next) => {
-  // console.log('uploadFile=>',uploadFilePath);
-console.log(req.body.student)
-console.log(req.body.scholarship)
-console.log(req.body.status)
-console.log(req.body.messageStudent)
-console.log(req.body.messageOfficer)
-console.log(req.body.applicationComplete)
-const chk = req.file;
-if(chk){
- checkTitle=req.body.student
-  if (checkTitle) {
-    let newForm = new db.ScholarshipForm({
-      student: req.body.student,
-      scholarship:req.body.scholarship,
-      form: req.file.filename,
-      status: req.body.status,
-      messageStudent: req.body.messageStudent,
-      messageOfficer:req.body.messageOfficer,
-      applicationComplete:req.body.applicationComplete
-    });
+const {scholarship,student} = req.body
 
-    await newForm.save((err, checkTitle) => {
-      if (err) return res.json({ Error: err });
-      return res.json(newForm);
-    });
-  } else {
-    fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
-    return res.json({ message: "alreadExisted" });
-  }
-}else{
-  checkTitle=req.body.student
-  if (checkTitle) {
+const checkRecord = await db.ScholarshipForm.findOne({student: student,scholarship:scholarship})
+console.log(checkRecord)
+  if (!checkRecord) {
     let newForm = new db.ScholarshipForm({
       student: req.body.student,
       scholarship:req.body.scholarship,
@@ -96,7 +69,7 @@ if(chk){
   }
 }
 
-}
+
 
 
 
@@ -236,6 +209,8 @@ exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
     console.log(getId)
     const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
       messageOfficer:req.body.messageOfficer
+
+
     })
     if(getMessageOfficer){
       console.log(getMessageOfficer)
@@ -252,6 +227,9 @@ exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
     res.status(500).json({ message: "Error in finding" })
   }
 })
+
+
+
 
 
 exports.updateApplicationComplete= expressAsyncHandler(async (req, res, next) => {
