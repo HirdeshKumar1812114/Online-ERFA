@@ -225,7 +225,7 @@ exports.updateMessageStudent= expressAsyncHandler(async (req, res, next) => {
 
   }
   catch(error){
-    res.status(400).a
+    res.status(500).json({ message: "Error in finding" })
   }
 })
 
@@ -249,10 +249,57 @@ exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
 
   }
   catch(error){
-    res.status(400).a
+    res.status(500).json({ message: "Error in finding" })
   }
 })
 
+
+exports.updateApplicationComplete= expressAsyncHandler(async (req, res, next) => {
+  const getId=req.params.id;
+  try{
+    console.log(getId)
+    const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
+      applicationComplete:req.body.applicationComplete
+    })
+    if(getMessageOfficer){
+      console.log(getMessageOfficer)
+      res.status(200).send({message:"Application State Changed"})
+      res.end()
+    }
+    else{
+      res.status(400).send({message: "No change were made!"})
+      res.end()
+    }
+
+  }
+  catch(error){
+    res.status(500).json({ message: "Error in finding" })
+  }
+})
+
+
+exports.updateStatus= expressAsyncHandler(async (req, res, next) => {
+  const getId=req.params.id;
+  try{
+    console.log(getId)
+    const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
+      status:req.body.status
+    })
+    if(getMessageOfficer){
+      console.log(getMessageOfficer)
+      res.status(200).send({message:"Update State Changed"})
+      res.end()
+    }
+    else{
+      res.status(400).send({message: "No change were made!"})
+      res.end()
+    }
+
+  }
+  catch(error){
+    res.status(500).json({ message: "Error in finding" })
+  }
+})
 
 exports.fetchStudentScholarshipForm= expressAsyncHandler(async (req, res, next) => {
 
