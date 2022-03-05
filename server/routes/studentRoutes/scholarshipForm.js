@@ -17,4 +17,5 @@ router.put(
     scholarshipFormController.uploadForm,
     scholarshipFormController.updateScholarshipForm
   );
+
 module.exports = router;

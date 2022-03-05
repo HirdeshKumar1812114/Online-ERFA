@@ -45,38 +45,11 @@ exports.uploadForm = multer({
 }).single("form");
 
 exports.addScholarshipForm = expressAsyncHandler(async (req, res, next) => {
-  // console.log('uploadFile=>',uploadFilePath);
-console.log(req.body.student)
-console.log(req.body.scholarship)
-console.log(req.body.status)
-console.log(req.body.messageStudent)
-console.log(req.body.messageOfficer)
-console.log(req.body.applicationComplete)
-const chk = req.file;
-if(chk){
- checkTitle=req.body.student
-  if (checkTitle) {
-    let newForm = new db.ScholarshipForm({
-      student: req.body.student,
-      scholarship:req.body.scholarship,
-      form: req.file.filename,
-      status: req.body.status,
-      messageStudent: req.body.messageStudent,
-      messageOfficer:req.body.messageOfficer,
-      applicationComplete:req.body.applicationComplete
-    });
+const {scholarship,student} = req.body
 
-    await newForm.save((err, checkTitle) => {
-      if (err) return res.json({ Error: err });
-      return res.json(newForm);
-    });
-  } else {
-    fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
-    return res.json({ message: "alreadExisted" });
-  }
-}else{
-  checkTitle=req.body.student
-  if (checkTitle) {
+const checkRecord = await db.ScholarshipForm.findOne({student: student,scholarship:scholarship})
+console.log(checkRecord)
+  if (!checkRecord) {
     let newForm = new db.ScholarshipForm({
       student: req.body.student,
       scholarship:req.body.scholarship,
@@ -92,11 +65,11 @@ if(chk){
     });
   } else {
   
-    return res.json({ message: "alreadExisted" });
+    return res.json({ message: "already existed!" });
   }
 }
 
-}
+
 
 
 
@@ -125,7 +98,7 @@ exports.getScholarshipForm = expressAsyncHandler(async (req, res, next) => {
 
 exports.deleteScholarshipForm = async (req, res) => {
   try {
-    const id = req.params.id;
+
     if (id) {
       const prev = await db.ScholarshipForm.findOne({ _id: id });
       console.log(prev.form)
@@ -150,6 +123,7 @@ exports.updateScholarshipForm = async (req, res) => {
     const fetchDetails = await db.ScholarshipForm.findOne({
       _id: req.params.id,
     });
+    console.log(fetchDetails)
     if (fetchDetails) {
       const updateDetails = await db.ScholarshipForm.findOneAndUpdate(
         { _id: fetchDetails.id },
@@ -164,18 +138,16 @@ exports.updateScholarshipForm = async (req, res) => {
       if (updateDetails) {
         // console.log(uploadFilePath + "/" + fetchDetails.poster);
         await fs.promises.unlink(uploadFilePath + "/" + fetchDetails.form);
-        res
-          .status(201)
-          .json({ message: "Updated Successfully Details and Form" })
-          .end();
+        res.status(201).json({ message: "Updated Successfully Details and Form" })
+        res.end();
       } else {
-        res
-          .status(400)
-          .json({ message: "Trouble in saving changes in details" });
+        res.status(400).json({ message: "Trouble in saving changes in details" })
+        res.end();
       }
     } else {
       await fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
       res.status(500).json({ message: "Error in finding" });
+      res.end();
     }
   } else {
     const fetchDetails = await db.ScholarshipForm.findOne({
@@ -194,14 +166,17 @@ exports.updateScholarshipForm = async (req, res) => {
       if (updateDetails) {
         // console.log(uploadFilePath + "/" + fetchDetails.poster);
 
-        res.status(201).json({ message: "Updated Details Successfully" }).end();
+        res.status(201).json({ message: "Updated Details Successfully" })
+        res.end();
       } else {
         res
           .status(400)
           .json({ message: "Trouble in saving changes in details" });
+        res.end();
       }
     } else {
       res.status(500).json({ message: "Error in finding" });
+      res.end();
     }
   }
 };
@@ -225,7 +200,7 @@ exports.updateMessageStudent= expressAsyncHandler(async (req, res, next) => {
 
   }
   catch(error){
-    res.status(400).a
+    res.status(500).json({ message: "Error in finding" })
   }
 })
 
@@ -236,6 +211,8 @@ exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
     console.log(getId)
     const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
       messageOfficer:req.body.messageOfficer
+
+
     })
     if(getMessageOfficer){
       console.log(getMessageOfficer)
@@ -249,10 +226,60 @@ exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
 
   }
   catch(error){
-    res.status(400).a
+    res.status(500).json({ message: "Error in finding" })
   }
 })
 
+
+
+
+
+exports.updateApplicationComplete= expressAsyncHandler(async (req, res, next) => {
+  const getId=req.params.id;
+  try{
+    console.log(getId)
+    const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
+      applicationComplete:req.body.applicationComplete
+    })
+    if(getMessageOfficer){
+      console.log(getMessageOfficer)
+      res.status(200).send({message:"Application State Changed"})
+      res.end()
+    }
+    else{
+      res.status(400).send({message: "No change were made!"})
+      res.end()
+    }
+
+  }
+  catch(error){
+    res.status(500).json({ message: "Error in finding" })
+  }
+})
+
+
+exports.updateStatus= expressAsyncHandler(async (req, res, next) => {
+  const getId=req.params.id;
+  try{
+    console.log(getId)
+    const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
+      status:req.body.status
+    })
+    if(getMessageOfficer){
+      console.log(getMessageOfficer)
+      res.status(200).send({message:"Update State Changed"})
+      res.end()
+    }
+    else{
+      res.status(400).send({message: "No change were made!"})
+      res.end()
+    }
+
+  }
+  catch(error){
+    res.status(500).json({ message: "Error in finding" })
+  }
+})
 
 exports.fetchStudentScholarshipForm= expressAsyncHandler(async (req, res, next) => {
 
