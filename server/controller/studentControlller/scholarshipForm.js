@@ -98,7 +98,7 @@ exports.getScholarshipForm = expressAsyncHandler(async (req, res, next) => {
 
 exports.deleteScholarshipForm = async (req, res) => {
   try {
-    const id = req.params.id;
+
     if (id) {
       const prev = await db.ScholarshipForm.findOne({ _id: id });
       console.log(prev.form)
@@ -145,7 +145,8 @@ exports.updateScholarshipForm = async (req, res) => {
       } else {
         res
           .status(400)
-          .json({ message: "Trouble in saving changes in details" });
+          .json({ message: "Trouble in saving changes in details" })
+          .end()
       }
     } else {
       await fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
