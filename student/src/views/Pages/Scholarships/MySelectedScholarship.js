@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
 import Checkbox from 'rc-checkbox';
@@ -30,8 +30,6 @@ const override = css`
   margin: 0 auto;
 `;
 
-
-
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
@@ -43,26 +41,32 @@ const Layout = (props) => {
   const [loading, setLoading] = useState(false);
   const [validated, setValidated] = useState(false);
   const [title, setTitle] = useState("");
-  const [applicationstart, setApplicationStart] = useState("");
-  const [applicationdeadline, setApplicationEnd] = useState("");
-  const [pdf, setPdf] = useState();
-  const [description, setDescription] = useState("");
-  const [eligibility, setEligibility] = useState("");
-  const [checkedPrograms, setPorgrams] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  const [pdf, setPdf] = useState('');
+  const [applicationComplete, setApplicationComplete] = useState('');
   const [status, setStatus] = useState('notreviewed');
+
+  const [disabled, setDisabled] = useState(false);
   const [formName, setFormName] = useState('');
   const [yourMessage, setYourMessage] = useState('');
   const [officerMessage, setOfficerMessage] = useState('');
 
-
-
-
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
 
-
+  useEffect(() =>{
+    api.
+    post('scholarship-form/applicationform',{scholarship: localStorage.getItem("viewPostUrl"), student:userID.onlineerfa_student_userID}, 
+    setLoading(true)).
+    then((res)=>{
+      let {form, status, messageStudent, messageOfficer} = res.data
+      console.log(res.data)
+      setPdf(form)
+      setFormName(form)
+      setStatus(status)
+      setYourMessage(messageStudent)
+      setOfficerMessage(messageOfficer)
+      setLoading(false)
+    })
+  },[title])
 
 
   const handleSubmit = (event) => {
@@ -77,27 +81,7 @@ const Layout = (props) => {
     }
   };
 
-  const onChange = (e) => {
-    let { checked, value } = e.target
-    // console.log('Checkbox checked:', (checked));
-    // console.log('Value', value);
-
-    if (checked == true) {
-      setPorgrams((checkedPrograms) => ([...checkedPrograms, e.target.value]))
-    }
-    else {
-      const arr = checkedPrograms.filter((item) => item !== value);
-      setPorgrams(arr);
-    }
-  }
-
-  const toggle = () => {
-    setDisabled(!disabled)
-  }
-
-  const handleOnChange = () => {
-    setIsChecked(!isChecked);
-  };
+  
 
   const stautsBadge = (status) => {
     if (status === 'accepted') {
@@ -129,7 +113,6 @@ const Layout = (props) => {
     }
   }
 
-
   const submitData = () => {
     console.log('pdf1==>', pdf);
     let scholarshipID = localStorage.getItem("viewPostUrl")
@@ -140,7 +123,6 @@ const Layout = (props) => {
       data.append("form", pdf[0]);
       data.append("scholarship", JSON.parse(JSON.stringify(scholarshipID)));
       data.append("student", userID.onlineerfa_student_userID);
-
 
       // console.log("FormData ==>", data);
       // for (var value of data.values()) {
@@ -196,12 +178,13 @@ const Layout = (props) => {
             <>
               <CCol md={12}>
                 <CFormLabel htmlFor="formFile">Status of the Application:</CFormLabel>
-                &nbsp;&nbsp;   {stautsBadge(status)}
+                &nbsp;&nbsp;&nbsp;   {stautsBadge(status)}
               </CCol>
 
               {
-                status == 'notreviewed' || status == 'paused' ?
+                status == 'notreviewed' || status == 'paused'  || !status  ?
                   <>
+                  <br />
                     <CForm
                       disabled
                       className="row g-3 needs-validation"
@@ -209,10 +192,6 @@ const Layout = (props) => {
                       validated={validated}
                       onSubmit={handleSubmit}
                     >
-
-                      <br />
-
-
                       <CRow className="mb-3">
                         <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Form:</CFormLabel>
                         <CCol sm={10}>
@@ -261,13 +240,13 @@ const Layout = (props) => {
                   </> :
                   <>
                     <h4>
-                        Application closed!
+                      Application closed!
                     </h4>
                     <CCol md={12}>
-                        <CFormLabel htmlFor="exampleFormControlTextarea1">Message from officer:</CFormLabel>
-                        <CFormTextarea id="exampleFormControlTextarea1" value={officerMessage == '' ? 'Application not evaluated yet!' : officerMessage} readOnly rows="3"></CFormTextarea>
-                      </CCol>
-                    </>
+                      <CFormLabel htmlFor="exampleFormControlTextarea1">Message from officer:</CFormLabel>
+                      <CFormTextarea id="exampleFormControlTextarea1" value={officerMessage == '' ? 'Application not evaluated yet!' : officerMessage} readOnly rows="3"></CFormTextarea>
+                    </CCol>
+                  </>
               }
             </>
           )}
