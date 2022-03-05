@@ -205,12 +205,13 @@ exports.updateMessageStudent= expressAsyncHandler(async (req, res, next) => {
 })
 
 
-exports.updateMessageOfficer= expressAsyncHandler(async (req, res, next) => {
+exports.updateOfficer= expressAsyncHandler(async (req, res, next) => {
   const getId=req.params.id;
   try{
     console.log(getId)
     const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
-      messageOfficer:req.body.messageOfficer
+      messageOfficer:req.body.messageOfficer,
+      status:req.body.status
 
 
     })
