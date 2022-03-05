@@ -123,6 +123,7 @@ exports.updateScholarshipForm = async (req, res) => {
     const fetchDetails = await db.ScholarshipForm.findOne({
       _id: req.params.id,
     });
+    console.log(fetchDetails)
     if (fetchDetails) {
       const updateDetails = await db.ScholarshipForm.findOneAndUpdate(
         { _id: fetchDetails.id },
