@@ -65,7 +65,7 @@ console.log(checkRecord)
     });
   } else {
   
-    return res.json({ message: "alreadExisted" });
+    return res.json({ message: "already existed!" });
   }
 }
 
@@ -138,19 +138,16 @@ exports.updateScholarshipForm = async (req, res) => {
       if (updateDetails) {
         // console.log(uploadFilePath + "/" + fetchDetails.poster);
         await fs.promises.unlink(uploadFilePath + "/" + fetchDetails.form);
-        res
-          .status(201)
-          .json({ message: "Updated Successfully Details and Form" })
-          .end();
+        res.status(201).json({ message: "Updated Successfully Details and Form" })
+        res.end();
       } else {
-        res
-          .status(400)
-          .json({ message: "Trouble in saving changes in details" })
-          .end()
+        res.status(400).json({ message: "Trouble in saving changes in details" })
+        res.end();
       }
     } else {
       await fs.promises.unlink(uploadFilePath + "/" + req.file.filename);
       res.status(500).json({ message: "Error in finding" });
+      res.end();
     }
   } else {
     const fetchDetails = await db.ScholarshipForm.findOne({
@@ -169,14 +166,17 @@ exports.updateScholarshipForm = async (req, res) => {
       if (updateDetails) {
         // console.log(uploadFilePath + "/" + fetchDetails.poster);
 
-        res.status(201).json({ message: "Updated Details Successfully" }).end();
+        res.status(201).json({ message: "Updated Details Successfully" })
+        res.end();
       } else {
         res
           .status(400)
           .json({ message: "Trouble in saving changes in details" });
+        res.end();
       }
     } else {
       res.status(500).json({ message: "Error in finding" });
+      res.end();
     }
   }
 };
