@@ -118,12 +118,14 @@ exports.deleteScholarshipForm = async (req, res) => {
 
 
 exports.updateScholarshipForm = async (req, res) => {
+
   const chk = req.file;
   if (chk) {
     const fetchDetails = await db.ScholarshipForm.findOne({
       _id: req.params.id,
     });
-    console.log(fetchDetails)
+    const fetchDetails2 = await db.ScholarshipForm.findOne({__id: fetchDetails.id,form:{$exists:true}})
+    console.log(fetchDetails2)
     if (fetchDetails) {
       const updateDetails = await db.ScholarshipForm.findOneAndUpdate(
         { _id: fetchDetails.id },
@@ -135,13 +137,15 @@ exports.updateScholarshipForm = async (req, res) => {
        
         }
       );
-      if (updateDetails) {
-        // console.log(uploadFilePath + "/" + fetchDetails.poster);
+      if (fetchDetails.form!==undefined) {
+      
         await fs.promises.unlink(uploadFilePath + "/" + fetchDetails.form);
         res.status(201).json({ message: "Updated Successfully Details and Form" })
         res.end();
       } else {
-        res.status(400).json({ message: "Trouble in saving changes in details" })
+        console.log("This value"+fetchDetails.form);
+   
+        res.status(201).json({ message: "Updated Successfully Details and Form" })
         res.end();
       }
     } else {
