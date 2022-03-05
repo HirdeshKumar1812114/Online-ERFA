@@ -108,8 +108,15 @@ const Layout = (props) => {
     api.
       post('scholarship-form/add', {student:userID.onlineerfa_student_userID, scholarship:JSON.parse(JSON.stringify(scholarshipID)) }, setLoading(true))
       .then((res) => {
-        window.alert('Application Created')
-        props.history.push('my-applications')
+        if(res.data.message=='already existed!'){
+          window.alert('Already applied!')
+
+          props.history.push('my-applications')
+        }else{
+          window.alert('Application Created')
+          props.history.push('my-applications')
+
+        }
       })
       .catch((error) => console.log(error))
   }
@@ -192,8 +199,6 @@ const Layout = (props) => {
                 />
 
               </CCol>
-
-
 
               <CCol md={6}>
                 <CFormLabel htmlFor="dob">

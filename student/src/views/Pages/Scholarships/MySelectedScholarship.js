@@ -49,39 +49,42 @@ const Layout = (props) => {
   const [formName, setFormName] = useState('');
   const [yourMessage, setYourMessage] = useState('');
   const [officerMessage, setOfficerMessage] = useState('');
+  const [applicationId, setApplicationId] = useState('');
 
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
 
-  useEffect(() =>{
+  useEffect(() => {
     api.
-    post('scholarship-form/applicationform',{scholarship: localStorage.getItem("viewPostUrl"), student:userID.onlineerfa_student_userID}, 
-    setLoading(true)).
-    then((res)=>{
-      let {form, status, messageStudent, messageOfficer} = res.data
-      console.log(res.data)
-      setPdf(form)
-      setFormName(form)
-      setStatus(status)
-      setYourMessage(messageStudent)
-      setOfficerMessage(messageOfficer)
-      setLoading(false)
-    })
-  },[title])
+      post('scholarship-form/applicationform', { scholarship: localStorage.getItem("viewPostUrl"), student: userID.onlineerfa_student_userID },
+        setLoading(true)).
+      then((res) => {
+        let { form, status, messageStudent, messageOfficer, _id } = res.data
+        console.log(res.data)
+        setPdf(form)
+        setFormName(form)
+        setStatus(status)
+        setYourMessage(messageStudent)
+        setOfficerMessage(messageOfficer)
+        setApplicationId(_id)
+        setLoading(false)
+      })
+  }, [title])
 
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
     event.preventDefault();
-    if (pdf.length == 0) {
-      event.stopPropagation();
-      setValidated(true);
-    } else {
-      setValidated(false);
+    // if (pdf.length == 0) {
+    //   event.stopPropagation();
+    //   setValidated(true);
+    // } else {
+      
+    // }
+    setValidated(false);
       submitData();
-    }
   };
 
-  
+
 
   const stautsBadge = (status) => {
     if (status === 'accepted') {
@@ -118,41 +121,37 @@ const Layout = (props) => {
     let scholarshipID = localStorage.getItem("viewPostUrl")
     console.log(JSON.parse(JSON.stringify(scholarshipID)));
     console.log(userID.onlineerfa_student_userID)
-    if (pdf.length !== 0) {
-      var data = new FormData();
-      data.append("form", pdf[0]);
-      data.append("scholarship", JSON.parse(JSON.stringify(scholarshipID)));
-      data.append("student", userID.onlineerfa_student_userID);
 
-      // console.log("FormData ==>", data);
-      // for (var value of data.values()) {
-      //   console.log('loop values==>', value);
-      // }
+    var data = new FormData();
+    data.append("form", pdf[0]);
+    data.append("scholarship", JSON.parse(JSON.stringify(scholarshipID)));
+    data.append("student", userID.onlineerfa_student_userID);
+    data.append("messageStudent", yourMessage)
+    // console.log("FormData ==>", data);
+    // for (var value of data.values()) {
+    //   console.log('loop values==>', value);
+    // }
 
-      const config = {
-        headers: { "content-type": "multipart/form-data" },
-      };
+    const config = {
+      headers: { "content-type": "multipart/form-data" },
+    };
 
-      api
-        .post("scholarship-form/add", data, setLoading(true), config)
-        .then((result) => {
-          // console.log("Data Posted in DB");
-          // console.log("Response==>", result);
-          setLoading(false);
+    api
+      .put(`scholarship-form/edit/${applicationId}`, data, setLoading(true), config)
+      .then((result) => {
+        // console.log("Data Posted in DB");
+        // console.log("Response==>", result);
+        setLoading(false);
+        console.log(result.data)
+        window.alert("Data Submitted! Please be patient for the response.");
+      })
+      .catch((err) => {
+        setLoading(false);
+        window.alert("Connection Error!");
 
-          window.alert("Document Uploaded!");
-        })
-        .catch((err) => {
-          setLoading(false);
-          window.alert("Connection Error!");
+        // console.log("Error occured : ", err);
+      });
 
-          // console.log("Error occured : ", err);
-        });
-    } else {
-      setValidated(true);
-      setLoading(false);
-      // window.alert("Please upload pdf.");
-    }
   };
   return (
     <CContainer fluid>
@@ -182,9 +181,9 @@ const Layout = (props) => {
               </CCol>
 
               {
-                status == 'notreviewed' || status == 'paused'  || !status  ?
+                status == 'notreviewed' || status == 'paused' || !status ?
                   <>
-                  <br />
+                    <br />
                     <CForm
                       disabled
                       className="row g-3 needs-validation"
@@ -201,7 +200,9 @@ const Layout = (props) => {
 
                       <CCol md={12}>
                         <CFormLabel htmlFor="exampleFormControlTextarea1">Message for officer:</CFormLabel>
-                        <CFormTextarea id="exampleFormControlTextarea1" placeholder={'Type your message here!'} value={yourMessage != '' ? yourMessage : ''} rows="3"></CFormTextarea>
+                        <CFormTextarea id="exampleFormControlTextarea1" placeholder={'Type your message here!'} value={yourMessage != '' ? yourMessage : ''}
+                          onChange={(e) => { setYourMessage(e.target.value) }}
+                          rows="3"></CFormTextarea>
                       </CCol>
 
                       <CCol md={12}>
@@ -213,7 +214,6 @@ const Layout = (props) => {
                       <CCol md={12}>
                         <CFormLabel htmlFor="formFile">Upload Completed Document</CFormLabel>
                         <DropzoneArea
-                          required
                           acceptedFiles={[".pdf"]}
                           dropzoneText={"Drag and drop an pdf here or click"}
                           onChange={(files) => {
@@ -255,8 +255,8 @@ const Layout = (props) => {
 
       {/* <prev>{JSON.stringify(validated, null, 2)}</prev> */}
       {/* <prev>{JSON.stringify(applicationstart, null, 2)}</prev>
+      <prev>{JSON.stringify(yourMessage, null, 2)}</prev>
       <prev>{JSON.stringify(pdf, null, 2)}</prev>
-      <prev>{JSON.stringify(applicationdeadline, null, 2)}</prev>
       <prev>{JSON.stringify(description, null, 2)}</prev>
       <prev>{JSON.stringify(eligibility, null, 2)}</prev>
       <prev>{JSON.stringify(tags, null, 2)}</prev> */}
