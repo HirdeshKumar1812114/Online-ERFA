@@ -12,7 +12,7 @@ router.post("/applicationform",scholarshipFormController.fetchStudentScholarship
 router.delete("/delete/:id", scholarshipFormController.deleteScholarshipForm);
 router.put("/sendstudentmessage/:id",scholarshipFormController.updateMessageStudent)
 router.put("/sendofficer/:id",scholarshipFormController.updateOfficer)
-router.put("")
+router.put("/sendappcomplete/:id",scholarshipFormController.updateApplicationComplete)
 router.put(
     "/edit/:id",
     scholarshipFormController.uploadForm,
