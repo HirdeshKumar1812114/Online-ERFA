@@ -1,6 +1,20 @@
 const expressAsyncHandler = require("express-async-handler");
 const db = require("../../models");
+var time = new Date();
+var timeExp  =time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+console.log(timeExp)
+time.setMinutes(25)
+var timeExp2=time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+console.log(timeExp2)
 
+const schedule = require('node-schedule');
+
+const job = schedule.scheduleJob('*/1 * * * *', function(){
+ var i=0;
+ i=i+1;
+ console.log(i)
+
+});
 
 exports.applyToken=expressAsyncHandler(async (req,res,next)=>{
 
