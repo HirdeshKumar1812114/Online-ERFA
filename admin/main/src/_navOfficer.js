@@ -7,6 +7,7 @@ import {
   cilCursor,
   cilDrop,
   cilNotes,
+  cilNewspaper,
   cilPencil,
   cilPuzzle,
   cilSpeedometer,
@@ -47,6 +48,12 @@ const _navOfficer = [
       },
     ],
   },
+  {
+    component: CNavItem,
+    name: "Application forms",
+    to: "/applications",
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+   },
   ]
 
 export default _navOfficer
