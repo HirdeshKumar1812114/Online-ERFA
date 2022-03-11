@@ -80,6 +80,10 @@ exports.getAllScholarshipForm = expressAsyncHandler(async (req, res, next) => {
   try {
     const fetch = await db.ScholarshipForm.aggregate([
       {
+        $match: {
+            form: { $exists: true},
+        }
+      },{
           $lookup:{
               from:'scholarshipposts',
               localField:"scholarship",
@@ -350,9 +354,49 @@ res.end();
 
 exports.sortStatus= expressAsyncHandler(async (req, res) => {
   checkStatus=req.body.status;
-  console.log()
+  console.log(checkStatus)
   try {
-    const fetch = await db.ScholarshipForm.find({ status:  checkStatus });
+    const fetch = await db.ScholarshipForm.aggregate([
+      {
+        $match: {
+            form: { $exists: true},
+status: checkStatus
+        }
+      },{
+          $lookup:{
+              from:'scholarshipposts',
+              localField:"scholarship",
+              foreignField:"_id",
+              as:"scholarshipdetails"
+          },
+        
+      },{$unwind:"$scholarshipdetails"},
+      {$lookup:{
+        from:'userstudents',
+        localField:"student",
+        foreignField:"_id",
+        as:"studentdetails"
+      }},{$unwind:"$studentdetails"},{
+        $project:{
+            "_id":1,
+            "student":1,
+           "scholarship":1,
+           "form":1, 
+           "status":1,
+           "messageStudent":1,
+           "messageOfficer":1,
+  
+            "scholarshipdetails.title":1,
+            "scholarshipdetails.applicationstart":1,
+            "scholarshipdetails.applicationdeadline":1,
+            "studentdetails.regid":1,
+            "studentdetails.firstname":1,
+            "studentdetails.lastname":1,
+            "studentdetails.section":1,
+            "studentsdetails.email":1            
+        }  
+      }
+  ]);
     res.status(200).send(fetch);
     res.end();
   } catch {
