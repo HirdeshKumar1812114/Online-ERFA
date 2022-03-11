@@ -28,6 +28,10 @@ const _navOfficer = [
     //   text: 'NEW',
     // },
   },
+  {
+    component: CNavTitle,
+    name: "Administration Settings",
+  },
   // Scholarships
   {
     component: CNavGroup,
@@ -47,6 +51,9 @@ const _navOfficer = [
         to: '/scholarship/list-posts',
       },
     ],
+  },{
+    component: CNavTitle,
+    name: "Applicaitons",
   },
   {
     component: CNavItem,

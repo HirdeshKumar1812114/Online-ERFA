@@ -29,6 +29,10 @@ const _navAdmin = [
     // },
   },
   {
+    component: CNavTitle,
+    name: "Administration Settings",
+  },
+  {
     component: CNavGroup,
     name: "User Management",
     to: "/officers",
@@ -66,12 +70,21 @@ const _navAdmin = [
     ],
   },
   {
+    component: CNavTitle,
+    name: "Applicaitons",
+  },
+  {
     component: CNavItem,
     name: "Application forms",
     to: "/applications",
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
-   },
-   
+  },
+  {
+    component: CNavItem,
+    name: "List Posts",
+    to: "/scholarship/list-posts",
+  },
+
 ];
 
 export default _navAdmin;

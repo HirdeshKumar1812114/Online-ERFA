@@ -19,6 +19,7 @@ import {
   CTableHeaderCell,
   CTableDataCell,
   CTableBody,
+  CRow,
 } from "@coreui/react";
 import { useCookies } from 'react-cookie';
 
@@ -37,6 +38,8 @@ const Layout = (props) => {
   const [email, setEmail] = useState(applicationEmail.onlineerfa_admin_applicationEmail)
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState('')
+  const [selectStatus, setSelectStatus] = useState('')
+
 
   var applications = [];
 
@@ -77,7 +80,7 @@ const Layout = (props) => {
         setValid("true")
         alert()
         deleteapplication()
-        
+
 
       }).catch(err => {
         // console.log(err)
@@ -122,7 +125,7 @@ const Layout = (props) => {
       // console.log(getapplications)
       localStorage.setItem("all-applications", JSON.stringify(res.data));
       applications = res.data;
-      // console.log(applications)
+      console.log(applications)
       setApplications(res.data);
     });
   }, [deleteConfirm, visible]);
@@ -155,9 +158,27 @@ const Layout = (props) => {
     <CContainer>
       <CCard>
         <CCardHeader>
-          <strong>
-            <h3>All applications</h3>
-          </strong>
+          <CRow>
+            <CCol md={8} sm={8}>
+              <strong>
+                <h3>All applications</h3>
+              </strong>
+            </CCol>
+            <CCol md={4} sm={4}>
+              <CDropdown>
+                <CDropdownToggle href="#" color="primary" onChange={(e)=>{setSelectStatus(e.target.value)}}>
+                  All Applications
+                </CDropdownToggle>
+                <CDropdownMenu>
+                  <CDropdownItem value='accepted' >Accepted</CDropdownItem>
+                  <CDropdownItem value='paused'>Paused</CDropdownItem>
+                  <CDropdownItem value='rejected'>Rejected</CDropdownItem>
+                  <CDropdownItem value=''>To be evaluated</CDropdownItem>
+                </CDropdownMenu>
+              </CDropdown>
+
+            </CCol>
+          </CRow>
         </CCardHeader>
         <CCardBody>
           <CTable striped hover responsive>
@@ -174,7 +195,7 @@ const Layout = (props) => {
                 return (
                   <CTableRow>
                     <CTableHeaderCell scope="row">
-                      #{key+1}
+                      #{key + 1}
                     </CTableHeaderCell>
                     <CTableDataCell>{stautsBadge(application.status)}</CTableDataCell>
                     <CTableDataCell>{application.messageStudent}</CTableDataCell>
@@ -215,7 +236,7 @@ const Layout = (props) => {
             </CModalHeader>
             <CModalBody>
               <b>
-              Enter password for confirmation to delete this application.
+                Enter password for confirmation to delete this application.
               </b>
               <br />
               <br />
