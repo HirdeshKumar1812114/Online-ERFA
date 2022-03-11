@@ -20,6 +20,7 @@ import {
   CTableDataCell,
   CTableBody,
   CRow,
+  CFormSelect
 } from "@coreui/react";
 import { useCookies } from 'react-cookie';
 
@@ -125,11 +126,30 @@ const Layout = (props) => {
       // console.log(getapplications)
       localStorage.setItem("all-applications", JSON.stringify(res.data));
       applications = res.data;
-      console.log(applications)
+      console.log('1', applications)
       setApplications(res.data);
     });
-  }, [deleteConfirm, visible]);
+  }, []);
 
+  useEffect(() => {
+    if(selectStatus!=""){api.post('scholarship-form/sortstatus', { status: selectStatus })
+      .then(res => {
+        localStorage.setItem("all-applications", JSON.stringify(res.data));
+        applications = res.data;
+        console.log('2', applications)
+        setApplications(res.data);
+      }).catch((err) => console.log(err))}
+  }, [selectStatus])
+
+  const showAll = () => {
+    api.get("scholarship-form/all").then((res) => {
+      // console.log(getapplications)
+      localStorage.setItem("all-applications", JSON.stringify(res.data));
+      applications = res.data;
+      console.log('3', applications)
+      setApplications(res.data);
+    });
+  }
   const deleteapplication = () => {
     // console.log('application to delte: ',applicationtoDelete)
     api
@@ -154,28 +174,33 @@ const Layout = (props) => {
     props.history.push("selected-applicaiton");
   };
 
+  
+
   return (
     <CContainer>
       <CCard>
         <CCardHeader>
           <CRow>
-            <CCol md={8} sm={8}>
+            <CCol md={4} sm={4}>
               <strong>
                 <h3>All applications</h3>
               </strong>
             </CCol>
             <CCol md={4} sm={4}>
-              <CDropdown>
-                <CDropdownToggle href="#" color="primary" onChange={(e)=>{setSelectStatus(e.target.value)}}>
-                  All Applications
-                </CDropdownToggle>
-                <CDropdownMenu>
-                  <CDropdownItem value='accepted' >Accepted</CDropdownItem>
-                  <CDropdownItem value='paused'>Paused</CDropdownItem>
-                  <CDropdownItem value='rejected'>Rejected</CDropdownItem>
-                  <CDropdownItem value=''>To be evaluated</CDropdownItem>
-                </CDropdownMenu>
-              </CDropdown>
+
+              <CFormSelect aria-label="Default select example" color="primary" onChange={(e) => { setSelectStatus(e.target.value) }}>
+                <option>Filter all applications</option>
+                <option value='accepted' >Accepted</option>
+                <option value='paused'>Paused</option>
+                <option value='rejected'>Rejected</option>
+                <option value='submitted'>Not Reviwed</option>
+
+                
+
+              </CFormSelect>
+            </CCol>
+            <CCol md={4} sm={4}>
+              <CButton color="primary" onClick={() => { showAll() }} >Show All scholarships</CButton>
 
             </CCol>
           </CRow>
@@ -184,7 +209,10 @@ const Layout = (props) => {
           <CTable striped hover responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">Applicaiton Id</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Applicaiton title</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Start date</CTableHeaderCell>
+                <CTableHeaderCell scope="col">End date</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Student Id</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Message from Student</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
@@ -195,8 +223,11 @@ const Layout = (props) => {
                 return (
                   <CTableRow>
                     <CTableHeaderCell scope="row">
-                      #{key + 1}
+                      {application.scholarshipdetails.title}
                     </CTableHeaderCell>
+                    <CTableDataCell>{application.scholarshipdetails.applicationstart}</CTableDataCell>
+                    <CTableDataCell style={{'color':'red'}}>{application.scholarshipdetails.applicationdeadline}</CTableDataCell>
+                    <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
                     <CTableDataCell>{stautsBadge(application.status)}</CTableDataCell>
                     <CTableDataCell>{application.messageStudent}</CTableDataCell>
                     <CTableDataCell>
@@ -209,7 +240,9 @@ const Layout = (props) => {
                           onClick={() => {
                             localStorage.setItem("viewPostUrl", application.scholarship);
                             localStorage.setItem("studentId", application.student);
+                            localStorage.setItem("ScholarshipTitle", application.scholarshipdetails.title);
 
+                            localStorage.setItem("student-details", JSON.stringify(application.studentdetails))
                             applicationUpdate();
                           }}
                         >

@@ -169,6 +169,7 @@ exports.updateScholarshipForm = async (req, res) => {
           form: req.file.filename,
         
           messageStudent: req.body.messageStudent,
+          status:'submitted'
        
         }
       );
@@ -198,6 +199,7 @@ exports.updateScholarshipForm = async (req, res) => {
         {
      
           messageStudent: req.body.messageStudent,
+          status:'submitted'
        
           
         }

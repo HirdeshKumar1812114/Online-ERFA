@@ -155,10 +155,11 @@ const Layout = (props) => {
   };
   return (
     <CContainer fluid>
+      
       <CCard>
         <CCardHeader>
           <strong>
-            <h3>{localStorage.getItem('ScholarshipTitle')} - Form </h3>
+            <h3>{localStorage.getItem('ScholarshipTitle')} - Form submission </h3>
           </strong>
         </CCardHeader>
         <CCardBody>

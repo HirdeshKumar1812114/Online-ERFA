@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import PDFViewer from 'pdf-viewer-reactjs'
 import Checkbox from 'rc-checkbox';
-// import 'rc-checkbox/assets/index.css';
 
 import {
     CContainer,
@@ -52,6 +50,9 @@ const Layout = (props) => {
     const [officerMessage, setOfficerMessage] = useState('');
     const [applicationId, setApplicationId] = useState('');
 
+    const [studentName, setName] = useState('')
+    const [regid, setregid] = useState('')
+
     const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
 
     useEffect(() => {
@@ -69,6 +70,9 @@ const Layout = (props) => {
                 setApplicationId(_id)
                 setLoading(false)
             })
+            let {firstname, lastname, regid} = JSON.parse(localStorage.getItem("student-details"))
+            setName(`${firstname} ${lastname}`)
+            setregid(regid)
     }, [title])
 
 
@@ -124,9 +128,9 @@ const Layout = (props) => {
         console.log(userID.onlineerfa_student_userID)
 
         var data = new FormData();
-        data.append('messageOfficer', officerMessage) 
-        data.append('status', status) 
-               
+        data.append('messageOfficer', officerMessage)
+        data.append('status', status)
+
         // console.log("FormData ==>", data);
         // for (var value of data.values()) {
         //   console.log('loop values==>', value);
@@ -137,13 +141,14 @@ const Layout = (props) => {
         };
 
         api
-            .put(`scholarship-form/sendofficer/${applicationId}`, {messageOfficer:officerMessage,status: status}, setLoading(true), config)
+            .put(`scholarship-form/sendofficer/${applicationId}`, { messageOfficer: officerMessage, status: status }, setLoading(true), config)
             .then((result) => {
                 // console.log("Data Posted in DB");
                 // console.log("Response==>", result);
                 setLoading(false);
                 console.log(result.data)
-                window.alert("Data Submitted! Please be patient for the response.");
+                window.alert("Evaluation done!");
+                props.history.push('applications')
             })
             .catch((err) => {
                 setLoading(false);
@@ -175,6 +180,11 @@ const Layout = (props) => {
                         </>
                     ) : (
                         <>
+                        <CRow>
+                            <CCol md={6}>Student Name: <span style={{'fontWeight':'bold'}}>{studentName}</span></CCol>
+                            <CCol md={6}> Registration Id: <span style={{'fontWeight':'bold'}}>{regid}</span></CCol>
+                        </CRow>
+                        <br></br>
                             <CCol md={12}>
                                 <CFormLabel htmlFor="formFile">Status of the Application:</CFormLabel>
                                 &nbsp;&nbsp;&nbsp;   {stautsBadge(status)}
@@ -197,7 +207,7 @@ const Layout = (props) => {
                                     <CCol md={12}>
                                         <CFormLabel htmlFor="exampleFormControlTextarea1">Message From student:</CFormLabel>
                                         <CFormTextarea id="exampleFormControlTextarea1" placeholder={'Type your message here!'}
-                                         value={yourMessage != '' ? yourMessage : ''}
+                                            value={yourMessage != '' ? yourMessage : ''}
                                             onChange={(e) => { setYourMessage(e.target.value) }}
                                             disabled
                                             rows="3"></CFormTextarea>
@@ -211,7 +221,11 @@ const Layout = (props) => {
                                             rows="3"></CFormTextarea>
                                     </CCol>
 
-                                    {formName == '' ? 'Form Not uploaded' :
+                                    {formName == '' || !formName || formName == undefined ?
+                                        <span style={{ 'color': 'red' }}>
+                                            Form Not uploaded
+                                        </span>
+                                        :
                                         <>
                                             <CCol md={12}>
                                                 {/* <PDFViewer
@@ -221,7 +235,7 @@ const Layout = (props) => {
                                                 /> */}
                                                 {/* <iframe src="http://localhost:5000/getForm/form_1646489636119.pdf" width="100%" height="500px">
                                                 </iframe> */}
-                                                Open a the file <a href={`http://localhost:5000/getForm/${formName}`} target='_blank'>{formName}</a>
+                                                Open the file <a href={`http://localhost:5000/getForm/${formName}`} target='_blank'>{formName}</a>
                                             </CCol>
                                         </>
 
@@ -237,15 +251,6 @@ const Layout = (props) => {
                                     </CCol>
                                     <br />
                                     <br />
-                                    {validated == true ? (
-                                        <>
-                                            <span style={{ "font-size": "14px", color: "red" }}>
-                                                *Please fill all the fields and upload a pdf!
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <></>
-                                    )}
                                     <CButton type="submit" color="primary">
                                         Update Evaluation Form
                                     </CButton>
