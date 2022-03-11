@@ -124,9 +124,6 @@ const Layout = (props) => {
         console.log(userID.onlineerfa_student_userID)
 
         var data = new FormData();
-        data.append("scholarship", JSON.parse(JSON.stringify(scholarshipID)));
-        data.append("student", userID.onlineerfa_student_userID);
-        data.append('messageStudent', yourMessage) 
         data.append('messageOfficer', officerMessage) 
         data.append('status', status) 
                
@@ -140,7 +137,7 @@ const Layout = (props) => {
         };
 
         api
-            .put(`scholarship-form/edit/${applicationId}`, data, setLoading(true), config)
+            .put(`scholarship-form/sendofficer/${applicationId}`, {messageOfficer:officerMessage,status: status}, setLoading(true), config)
             .then((result) => {
                 // console.log("Data Posted in DB");
                 // console.log("Response==>", result);
@@ -250,7 +247,7 @@ const Layout = (props) => {
                                         <></>
                                     )}
                                     <CButton type="submit" color="primary">
-                                        Upload document
+                                        Update Evaluation Form
                                     </CButton>
                                 </CForm>
                             </>
