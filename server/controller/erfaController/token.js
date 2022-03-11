@@ -16,6 +16,7 @@ i=0;
 
 exports.applyToken=expressAsyncHandler(async (req,res,next)=>{
   
+if(i<37){
 
   i=i+1;
   time.setMinutes(time.getMinutes()+(minTime))
@@ -49,7 +50,12 @@ today = mm + '/' + dd + '/' + yyyy;
     }catch(err){
         res.status(500).send({message:err.message})
     }
-})
+  }
+  else{
+    res.status(500).send("No more tokens available for the day")
+  }
+}
+)
 
 exports.getAllTokens= expressAsyncHandler(async (req, res, next)=>{
     try{
