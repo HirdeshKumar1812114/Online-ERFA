@@ -78,7 +78,42 @@ console.log(checkRecord)
    
 exports.getAllScholarshipForm = expressAsyncHandler(async (req, res, next) => {
   try {
-    const fetch = await db.ScholarshipForm.find();
+    const fetch = await db.ScholarshipForm.aggregate([
+      {
+          $lookup:{
+              from:'scholarshipposts',
+              localField:"scholarship",
+              foreignField:"_id",
+              as:"scholarshipdetails"
+          },
+        
+      },{$unwind:"$scholarshipdetails"},
+      {$lookup:{
+        from:'userstudents',
+        localField:"student",
+        foreignField:"_id",
+        as:"studentdetails"
+      }},{$unwind:"$studentdetails"},{
+        $project:{
+            "_id":1,
+            "student":1,
+           "scholarship":1,
+           "form":1, 
+           "status":1,
+           "messageStudent":1,
+           "messageOfficer":1,
+  
+            "scholarshipdetails.title":1,
+            "scholarshipdetails.applicationstart":1,
+            "scholarshipdetails.applicationdeadline":1,
+            "studentdetails.regid":1,
+            "studentdetails.firstname":1,
+            "studentdetails.lastname":1,
+            "studentdetails.section":1,
+            "studentsdetails.email":1            
+        }  
+      }
+  ]);
     res.status(200).send(fetch);
     res.end();
   } catch {
@@ -134,7 +169,6 @@ exports.updateScholarshipForm = async (req, res) => {
           form: req.file.filename,
         
           messageStudent: req.body.messageStudent,
-          
        
         }
       );
@@ -242,7 +276,7 @@ exports.updateOfficer= expressAsyncHandler(async (req, res, next) => {
 
 exports.updateApplicationComplete= expressAsyncHandler(async (req, res, next) => {
   const getId=req.params.id;
-  try{
+  try{hng
     console.log(getId)
     const getMessageOfficer = await db.ScholarshipForm.findByIdAndUpdate({_id:getId},{
       applicationComplete:req.body.applicationComplete
@@ -308,5 +342,18 @@ res.end();
   catch(error){
 res.status(500).send({message: error.message })
 res.end();
+  }
+})
+
+
+exports.sortStatus= expressAsyncHandler(async (req, res) => {
+  checkStatus=req.body.status;
+  console.log()
+  try {
+    const fetch = await db.ScholarshipForm.find({ status:  checkStatus });
+    res.status(200).send(fetch);
+    res.end();
+  } catch {
+    res.status(404).json({ message: "Not Found" });
   }
 })

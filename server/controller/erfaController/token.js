@@ -1,32 +1,42 @@
 const expressAsyncHandler = require("express-async-handler");
-const db = require("../../models");
-var time = new Date();
-var timeExp  =time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-console.log(timeExp)
-time.setMinutes(25)
-var timeExp2=time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-console.log(timeExp2)
 
 const schedule = require('node-schedule');
+const db = require("../../models");
+var time = new Date();
+var i=0;
+var minTime=  15;
 
-const job = schedule.scheduleJob('*/1 * * * *', function(){
- var i=0;
- i=i+1;
- console.log(i)
+
+const job = schedule.scheduleJob('0 0 23 * *', function(){
+
+i=0;
+
 
 });
 
 exports.applyToken=expressAsyncHandler(async (req,res,next)=>{
+  
+
+  i=i+1;
+  time.setMinutes(time.getMinutes()+(minTime))
+  console.log(time.getMinutes()+(minTime))
+  var timeExp  =time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  var dd = String(time.getDate()).padStart(2, '0');
+var mm = String(time.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = time.getFullYear();
+
+today = mm + '/' + dd + '/' + yyyy;
+  console.log(timeExp)
 
     console.log(req.body.value);
-    console.log(req.body.time);
-    console.log(req.body.date);
+  
+ 
     console.log(req.body.venue);
     try{
   let makeToken = new db.Token({
-      value:req.body.value,
-      time: req.body.time,
-      date: req.body.date,
+      value:i,
+      time:timeExp,
+      date: today,
       venue: req.body.venue,
   })
   
