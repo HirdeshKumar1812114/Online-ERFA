@@ -47,13 +47,15 @@ const Layout = (props) => {
   const [regNo, setRegNo] = useState('');
   const [applied, setApplied] = useState([])
   const [scholarships, setScholarships] = useState([]);
-
+  const [userRegID, setUserRegID] = useCookies([
+    "onlineerfa_student_userRegID",
+  ]);
   useEffect(() => {
     var regNo = localStorage.getItem('student_id')
-    // console.log(JSON.stringify(regNo))
+     console.log(JSON.stringify(regNo))
     //  // console.log('regid=>',studentData.regid)
     api
-      .post('student/appliedscholarships', { regid: JSON.parse(regNo) })
+      .post('student/appliedscholarships', { regid: userRegID.onlineerfa_student_userRegID })
       .then((res) => {
         setLoading(false)
         setApplied(res.data)

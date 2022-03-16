@@ -193,7 +193,7 @@ const Layout = (props) => {
                 <option value='accepted' >Accepted</option>
                 <option value='paused'>Paused</option>
                 <option value='rejected'>Rejected</option>
-                <option value='submitted'>Not Reviwed</option>
+                <option value='submitted'>Not Reviewed</option>
 
                 
 
@@ -302,6 +302,7 @@ const Layout = (props) => {
             </CModalFooter>
           </CModal>
         </CCardBody>
+    
       </CCard>
     </CContainer>
   );
