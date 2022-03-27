@@ -8,6 +8,7 @@ status: { type: String },
 messageStudent:{type: String},
 messageOfficer:{type: String},
 applicationComplete:{type: String},
+interview:{type:mongoose.Schema.Types.ObjectId, ref:'Interview' }
 })
 
 const scholarshipForm = mongoose.model('Scholarshipform',scholarshipFormSchema);

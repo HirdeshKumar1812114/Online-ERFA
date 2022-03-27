@@ -19,4 +19,5 @@ router.put(
     scholarshipFormController.updateScholarshipForm
   );
 router.post("/sortstatus",scholarshipFormController.sortStatus)
+
 module.exports = router;
