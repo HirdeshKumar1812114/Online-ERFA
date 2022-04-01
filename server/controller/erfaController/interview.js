@@ -1,5 +1,9 @@
 const expressAsyncHandler = require("express-async-handler");
 const db = require("../../models");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
+var nodemailer = require('nodemailer');
 
 exports.schedule=expressAsyncHandler(async(req, res, next)=>{
 try{
@@ -94,4 +98,104 @@ res.end();
 catch(error){
 res.status(500).send({message:'Error in catch block'})
 }
+})
+
+exports.selectStudents=expressAsyncHandler(async(req,res)=>{
+const students = req.body.students
+
+console.log( students )
+for(let i=0; i<students.length; i++){
+
+  var findDocs=await  db.ScholarshipForm.findOneAndUpdate({_id:students[i]},  { $set: {interview:req.body.interview} });
+if(findDocs){
+  console.log("Done attacted interview with applications");
+}else{
+console.log("No documents found")
+}}
+
+
+res.redirect(307, "/interview/sendinterviewemail")
+})
+
+exports.sendEmailInterview= expressAsyncHandler(async(req, res)=>{
+
+var students=req.body.students;
+for (let i=0; i<students.length; i++)
+{  var findStudent = await db.ScholarshipForm.aggregate([
+    {
+      $match: { _id: ObjectId(students[i]) }
+    },    
+    {$lookup:{
+      from:'userstudents',
+      localField:"student",
+      foreignField:"_id",
+      as:"studentdetails"
+    }},{$unwind:"$studentdetails"},
+    
+    {$lookup:{
+      from:'interviews',
+      localField:"interview",
+      foreignField:"_id",
+      as:"interviewdetails"
+    }},{$unwind:"$interviewdetails"},
+    {
+      $project:{
+        "_id":1,
+        "student":1,
+       "scholarship":1,
+       "form":1, 
+       "status":1,
+       "messageStudent":1,
+       "messageOfficer":1,
+       "interview":1,
+       "studentdetails.regid":1,
+       "studentdetails.firstname":1,
+       "studentdetails.lastname":1,
+     "studentdetails.email":1,        
+       "studentdetails.section":1,
+       "interviewdetails.startDate":1,
+       "interviewdetails.startDate": 1,
+       "interviewdetails.endDate": 1,
+       "interviewdetails.startTime": 1,
+       "interviewdetails.endTime": 1,
+       "interviewdetails.venue": 1,
+
+      }  
+    }
+ 
+  ]);
+
+  var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'onlineerfa1998@gmail.com',
+    pass: 'ciuptmjpjlnzgfgo'
+  }
+});
+
+var mailOptions = {
+  from: 'onlineerfa1998@gmail.com',
+  to: `${findStudent[0].studentdetails.email}`,
+  subject: 'Interview Details',
+  html: `<h1>Interview details</h1><p>${findStudent[0].studentdetails.email}</p><p>startDate:${findStudent[0].interviewdetails.startDate}</p>endDate:${findStudent[0].interviewdetails.endDate}<p>startTime:${findStudent[0].interviewdetails.startTime}</p><p>endTime:${findStudent[0].interviewdetails.endTime}</p> <p>venue:${findStudent[0].interviewdetails.venue}</p>`
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+
+  console.log(findStudent[0].studentdetails.email)
+  
+}
+
+
+//   for(let i=0; i<students.length; i++){
+// }
+  res.end();
 })
