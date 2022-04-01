@@ -178,8 +178,14 @@ var transporter = nodemailer.createTransport({
 var mailOptions = {
   from: 'onlineerfa1998@gmail.com',
   to: `${findStudent[0].studentdetails.email}`,
-  subject: 'Interview Details',
-  html: `<h1>Interview details</h1><p>${findStudent[0].studentdetails.email}</p><p>startDate:${findStudent[0].interviewdetails.startDate}</p>endDate:${findStudent[0].interviewdetails.endDate}<p>startTime:${findStudent[0].interviewdetails.startTime}</p><p>endTime:${findStudent[0].interviewdetails.endTime}</p> <p>venue:${findStudent[0].interviewdetails.venue}</p>`
+  subject: `Interview Details ${findStudent[0].studentdetails.regid}`,
+  html: `<p><strong>Hello ${findStudent[0].studentdetails.firstname},</strong></p>
+  <p>&nbsp;</p>
+  <p>Your interview is scheduled on ${findStudent[0].interviewdetails.startTime} ${findStudent[0].interviewdetails.startDate} at ${findStudent[0].interviewdetails.venue}. Please be on time.</p>
+  <p>&nbsp;</p>
+  <p>King Regards,</p>
+  <p>EERFA Department</p>
+  <p>&nbsp;</p>`
 };
 
 transporter.sendMail(mailOptions, function(error, info){
