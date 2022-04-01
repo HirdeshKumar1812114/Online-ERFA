@@ -1,5 +1,9 @@
 const expressAsyncHandler = require("express-async-handler");
 const db = require("../../models");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
+
 
 exports.schedule=expressAsyncHandler(async(req, res, next)=>{
 try{
@@ -116,16 +120,25 @@ res.redirect(307, "/interview/sendinterviewemail")
 exports.sendEmailInterview= expressAsyncHandler(async(req, res)=>{
 
 var students=req.body.students;
-
-
-  var findStudent = await db.ScholarshipForm.aggregate([
-     
+for (let i=0; i<students.length; i++)
+{  var findStudent = await db.ScholarshipForm.aggregate([
+    {
+      $match: { _id: ObjectId(students[i]) }
+    },    
     {$lookup:{
       from:'userstudents',
       localField:"student",
       foreignField:"_id",
       as:"studentdetails"
-    }},{$unwind:"$studentdetails"},{
+    }},{$unwind:"$studentdetails"},
+    
+    {$lookup:{
+      from:'interviews',
+      localField:"interview",
+      foreignField:"_id",
+      as:"interviewdetails"
+    }},{$unwind:"$interviewdetails"},
+    {
       $project:{
         "_id":1,
         "student":1,
@@ -134,20 +147,27 @@ var students=req.body.students;
        "status":1,
        "messageStudent":1,
        "messageOfficer":1,
+       "interview":1,
        "studentdetails.regid":1,
        "studentdetails.firstname":1,
        "studentdetails.lastname":1,
      "studentdetails.email":1,        
-       "studentdetails.section":1
+       "studentdetails.section":1,
+       "interviewdetails.startDate":1,
+       "interviewdetails.startDate": 1,
+       "interviewdetails.endDate": 1,
+       "interviewdetails.startTime": 1,
+       "interviewdetails.endTime": 1,
+       "interviewdetails.venue": 1,
+
       }  
     }
+ 
   ]);
 
-  if( findStudent){
-    res.status(200).send(findStudent)
-  }else{
-    res.status(400).send({message:"Not working"})
-  }
+  console.log(findStudent[0].interviewdetails.venue)
+}
+
 
 //   for(let i=0; i<students.length; i++){
 // }
