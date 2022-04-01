@@ -8,6 +8,7 @@ import {
   cilDrop,
   cilNotes,
   cilNewspaper,
+  cilClock,
   cilPencil,
   cilChartLine,
   cilPuzzle,
@@ -80,9 +81,14 @@ const _navAdmin = [
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
   {
+    component: CNavTitle,
+    name: "Interview",
+  },
+  {
     component: CNavItem,
-    name: "List Posts",
-    to: "/scholarship/list-posts",
+  name: "Scheduling",
+    to: "/scheduling",
+    icon: <CIcon icon={cilClock} customClassName="nav-icon" />,
   },
 
 ];

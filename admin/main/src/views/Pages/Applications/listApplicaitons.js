@@ -43,7 +43,6 @@ const Layout = (props) => {
 
 
   var applications = [];
-
   const stautsBadge = (status) => {
     if (status === 'accepted') {
       return (
