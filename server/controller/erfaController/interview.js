@@ -3,7 +3,7 @@ const db = require("../../models");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
-
+var nodemailer = require('nodemailer');
 
 exports.schedule=expressAsyncHandler(async(req, res, next)=>{
 try{
@@ -165,7 +165,33 @@ for (let i=0; i<students.length; i++)
  
   ]);
 
-  console.log(findStudent[0].interviewdetails.venue)
+  var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'onlineerfa1998@gmail.com',
+    pass: 'ciuptmjpjlnzgfgo'
+  }
+});
+
+var mailOptions = {
+  from: 'onlineerfa1998@gmail.com',
+  to: `${findStudent[0].studentdetails.email}`,
+  subject: 'Interview Details',
+  html: `<h1>Interview details</h1><p>${findStudent[0].studentdetails.email}</p><p>startDate:${findStudent[0].interviewdetails.startDate}</p>endDate:${findStudent[0].interviewdetails.endDate}<p>startTime:${findStudent[0].interviewdetails.startTime}</p><p>endTime:${findStudent[0].interviewdetails.endTime}</p> <p>venue:${findStudent[0].interviewdetails.venue}</p>`
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+
+  console.log(findStudent[0].studentdetails.email)
+  
 }
 
 
