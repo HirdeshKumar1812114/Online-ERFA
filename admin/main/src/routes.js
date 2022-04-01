@@ -12,7 +12,8 @@ const UpdateSeletctedPost = React.lazy(()=>import('./views/Pages/Scholarships/Up
 // Applications
 const listApplications = React.lazy(()=>import('./views/Pages/Applications/listApplicaitons'))
 const selectedApplications = React.lazy(()=>import('./views/Pages/Applications/selectedApplications'))
-
+// Interviews
+const scheduling = React.lazy(()=>import('./views/Pages/Interview/scheduling'))
 
 
 
@@ -39,6 +40,8 @@ const routes = [
 { path: '/applications', name: 'All Applications', component: listApplications },
 { path: '/selected-applicaiton', name: 'Application', component: selectedApplications },
 
+// Interview Routes
+{ path: '/scheduling', name: 'Scheduling', component: scheduling },
 
 
 
