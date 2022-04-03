@@ -406,18 +406,3 @@ status: checkStatus
     res.status(404).json({ message: "Not Found" });
   }
 })
-
-exports.sortStatusandTitle=
-expressAsyncHandler(async (req, res) => {  checkStatus=req.body.status;
-  checkTitle=req.body.title;
-  checkStatus=req.body.status;
-  console.log(checkStatus)
-  console.log(checkTitle)
-  try {
-    const fetch = await db.ScholarshipForm.find({status:checkStatus})
-    res.status(200).send(fetch);
-    res.end();
-  } catch {
-    res.status(404).json({ message: "Not Found" });
-  }
-})
