@@ -406,3 +406,33 @@ status: checkStatus
     res.status(404).json({ message: "Not Found" });
   }
 })
+
+exports.sortStatusandTitle= expressAsyncHandler(async (req, res) => {
+
+  const scholarship=req.body.scholarship;
+  const status=req.body.status;
+  console.log(status);
+  console.log(scholarship);
+  try{
+const fetchApplication= await db.ScholarshipForm.find({scholarship:scholarship,status:status});
+const getTitle=await db.ScholarshipPost.findOne({_id:fetchApplication[0].scholarship})
+
+if(fetchApplication){
+  if(getTitle){
+    res.status(200).send({application:fetchApplication,scholarship:scholarship});
+res.end();
+}else{
+  res.status(404).send({message:"Title Not Found!"})
+  res.end();
+}
+} else{
+
+  res.status(404).send({message:"Application Not Found!"})
+  res.end();
+} 
+}
+  catch(error){
+res.status(500).send({message: error.message })
+res.end();
+  }
+})

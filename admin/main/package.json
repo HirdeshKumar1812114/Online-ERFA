@@ -33,6 +33,7 @@
     "material-design-icons": "^3.0.1",
     "material-ui-dropzone": "^3.5.0",
     "moment": "2.29.1",
+    "mongoose": "^6.2.9",
     "node-sass": "6.0.0",
     "nouislider": "15.1.0",
     "pdf-viewer-reactjs": "^2.2.3",

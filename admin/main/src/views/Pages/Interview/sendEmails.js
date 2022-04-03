@@ -42,7 +42,9 @@ const Layout = (props) => {
     const [valid, setValid] = useState('')
     const [selectStatus, setSelectStatus] = useState('')
     const [getStudents, setStudents] = useState([]);
-
+    const mongoose = require("mongoose");
+    const ObjectId = mongoose.Types.ObjectId;
+    
     var applications = [];
     const stautsBadge = (status) => {
         if (status === 'accepted') {
@@ -77,9 +79,10 @@ const Layout = (props) => {
   
 
     useEffect(() => {
-        api.post("scholarship-form/sorttitlestatus",{status: "accepted", title: localStorage.getItem("interviewScholarshipTitle") })
+        api.post("scholarship-form/sorttitlestatus",{status: "accepted", scholarship: ObjectId(localStorage.getItem("interviewScholarshipTitle")) })
         .then((res) => {
             // console.log(getapplications)
+          console.log(localStorage.getItem("interviewScholarshipTitle"))
             localStorage.setItem("all-applications", JSON.stringify(res.data));
             applications = res.data;
             console.log(res.data)
