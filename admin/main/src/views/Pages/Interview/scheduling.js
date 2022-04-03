@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import validator from "validator";
 import {
     CContainer,
@@ -24,16 +24,18 @@ const override = css`
 `;
 
 const Layout = (props) => {
-    const [startDate,setStartDate] =useState('');
-    const [endDate,setEndDate] =useState('');
-    const [startTime,setStartTime] =useState('');
-    const [endTime,setEndTime] =useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const [venue, setVenue] = useState('');
     const [scholarship, setScholarship] = useState('')
     const [loading, setLoading] = useState(false);
+    const [post, setPost] = useState([]);
     const [valid, setValid] = useState("");
     let [color, setColor] = useState("#49A54D");
     const [validated, setValidated] = useState(false);
+
     const [error, setError] = useState("");
     const [toSend, setToSend] = useState({
         sendfirstname: '',
@@ -49,7 +51,15 @@ const Layout = (props) => {
     const api = axios.create({
         baseURL: "http://localhost:5000/",
     });
-
+    useEffect(() => {
+        api.get("scholarship/all").then((res) => {
+            // console.log('getPost=>', getPost)
+            localStorage.setItem("posts", JSON.stringify(res.data));
+            let posts = res.data;
+            console.log('posts=>', posts)
+            setPost(posts);
+        });
+    }, []);
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
@@ -64,15 +74,6 @@ const Layout = (props) => {
             alert();
         }
 
-        if (password === confPass) {
-            setIsMatched(true);
-            submitData();
-        } else {
-            setIsMatched(false);
-            event.preventDefault();
-            event.stopPropagation();
-            setValid("invalidPassword");
-        }
 
         setValidated(true);
     };
@@ -223,6 +224,7 @@ const Layout = (props) => {
 
     return (
         <CContainer fluid>
+            {console.log(post)}
             <CCard>
                 <CCardHeader>
                     <strong>
@@ -250,7 +252,7 @@ const Layout = (props) => {
                             onSubmit={handleSubmit}
                         >
                             <CCol md={12}>
-                                <CFormLabel htmlFor="selectScholarship">Select Scholarship</CFormLabel>
+                                <CFormLabel htmlFor="selectScholarship">Scholarship Title</CFormLabel>
                                 <CFormSelect
                                     aria-label="Default select example"
                                     value={scholarship}
@@ -259,9 +261,12 @@ const Layout = (props) => {
                                     }}
                                     required
                                 >
-                                    <option value="Merit">Merit</option>
-                                    <option value="NeedBased">NeedBased</option>
-                                    <option value="Sindh">Sindh</option>
+                                            <option >Select scholarship</option>
+                                    {post.map((value, key) => {
+                                        return (
+                                            <option value={value.title}>{value.title}</option>
+                                        )
+                                    })}
                                 </CFormSelect>
                             </CCol>
                             <CCol md={6}>
@@ -327,7 +332,7 @@ const Layout = (props) => {
                                     }}
                                 />
                             </CCol>
-                           
+
 
                             <CCol xs={12}>
                                 <CButton type="submit">Schedule Interviews</CButton>
@@ -337,12 +342,12 @@ const Layout = (props) => {
                 </CCardBody>
             </CCard>
             <prev >{JSON.stringify(scholarship, null, 2)}</prev>
-      <prev >{JSON.stringify(startDate, null, 2)}</prev>
-      <prev >{JSON.stringify(endDate, null, 2)}</prev>
-      <prev >{JSON.stringify(startTime, null, 2)}</prev>
-      <prev >{JSON.stringify(endTime, null, 2)}</prev>
-      <prev >{JSON.stringify(venue, null, 2)}</prev>
-      
+            <prev >{JSON.stringify(startDate, null, 2)}</prev>
+            <prev >{JSON.stringify(endDate, null, 2)}</prev>
+            <prev >{JSON.stringify(startTime, null, 2)}</prev>
+            <prev >{JSON.stringify(endTime, null, 2)}</prev>
+            <prev >{JSON.stringify(venue, null, 2)}</prev>
+
         </CContainer>
     );
 };
