@@ -351,7 +351,6 @@ res.end();
   }
 })
 
-
 exports.sortStatus= expressAsyncHandler(async (req, res) => {
   checkStatus=req.body.status;
   checkTitle=req.body.title;
@@ -363,8 +362,7 @@ exports.sortStatus= expressAsyncHandler(async (req, res) => {
         $match: {
             form: { $exists: true},
 status: checkStatus
-,
-"scholarshipdetails.title":checkTitle
+
 }
       },{
           $lookup:{
@@ -418,7 +416,8 @@ expressAsyncHandler(async (req, res) => {
       {
         $match: {
             form: { $exists: true},
-status: checkStatus
+status: checkStatus,
+
         }
       },{
           $lookup:{
@@ -455,6 +454,7 @@ status: checkStatus
         }  
       }
   ]);
+  console.log(fetch.scholarshipdetails.title)
     res.status(200).send(fetch);
     res.end();
   } catch {
