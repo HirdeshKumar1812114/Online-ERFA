@@ -15,6 +15,7 @@ try{
     startTime:req.body.startTime,
     endTime:req.body.endTime,
     venue: req.body.venue,
+    scholarship:req.body.scholarship,
 
   })
   
