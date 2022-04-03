@@ -25,6 +25,7 @@ import {
 import { useCookies } from 'react-cookie';
 
 import axios from "axios";
+import { ApiOutlined } from "@mui/icons-material";
 const api = axios.create({
     baseURL: "http://localhost:5000/",
 });
@@ -73,65 +74,20 @@ const Layout = (props) => {
         }
     }
 
-    const checkPassword = () => {
-        if (password != '') {
-            console.log({ email, password });
-            api.post('erfa/login', { email, password }).then(result => {
-                setValid("true")
-                alert()
-                deleteapplication()
-
-
-            }).catch(err => {
-                // console.log(err)
-                setValid("false")
-                alert()
-            })
-        } else {
-            setValid("fillForm")
-            alert()
-        }
-
-    }
-    const alert = () => {
-        if (valid != "") {
-            if (valid == "true") {
-                return (
-                    <>
-                        <strong style={{ 'color': 'green' }}>   OK - application Verified. </strong>
-                    </>
-                )
-            }
-            else if (valid == "false") {
-                return (
-                    <strong style={{ 'color': 'red' }}> ERROR — Invalid Credentials!</strong>
-                )
-            }
-            else {
-                return (
-                    <strong style={{ 'color': 'orange' }}>ALERT — Please fill all fields!</strong>)
-            }
-        }
-        else {
-            return (
-                <>
-                </>)
-        }
-    }
-
+  
 
     useEffect(() => {
-        api.get("scholarship-form/all").then((res) => {
+        api.post("scholarship-form/sorttitlestatus",{status: "accepted", title: localStorage.getItem("interviewScholarshipTitle") })
+        .then((res) => {
             // console.log(getapplications)
             localStorage.setItem("all-applications", JSON.stringify(res.data));
             applications = res.data;
-            // console.log('1', applications)
+            console.log(res.data)
             setApplications(res.data);
         });
     }, []);
 
     let appendStudent = (student) => {
-        console.log('check=.',getStudents.includes(student));
         if (!getStudents.includes(student) ) {
             setStudents((getStudents) => ([...getStudents, student]))
         }
@@ -139,7 +95,6 @@ const Layout = (props) => {
 
     useEffect(() => {
         let len = getApplications.length
-        console.log(len)
         for (let i = 0; i < len; i++) {
             appendStudent(getApplications[i].student)
             // 
@@ -191,6 +146,15 @@ const Layout = (props) => {
         props.history.push("selected-applicaiton");
     };
 
+    const sendEmails = ()=>{
+        console.log('localStorage.getItem("interviewId")=>',localStorage.getItem("interviewId"))
+        console.log(getStudents);
+        api.post('interview/selectinterviewee',{interview:localStorage.getItem("interviewId"),students:getStudents})
+        .then((res) => {
+            console.log(res)
+            window.alert('Email Sent')
+        }).catch((err) => console.log(err))
+    }
 
 
     return (
@@ -204,7 +168,7 @@ const Layout = (props) => {
                             </strong>
                         </CCol>
                         <CCol md={4} sm={12}>
-                            <CButton color="success" style={{ "color": "white" }} onClick={() => { showAll() }} >Send interview confirmation email</CButton>
+                            <CButton color="success" style={{ "color": "white" }} onClick={() => { sendEmails() }} >Send interview confirmation email</CButton>
                         </CCol>
                     </CRow>
                 </CCardHeader>
@@ -269,7 +233,6 @@ const Layout = (props) => {
                                     <input type="password" class="form-control" id="inputPassword" value={password} onChange={(e) => { setPassword(e.target.value) }} />
                                 </div>
                             </div>
-                            {alert()}
                         </CModalBody>
                         <CModalFooter>
                             <CButton color="secondary" onClick={() => setVisible(false)}>
