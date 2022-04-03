@@ -354,6 +354,64 @@ res.end();
 
 exports.sortStatus= expressAsyncHandler(async (req, res) => {
   checkStatus=req.body.status;
+  checkTitle=req.body.title;
+  console.log(checkStatus)
+  console.log(checkTitle)
+  try {
+    const fetch = await db.ScholarshipForm.aggregate([
+      {
+        $match: {
+            form: { $exists: true},
+status: checkStatus
+,
+"scholarshipdetails.title":checkTitle
+}
+      },{
+          $lookup:{
+              from:'scholarshipposts',
+              localField:"scholarship",
+              foreignField:"_id",
+              as:"scholarshipdetails"
+          },
+        
+      },{$unwind:"$scholarshipdetails"},
+      {$lookup:{
+        from:'userstudents',
+        localField:"student",
+        foreignField:"_id",
+        as:"studentdetails"
+      }},{$unwind:"$studentdetails"},{
+        $project:{
+            "_id":1,
+            "student":1,
+           "scholarship":1,
+           "form":1, 
+           "status":1,
+           "messageStudent":1,
+           "messageOfficer":1,
+  
+            "scholarshipdetails.title":1,
+            "scholarshipdetails.applicationstart":1,
+            "scholarshipdetails.applicationdeadline":1,
+            "studentdetails.regid":1,
+            "studentdetails.firstname":1,
+            "studentdetails.lastname":1,
+            "studentdetails.section":1,
+            "studentsdetails.email":1            
+        }  
+      }
+  ]);
+  
+    res.status(200).send(fetch);
+    res.end();
+  } catch {
+    res.status(404).json({ message: "Not Found" });
+  }
+})
+
+exports.sortStatusandTitle=
+expressAsyncHandler(async (req, res) => {
+  checkStatus=req.body.status;
   console.log(checkStatus)
   try {
     const fetch = await db.ScholarshipForm.aggregate([
@@ -403,4 +461,3 @@ status: checkStatus
     res.status(404).json({ message: "Not Found" });
   }
 })
-
