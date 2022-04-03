@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { lazy, useState, useEffect } from "react";
 
 import {
   CAvatar,
@@ -22,8 +22,28 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-
+import axios from "axios";
+const api = axios.create({
+  baseURL: "http://localhost:5000/",
+});
 const Dashboard = (props) => {
+
+  const [getPost, setPost] = useState([]);
+  var posts = [];
+
+  useEffect(() => {
+    api.get("scholarship/last3").then((res) => {
+      // // console.log('getPost=>', getPost)
+      localStorage.setItem("posts", JSON.stringify(res.data));
+      posts = res.data;
+      // // console.log('posts=>', posts)
+      setPost(res.data);
+    });
+  }, []);
+  const viewPost = () => {
+    props.history.push("scholarship/view-post");
+  }
+
   return (
     <>
       <CContainer>
@@ -57,57 +77,36 @@ const Dashboard = (props) => {
             </CRow> */}
 
             <CRow xs={{ cols: 1 }} md={{ cols: 3 }} className="g-4">
-              <CCol xs>
-                <CCard className="h-100">
-                  <CCardImage
-                    orientation="top"
-                    src="http://localhost:5000/getPoster/poster_1643631802225.jpg"
-                  />
-                  <CCardBody>
-                    <CCardTitle>Need-Based Scholarship 2021</CCardTitle>
-                    <CCardText>
-                    SZABIST Need-Based Scholarship is an award of scholarship with varying percentages 25%, 50%, 75% and 100% for the talented but financially challenged students.
-                    </CCardText>
-                  </CCardBody>
-                  <CCardFooter>
-                    <CButton href="#">Quick Apply</CButton>
-                  </CCardFooter>
-                </CCard>
-              </CCol>
-              <CCol xs>
-                <CCard className="h-100">
-                  <CCardImage
-                    orientation="top"
-                    src="https://scontent.fkhi22-1.fna.fbcdn.net/v/t1.6435-9/s600x600/101296846_3046145455472596_901224652850855936_n.jpg?_nc_cat=104&ccb=1-5&_nc_sid=730e14&_nc_eui2=AeEpUtXgw47rZSAyIVZDCQK9d-S0KrFkbvN35LQqsWRu80foQNFlverM_PyQnN2hefzy0vUjSJ3Qlaj8ufWKSRv_&_nc_ohc=E99HAcEfAAUAX8fZPQ1&_nc_ht=scontent.fkhi22-1.fna&oh=00_AT-T3tUfyk8I970HcpIoaEzBak3L_adU8xZsHXJ8Tbd-qg&oe=621E003F"
-                  />
-                  <CCardBody>
-                    <CCardTitle>Need-Based Scholarship 2020</CCardTitle>
-                    <CCardText>
-                    SZABIST Need-Based Scholarship is an award of scholarship with varying percentages 25%, 50%, 75% and 100% for the talented but financially challenged students.
-                    </CCardText>
-                  </CCardBody>
-                  <CCardFooter>
-                    <CButton href="#">Quick Apply</CButton>
-                  </CCardFooter>
-                </CCard>
-              </CCol>
-              <CCol xs>
-                <CCard className="h-100">
-                  <CCardImage
-                    orientation="top"
-                    src="https://lrk.szabist.edu.pk/wp-content/uploads/2021/07/Scholarship-1.png"
-                  />
-                  <CCardBody>
-                    <CCardTitle>USAID Funded Scholarship</CCardTitle>
-                    <CCardText>
-                    United States Agency for International Development USAID with its commitment to support the program of scholarship for academically qualified Pakistani students, who aspire to continue higher studies, but due to lack of financial resources are unable to continue. 
-                    </CCardText>
-                  </CCardBody>
-                  <CCardFooter>
-                    <CButton href="#">Quick Apply</CButton>
-                  </CCardFooter>
-                </CCard>
-              </CCol>
+              {
+                getPost.map((posts, key) => {
+                  return (
+                    <CCol xs>
+                      <CCard className="h-100">
+                        <CCardImage
+                          orientation="top"
+                          src={`http://localhost:5000/getPoster/${posts.poster}`}
+                        />
+                        <CCardBody>
+                          <CCardTitle>{posts.title}</CCardTitle>
+                          <CCardText>
+                            {posts.description.substring(0, 200)}... read more.
+                          </CCardText>
+                        </CCardBody>
+                        <CCardFooter>
+                          <CButton
+                            onClick={() => {
+                              localStorage.setItem("viewPostUrl", posts._id);
+                              viewPost()
+                            }}
+                          >Quick Apply</CButton>
+                        </CCardFooter>
+                      </CCard>
+                    </CCol>
+                  )
+                })
+              }
+
+
             </CRow>
             <br></br>
             <br></br>

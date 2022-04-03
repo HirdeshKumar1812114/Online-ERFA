@@ -78,10 +78,10 @@ const Layout = (props) => {
     //   event.stopPropagation();
     //   setValidated(true);
     // } else {
-      
+
     // }
     setValidated(false);
-      submitData();
+    submitData();
   };
 
 
@@ -155,7 +155,7 @@ const Layout = (props) => {
   };
   return (
     <CContainer fluid>
-      
+
       <CCard>
         <CCardHeader>
           <strong>
@@ -243,10 +243,35 @@ const Layout = (props) => {
                     <h4>
                       Application closed!
                     </h4>
+
                     <CCol md={12}>
                       <CFormLabel htmlFor="exampleFormControlTextarea1">Message from officer:</CFormLabel>
                       <CFormTextarea id="exampleFormControlTextarea1" value={officerMessage == '' ? 'Application not evaluated yet!' : officerMessage} readOnly rows="3"></CFormTextarea>
                     </CCol>
+                      <hr/>
+                      <h4>
+                      Your application has been scheduled!
+                    </h4>
+                    <CRow className="mb-2">
+                        <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Interview Time:</CFormLabel>
+                        <CCol sm={8}>
+                          <CFormInput type="text" defaultValue="Form not uploaded" value={"12:30 PM"} readOnly plainText />
+                        </CCol>
+                      </CRow>
+
+                      <CRow className="mb-2">
+                        <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Interview Date:</CFormLabel>
+                        <CCol sm={8}>
+                          <CFormInput type="text" defaultValue="Form not uploaded" value={"4-May-2025"} readOnly plainText />
+                        </CCol>
+                      </CRow>
+
+                      <CRow className="mb-2">
+                        <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Venue:</CFormLabel>
+                        <CCol sm={8}>
+                          <CFormInput type="text" defaultValue="Form not uploaded" value={"Aunty Park"} readOnly plainText />
+                        </CCol>
+                      </CRow>
                   </>
               }
             </>
