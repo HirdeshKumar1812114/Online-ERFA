@@ -96,7 +96,7 @@ const Layout = (props) => {
     useEffect(() => {
         let len = getApplications.length
         for (let i = 0; i < len; i++) {
-            appendStudent(getApplications[i].student)
+            appendStudent(getApplications[i]._id)
             // 
         }
     }, [applications])
