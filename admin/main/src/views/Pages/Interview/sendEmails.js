@@ -79,7 +79,7 @@ const Layout = (props) => {
   
 
     useEffect(() => {
-        api.post("scholarship-form/sorttitlestatus",{status: "accepted", scholarship: ObjectId(localStorage.getItem("interviewScholarshipTitle")) })
+        api.post("scholarship-form/sorttitlestatus",{status: "accepted", scholarship: localStorage.getItem("interviewScholarshipTitle") })
         .then((res) => {
             // console.log(getapplications)
           console.log(localStorage.getItem("interviewScholarshipTitle"))

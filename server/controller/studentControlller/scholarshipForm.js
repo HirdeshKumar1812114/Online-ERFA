@@ -419,7 +419,7 @@ const getTitle=await db.ScholarshipPost.findOne({_id:fetchApplication[0].scholar
 
 if(fetchApplication){
   if(getTitle){
-    res.status(200).send({application:fetchApplication,scholarship:scholarship});
+    res.status(200).send({application:fetchApplication,title:getTitle.title});
 res.end();
 }else{
   res.status(404).send({message:"Title Not Found!"})
