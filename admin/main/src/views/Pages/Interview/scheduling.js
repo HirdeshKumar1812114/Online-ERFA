@@ -27,6 +27,8 @@ const Layout = (props) => {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [venue, setVenue] = useState('');
+    const [postId, setPostId] = useState('');
+
     const [scholarship, setScholarship] = useState('')
     const [loading, setLoading] = useState(false);
     const [post, setPost] = useState([]);
@@ -45,7 +47,7 @@ const Layout = (props) => {
             // console.log('getPost=>', getPost)
             localStorage.setItem("posts", JSON.stringify(res.data));
             let posts = res.data;
-            // console.log('posts=>', posts)
+            console.log('posts=>', posts)
             setPost(posts);
         });
     }, []);
@@ -194,7 +196,7 @@ const Layout = (props) => {
                                     <option >Select scholarship</option>
                                     {post.map((value, key) => {
                                         return (
-                                            <option value={value.title}>{value.title}</option>
+                                            <option value={value._id} >{value.title}</option>
                                         )
                                     })}
                                 </CFormSelect>
@@ -269,8 +271,12 @@ const Layout = (props) => {
                             </CCol>
                         </CForm>
                     )}
+            <prev >{JSON.stringify(postId, null, 2)}</prev>
+            <prev >{JSON.stringify(scholarship, null, 2)}</prev>
+                
                 </CCardBody>
             </CCard>
+
             {/* <prev >{JSON.stringify(scholarship, null, 2)}</prev>
             <prev >{JSON.stringify(startDate, null, 2)}</prev>
             <prev >{JSON.stringify(endDate, null, 2)}</prev>
