@@ -86,9 +86,15 @@ const _navAdmin = [
   },
   {
     component: CNavItem,
-  name: "Scheduling",
+    name: "Scheduling",
     to: "/scheduling",
     icon: <CIcon icon={cilClock} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "List Schedule",
+    to: "/list-schedule",
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
 
 ];
