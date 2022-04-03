@@ -121,6 +121,7 @@ const Layout = (props) => {
                           onClick={() => {
                             localStorage.setItem("interviewId", application._id);
                             localStorage.setItem("interviewScholarshipTitle", application.scholarship);
+                            
 
                             sendEmails();
                           }}
