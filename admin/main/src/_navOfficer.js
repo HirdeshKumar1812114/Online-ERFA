@@ -41,7 +41,7 @@ const _navOfficer = [
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
-        
+
         component: CNavItem,
         name: 'New Post',
         to: '/scholarship/new-post',
@@ -52,7 +52,7 @@ const _navOfficer = [
         to: '/scholarship/list-posts',
       },
     ],
-  },{
+  }, {
     component: CNavTitle,
     name: "Applicaitons",
   },
@@ -61,17 +61,23 @@ const _navOfficer = [
     name: "Application forms",
     to: "/applications",
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
-   },
-   {
+  },
+  {
     component: CNavTitle,
     name: "Interview",
   },
   {
     component: CNavItem,
-  name: "Scheduling",
+    name: "Scheduling",
     to: "/scheduling",
     icon: <CIcon icon={cilClock} customClassName="nav-icon" />,
   },
-  ]
+  {
+    component: CNavItem,
+    name: "List Schedule",
+    to: "/list-schedule",
+    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+  },
+]
 
 export default _navOfficer
