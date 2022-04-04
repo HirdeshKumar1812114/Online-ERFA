@@ -77,6 +77,7 @@ const Layout = (props) => {
         .get(`scholarship/view/${applied[i]}`, setLoading(true))
         .then((res) => {
           setLoading(false)
+          console.log(res.data)
 
           setScholarships((scholarships) => ([...scholarships, res.data]))
         })
