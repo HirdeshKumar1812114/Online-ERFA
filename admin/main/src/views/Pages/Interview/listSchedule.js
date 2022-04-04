@@ -40,7 +40,7 @@ const Layout = (props) => {
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState('')
   const [selectStatus, setSelectStatus] = useState('')
-
+  let i=0;
 
   var applications = [];
  
@@ -64,6 +64,8 @@ const Layout = (props) => {
         applications = res.data;
         console.log(applications)
         setSchedule(res.data);
+   /*     console.log(applications[0].scholarshipdetails.title) 
+        console.log(applications[1].scholarshipdetails.title) */
       }).catch((err) => console.log(err))}
   }, [])
 
@@ -103,8 +105,9 @@ const Layout = (props) => {
              {getSchedule.map((application, key) => {
                 return (
                   <CTableRow>
+                
                     <CTableHeaderCell scope="row">
-                      {application.scholarship}
+                  {application.scholarshipdetails.title}
                     </CTableHeaderCell>
                     <CTableDataCell>{application.startDate}</CTableDataCell>
                     <CTableDataCell style={{'color':'red'}}>{application.endDate}</CTableDataCell>
@@ -120,7 +123,7 @@ const Layout = (props) => {
                           color="warning"
                           onClick={() => {
                             localStorage.setItem("interviewId", application._id);
-                            localStorage.setItem("interviewScholarshipTitle", application.scholarship);
+                            localStorage.setItem("interviewScholarshipId", application.scholarship);
                             
 
                             sendEmails();
@@ -130,6 +133,7 @@ const Layout = (props) => {
                         </CButton>
                       </CButtonGroup>
                     </CTableDataCell>
+                    
                   </CTableRow>
                 );
               })} 

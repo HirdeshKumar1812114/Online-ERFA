@@ -5,7 +5,8 @@ const path = require("path");
 const posterPath = "public/uploadScholarshipForm";
 const fs = require("fs");
 const maxSize = 10 * 1024 * 1024; // for 10MB
-
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 const uploadFilePath = path.resolve(__dirname, "../..", posterPath);
 
 const storage = multer.diskStorage({
@@ -414,23 +415,52 @@ exports.sortStatusandTitle= expressAsyncHandler(async (req, res) => {
   console.log(status);
   console.log(scholarship);
   try{
-const fetchApplication= await db.ScholarshipForm.find({scholarship:scholarship,status:status});
-const getTitle=await db.ScholarshipPost.findOne({_id:fetchApplication[0].scholarship})
 
-if(fetchApplication){
-  if(getTitle){
-    res.status(200).send({application:fetchApplication,title:getTitle.title});
-res.end();
+  const fetchApplication=await db.ScholarshipForm.aggregate([
+ 
+    {
+      $match: {
+          form: { $exists: true},
+status:{$eq:
+  status},
+  scholarship:{$eq: ObjectId(scholarship)}
+}
+    },   {$lookup:{
+        from:'userstudents',
+        localField:"student",
+        foreignField:"_id",
+        as:"studentdetails"
+      }},{$unwind:"$studentdetails"},{
+        $project:{
+            "_id":1,
+            "student":1,
+           "scholarship":1,
+           "form":1, 
+           "status":1,
+           "messageStudent":1,
+           "messageOfficer":1,
+  
+            "scholarshipdetails.title":1,
+            "scholarshipdetails.applicationstart":1,
+            "scholarshipdetails.applicationdeadline":1,
+            "studentdetails.regid":1,
+            "studentdetails.firstname":1,
+            "studentdetails.lastname":1,
+            "studentdetails.section":1,
+            "studentdetails.email":1            
+        }  
+      }  ])
+
+      if(fetchApplication){
+res.status(200).send(fetchApplication)
+res.end();     
 }else{
-  res.status(404).send({message:"Title Not Found!"})
-  res.end();
-}
-} else{
 
-  res.status(404).send({message:"Application Not Found!"})
-  res.end();
-} 
-}
+res.status(400).send({message:'Applications not found' })
+res.end();
+
+      }
+    }
   catch(error){
 res.status(500).send({message: error.message })
 res.end();

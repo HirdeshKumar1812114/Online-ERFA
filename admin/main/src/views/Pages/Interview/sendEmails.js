@@ -79,10 +79,10 @@ const Layout = (props) => {
   
 
     useEffect(() => {
-        api.post("scholarship-form/sorttitlestatus",{status: "accepted", scholarship: localStorage.getItem("interviewScholarshipTitle") })
+        api.post("scholarship-form/sorttitlestatus",{status: "accepted", scholarship: localStorage.getItem("interviewScholarshipId") })
         .then((res) => {
             // console.log(getapplications)
-          console.log(localStorage.getItem("interviewScholarshipTitle"))
+          console.log(localStorage.getItem("interviewScholarshipId"))
             localStorage.setItem("all-applications", JSON.stringify(res.data));
             applications = res.data;
             console.log(res.data)
@@ -99,7 +99,7 @@ const Layout = (props) => {
     useEffect(() => {
         let len = getApplications.length
         for (let i = 0; i < len; i++) {
-            appendStudent(getApplications[i].student)
+            appendStudent(getApplications[i]._id)
             // 
         }
     }, [applications])
@@ -150,7 +150,7 @@ const Layout = (props) => {
     };
 
     const sendEmails = ()=>{
-        console.log('localStorage.getItem("interviewId")=>',localStorage.getItem("interviewId"))
+        console.log('localStorage.getItem("interviewScholarshipId")=>',localStorage.getItem("interviewId"))
         console.log(getStudents);
         api.post('interview/selectinterviewee',{interview:localStorage.getItem("interviewId"),students:getStudents})
         .then((res) => {
@@ -183,9 +183,10 @@ const Layout = (props) => {
                                 <CTableHeaderCell scope="col">Student Id</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Student Section</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Email Sent</CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
-                        <CTableBody>
+                         <CTableBody>
                             {getApplications.map((application, key) => {
 
                                 return (
@@ -204,7 +205,7 @@ const Layout = (props) => {
 
 
                             }
-                        </CTableBody>
+                        </CTableBody> 
                     </CTable>
 
                     <CModal

@@ -54,8 +54,33 @@ exports.getInterviewDetail = expressAsyncHandler(async (req, res, next) => {
 })
 exports.getAllInterviewDetails = expressAsyncHandler(async (req, res, next) => {
   try {
-    const findAllInterview = await db.Interview.find({
-    });
+    const findAllInterview = await db.Interview.aggregate([{
+      $lookup:{
+          from:'scholarshipposts',
+          localField:"scholarship",
+          foreignField:"_id",
+          as:"scholarshipdetails"
+      },
+    
+  },{$unwind:"$scholarshipdetails"},
+  {
+    $project:{
+      "_id": 1,
+      "startDate": 1,
+      "endDate": 1,
+      "startTime": 1,
+      "endTime": 1,
+      "venue": 1,
+      "scholarship":1,
+        "scholarshipdetails.title":1,
+        "scholarshipdetails.applicationstart":1,
+        "scholarshipdetails.applicationdeadline":1,
+        "studentdetails.regid":1,
+        "studentdetails.firstname":1,
+        "studentdetails.lastname":1,
+        "studentdetails.section":1,
+        "studentdetails.email":1            
+    }}])
     if (findAllInterview) {
       res.status(200).send(findAllInterview);
       res.end();
