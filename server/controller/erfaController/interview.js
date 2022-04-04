@@ -132,7 +132,7 @@ exports.selectStudents = expressAsyncHandler(async (req, res) => {
   console.log(students)
   for (let i = 0; i < students.length; i++) {
 
-    var findDocs = await db.ScholarshipForm.findOneAndUpdate({ _id: students[i] }, { $set: { interview: req.body.interview } });
+    var findDocs = await db.ScholarshipForm.findOneAndUpdate({ _id: students[i] }, { $set: { interview: req.body.interview,emailSented:'Yes' } });
     if (findDocs) {
       console.log("Done attacted interview with applications");
     } else {

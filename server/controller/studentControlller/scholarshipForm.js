@@ -57,7 +57,8 @@ console.log(checkRecord)
       status: req.body.status,
       messageStudent: req.body.messageStudent,
       messageOfficer:req.body.messageOfficer,
-      applicationComplete:req.body.applicationComplete
+      applicationComplete:req.body.applicationComplete,
+      emailSented:'No'
     });
 
     await newForm.save((err, checkTitle) => {
@@ -335,7 +336,46 @@ exports.fetchStudentScholarshipForm= expressAsyncHandler(async (req, res, next) 
   console.log(student);
   console.log(scholarship);
   try{
-const fetchApplication= await db.ScholarshipForm.findOne({scholarship:scholarship,student:student});
+const fetchApplication= await db.ScholarshipForm.aggregate([
+  {
+    $match: {
+        form: { $exists: true},
+        scholarship:{$eq: ObjectId(scholarship)},
+        student:{$eq: ObjectId(student)}
+       
+
+}
+  },
+  {
+    $lookup: {
+      from: 'interviews',
+      localField: "interview",
+      foreignField: "_id",
+      as: "interviewdetails"
+    }
+  }, { $unwind: "$interviewdetails" },
+  {
+    $project: {
+      "_id": 1,
+      "student": 1,
+      "scholarship": 1,
+      "form": 1,
+      "status": 1,
+      "messageStudent": 1,
+      "messageOfficer": 1,
+      "interview": 1,
+      "interviewdetails.startDate": 1,
+      "interviewdetails.startDate": 1,
+      "interviewdetails.endDate": 1,
+      "interviewdetails.startTime": 1,
+      "interviewdetails.endTime": 1,
+      "interviewdetails.venue": 1,
+
+    }
+  }
+
+]);
+
 if(fetchApplication){
 res.status(200).send(fetchApplication);
 res.end();
@@ -439,7 +479,8 @@ status:{$eq:
            "status":1,
            "messageStudent":1,
            "messageOfficer":1,
-  
+           "interview":1,
+  "emailSented":1,
             "scholarshipdetails.title":1,
             "scholarshipdetails.applicationstart":1,
             "scholarshipdetails.applicationdeadline":1,

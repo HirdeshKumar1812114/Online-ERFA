@@ -172,9 +172,7 @@ exports.updateScholarship = async (req, res) => {
 exports.getLastThreeScholarship = expressAsyncHandler(
   async (req, res, next) => {
     try {
-      const fetch = await db.ScholarshipPost.find().skip(
-        db.ScholarshipPost.count() - 3
-      );
+      const fetch = await db.ScholarshipPost.find().sort({$natural: -1}).limit(3);
       res.status(200).send(fetch);
       res.end();
     } catch {

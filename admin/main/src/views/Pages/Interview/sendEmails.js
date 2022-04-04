@@ -86,6 +86,7 @@ const Layout = (props) => {
             localStorage.setItem("all-applications", JSON.stringify(res.data));
             applications = res.data;
             console.log(res.data)
+            console.log(applications[0].interview)
             setApplications(res.data);
         });
     }, []);
@@ -198,6 +199,7 @@ const Layout = (props) => {
                                         <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
                                         <CTableDataCell>{application.studentdetails.section}</CTableDataCell>
                                         <CTableDataCell>{stautsBadge(application.status)}</CTableDataCell>
+                                        <CTableDataCell>{application.emailSented}</CTableDataCell>
                                     </CTableRow>
                                 );
 
