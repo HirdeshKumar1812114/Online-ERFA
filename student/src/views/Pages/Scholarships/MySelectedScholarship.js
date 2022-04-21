@@ -51,6 +51,12 @@ const Layout = (props) => {
   const [officerMessage, setOfficerMessage] = useState('');
   const [applicationId, setApplicationId] = useState('');
 
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [venue, setVenue] = useState('');
+  const [interviewIsScheduled, setInterviewIsScheduled] = useState(false)
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
 
   useEffect(() => {
@@ -58,16 +64,41 @@ const Layout = (props) => {
       post('scholarship-form/applicationform', { scholarship: localStorage.getItem("viewPostUrl"), student: userID.onlineerfa_student_userID },
         setLoading(true)).
       then((res) => {
-        let { form, status, messageStudent, messageOfficer, _id } = res.data
+        let { form, status, messageStudent, messageOfficer, _id } = res.data;
         console.log(res.data)
-        setPdf(form)
-        setFormName(form)
-        setStatus(status)
-        setYourMessage(messageStudent)
-        setOfficerMessage(messageOfficer)
-        setApplicationId(_id)
-        setLoading(false)
+        setPdf(form);
+        setFormName(form);
+        setStatus(status);
+        setYourMessage(messageStudent);
+        setOfficerMessage(messageOfficer);
+        setApplicationId(_id);
+        setLoading(false);
       })
+
+
+    api.
+      post('scholarship-form/interviewapplicationform', { scholarship: localStorage.getItem("viewPostUrl"), student: userID.onlineerfa_student_userID },
+        setLoading(true)).
+      then((res) => {
+
+        if (res.data.length > 0) {
+          setInterviewIsScheduled(true);
+          let { startDate, endDate, startTime, endTime, venue } = res.data[0].interviewdetails;
+          // console.log('interview Details:=>', res.data[0].interviewdetails);
+          setStartDate(startDate);
+          setEndDate(endDate);
+          setStartTime(startTime);
+          setEndTime(endTime);
+          setVenue(venue);
+          setLoading(false);
+        }
+        else {
+          setInterviewIsScheduled(false);
+        }
+
+
+      })
+
   }, [title])
 
 
@@ -182,7 +213,7 @@ const Layout = (props) => {
               </CCol>
 
               {
-                status == 'notreviewed' || status == 'paused' || !status ?
+                !formName || status === 'paused' || !status  ?
                   <>
                     <br />
                     <CForm
@@ -195,7 +226,7 @@ const Layout = (props) => {
                       <CRow className="mb-3">
                         <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Form:</CFormLabel>
                         <CCol sm={10}>
-                          <CFormInput type="text" defaultValue="Form not uploaded" value={formName == '' ? 'Please upload form!' : formName} readOnly plainText />
+                          <CFormInput type="text" value={formName == '' ? 'Please upload form!' : formName} readOnly plainText />
                         </CCol>
                       </CRow>
 
@@ -223,6 +254,7 @@ const Layout = (props) => {
                           }}
                         />
                       </CCol>
+
                       <br />
                       <br />
                       {validated == true ? (
@@ -235,43 +267,49 @@ const Layout = (props) => {
                         <></>
                       )}
                       <CButton type="submit" color="primary">
-                        Upload document
+                        Submit application
                       </CButton>
                     </CForm>
                   </> :
                   <>
                     <h4>
-                      Application closed!
+                      Application submitted!
                     </h4>
 
                     <CCol md={12}>
                       <CFormLabel htmlFor="exampleFormControlTextarea1">Message from officer:</CFormLabel>
                       <CFormTextarea id="exampleFormControlTextarea1" value={officerMessage == '' ? 'Application not evaluated yet!' : officerMessage} readOnly rows="3"></CFormTextarea>
                     </CCol>
-                      <hr/>
-                      <h4>
-                      Your application has been scheduled!
-                    </h4>
-                    <CRow className="mb-2">
-                        <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Interview Time:</CFormLabel>
-                        <CCol sm={8}>
-                          <CFormInput type="text" defaultValue="Form not uploaded" value={"12:30 PM"} readOnly plainText />
-                        </CCol>
-                      </CRow>
+                    <hr />
+                   
+                    {interviewIsScheduled == false ||  status === 'rejected' ||  status === 'paused' ?
+                    <></>:
+                      <CCol md={12}>
+                        <h4>
+                          Your application has been scheduled!
+                        </h4>
+                        <CRow className="mb-2">
+                          <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Interview Time:</CFormLabel>
+                          <CCol sm={8}>
+                            <CFormInput type="text" value={startTime} readOnly plainText />
+                          </CCol>
+                        </CRow>
 
-                      <CRow className="mb-2">
-                        <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Interview Date:</CFormLabel>
-                        <CCol sm={8}>
-                          <CFormInput type="text" defaultValue="Form not uploaded" value={"4-May-2025"} readOnly plainText />
-                        </CCol>
-                      </CRow>
+                        <CRow className="mb-2">
+                          <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Interview Date:</CFormLabel>
+                          <CCol sm={8}>
+                            <CFormInput type="text" value={startDate} readOnly plainText />
+                          </CCol>
+                        </CRow>
 
-                      <CRow className="mb-2">
-                        <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Venue:</CFormLabel>
-                        <CCol sm={8}>
-                          <CFormInput type="text" defaultValue="Form not uploaded" value={"Aunty Park"} readOnly plainText />
-                        </CCol>
-                      </CRow>
+                        <CRow className="mb-2">
+                          <CFormLabel htmlFor="staticEmail" className="col-sm-2 col-form-label">Venue:</CFormLabel>
+                          <CCol sm={8}>
+                            <CFormInput type="text" value={venue} readOnly plainText />
+                          </CCol>
+                        </CRow>
+                      </CCol>
+                    }
                   </>
               }
             </>

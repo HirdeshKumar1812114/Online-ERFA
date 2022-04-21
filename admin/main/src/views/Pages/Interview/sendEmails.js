@@ -85,8 +85,8 @@ const Layout = (props) => {
           console.log(localStorage.getItem("interviewScholarshipId"))
             localStorage.setItem("all-applications", JSON.stringify(res.data));
             applications = res.data;
-            console.log(res.data)
-            console.log(applications[0].interview)
+            // console.log(res.data)
+            // console.log(applications[0].interview)
             setApplications(res.data);
         });
     }, []);
