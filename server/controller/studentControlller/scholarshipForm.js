@@ -336,7 +336,8 @@ exports.fetchStudentScholarshipForm= expressAsyncHandler(async (req, res, next) 
   console.log(student);
   console.log(scholarship);
   try{
-const fetchApplication= await db.ScholarshipForm.aggregate([
+    const fetchApplication=  await db.ScholarshipForm.findOne({scholarship:scholarship,student:student});
+const interviewDetails= await db.ScholarshipForm.aggregate([
   {
     $match: {
         form: { $exists: true},
@@ -356,6 +357,66 @@ const fetchApplication= await db.ScholarshipForm.aggregate([
   }, { $unwind: "$interviewdetails" },
   {
     $project: {
+    
+      "interview": 1,
+      "interviewdetails.startDate": 1,
+      "interviewdetails.startDate": 1,
+      "interviewdetails.endDate": 1,
+      "interviewdetails.startTime": 1,
+      "interviewdetails.endTime": 1,
+      "interviewdetails.venue": 1,
+
+    }
+  }
+
+]);
+
+if(fetchApplication){
+  console.log(interviewDetails)
+res.status(200).send(fetchApplication);
+res.end();
+
+} else{
+
+  res.status(404).send({message:"Not Found!"})
+  res.end();
+} 
+}
+  catch(error){
+res.status(500).send({message: error.message })
+res.end();
+  }
+})
+
+exports.fetchInterviewStudentScholarshipForm= expressAsyncHandler(async (req, res, next) => {
+
+  const scholarship=req.body.scholarship;
+  const student=req.body.student;
+  console.log(student);
+  console.log(scholarship);
+  try{
+   
+const interviewDetails= await db.ScholarshipForm.aggregate([
+  {
+    $match: {
+        form: { $exists: true},
+        scholarship:{$eq: ObjectId(scholarship)},
+        student:{$eq: ObjectId(student)}
+       
+
+}
+  },
+  {
+    $lookup: {
+      from: 'interviews',
+      localField: "interview",
+      foreignField: "_id",
+      as: "interviewdetails"
+    }
+  }, { $unwind: "$interviewdetails" },
+  {
+    $project: {
+    
       "_id": 1,
       "student": 1,
       "scholarship": 1,
@@ -376,8 +437,9 @@ const fetchApplication= await db.ScholarshipForm.aggregate([
 
 ]);
 
-if(fetchApplication){
-res.status(200).send(fetchApplication);
+if(interviewDetails){
+
+res.status(200).send(interviewDetails);
 res.end();
 
 } else{

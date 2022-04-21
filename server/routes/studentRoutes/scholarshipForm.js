@@ -9,7 +9,9 @@ router.post(
 router.get("/all", scholarshipFormController.getAllScholarshipForm);
 router.get("/view/:id", scholarshipFormController.getScholarshipForm);
 router.post("/applicationform",scholarshipFormController.fetchStudentScholarshipForm)
+router.post("/interviewapplicationform",scholarshipFormController.fetchInterviewStudentScholarshipForm)
 router.delete("/delete/:id", scholarshipFormController.deleteScholarshipForm);
+
 router.put("/sendstudentmessage/:id",scholarshipFormController.updateMessageStudent)
 router.put("/sendofficer/:id",scholarshipFormController.updateOfficer)
 router.put("/sendappcomplete/:id",scholarshipFormController.updateApplicationComplete)
