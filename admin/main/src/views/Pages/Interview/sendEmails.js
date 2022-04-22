@@ -171,7 +171,7 @@ const Layout = (props) => {
                                 <h3>{localStorage.getItem("interviewScholarshipTitle")}</h3>
                             </strong>
                         </CCol>
-                        <CCol md={4} sm={12}>
+                        <CCol md={4} sm={12} style={{'float': 'right'}}>
                             <CButton color="success" style={{ "color": "white" }} onClick={() => { sendEmails() }} >Send interview confirmation email</CButton>
                         </CCol>
                     </CRow>
@@ -255,7 +255,7 @@ const Layout = (props) => {
                         </CModalFooter>
                     </CModal>
                 </CCardBody>
-                <prev>{JSON.stringify(getStudents, null, 2)}</prev>
+                {/* <prev>{JSON.stringify(getStudents, null, 2)}</prev> */}
             </CCard>
         </CContainer>
     );

@@ -119,11 +119,23 @@ const Layout = (props) => {
                         role="group"
                         aria-label="Basic mixed styles example"
                       >
-                        <CButton
+                       <CButton
                           color="warning"
                           onClick={() => {
                             localStorage.setItem("interviewId", application._id);
                             localStorage.setItem("interviewScholarshipId", application.scholarship);
+                            localStorage.setItem("interviewScholarshipTitle", application.scholarshipdetails.title);
+                            props.history.push('re-scheduling')
+                          }}
+                        >
+                          Re-schedule
+                        </CButton>
+                        <CButton
+                          color="success"
+                          onClick={() => {
+                            localStorage.setItem("interviewId", application._id);
+                            localStorage.setItem("interviewScholarshipId", application.scholarship);
+
                             
 
                             sendEmails();

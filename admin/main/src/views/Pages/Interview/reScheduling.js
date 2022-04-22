@@ -36,19 +36,25 @@ const Layout = (props) => {
     let [color, setColor] = useState("#49A54D");
     const [validated, setValidated] = useState(false);
 
-
+    const [newstartDate, setNewStartDate] = useState('');
+    const [newendDate, setNewEndDate] = useState('');
+    const [newstartTime, setNewStartTime] = useState('');
+    const [newendTime, setNewEndTime] = useState('');
+    const [newvenue, setNewVenue] = useState('');
 
 
     const api = axios.create({
         baseURL: "http://localhost:5000/",
     });
     useEffect(() => {
-        api.get("scholarship/all").then((res) => {
-            // console.log('getPost=>', getPost)
-            localStorage.setItem("posts", JSON.stringify(res.data));
-            let posts = res.data;
-            console.log('posts=>', posts)
-            setPost(posts);
+        api.get(`interview/schedule/${localStorage.getItem('interviewId')}`).then((res) => {
+            console.log('fetchSchoarship=>', res.data)
+            let {startDate, endDate, startTime, endTime, venue} = res.data;
+            setStartDate(startDate);
+            setEndDate(endDate);
+            setStartTime(startTime);
+            setEndTime(endTime);
+            setVenue(venue);
         });
     }, []);
 
@@ -74,15 +80,14 @@ const Layout = (props) => {
 
     const submitData = () => {
         api
-            .post(
-                "interview/schedule",
+            .put(
+                `interview/reschedule/${localStorage.getItem('interviewId')}`,
                 {
                     startDate,
                     endDate,
                     startTime,
                     endTime,
                     venue,
-                    scholarship,
                 },
                 setLoading(true)
             )
@@ -102,7 +107,7 @@ const Layout = (props) => {
                 // props.history.push("/officers/view-users");
                 // console.log(result)
                 alert();
-                // props.history.push("view-users");
+                props.history.push("list-schedule");
             })
             .catch((err) => {
                 setLoading(false);
@@ -160,7 +165,7 @@ const Layout = (props) => {
             <CCard>
                 <CCardHeader>
                     <strong>
-                        <h3>Interview Scheduling</h3>
+                        <h3>Interview Re-scheduling</h3>
                     </strong>
                 </CCardHeader>
                 <CCardBody>
@@ -185,21 +190,7 @@ const Layout = (props) => {
                         >
                             <CCol md={12}>
                                 <CFormLabel htmlFor="selectScholarship">Scholarship Title</CFormLabel>
-                                <CFormSelect
-                                    aria-label="Default select example"
-                                    value={scholarship}
-                                    onChange={(e) => {
-                                        setScholarship(e.target.value)
-                                    }}
-                                    required
-                                >
-                                    <option >Select scholarship</option>
-                                    {post.map((value, key) => {
-                                        return (
-                                            <option value={value._id} >{value.title}</option>
-                                        )
-                                    })}
-                                </CFormSelect>
+                                <CFormInput type="text" disabled value={localStorage.getItem('interviewScholarshipTitle')}></CFormInput>
                             </CCol>
                             <CCol md={6}>
                                 <CFormLabel htmlFor="startDate">Interviews Start Date</CFormLabel>
@@ -267,7 +258,7 @@ const Layout = (props) => {
 
 
                             <CCol xs={12}>
-                                <CButton type="submit">Schedule Interviews</CButton>
+                                <CButton type="submit">Re-schedule Interview</CButton>
                             </CCol>
                         </CForm>
                     )}
@@ -277,12 +268,12 @@ const Layout = (props) => {
                 </CCardBody>
             </CCard>
 
-            {/* <prev >{JSON.stringify(scholarship, null, 2)}</prev>
+           {/* <prev >{JSON.stringify(scholarship, null, 2)}</prev>
             <prev >{JSON.stringify(startDate, null, 2)}</prev>
             <prev >{JSON.stringify(endDate, null, 2)}</prev>
             <prev >{JSON.stringify(startTime, null, 2)}</prev>
             <prev >{JSON.stringify(endTime, null, 2)}</prev>
-            <prev >{JSON.stringify(venue, null, 2)}</prev> */}
+            <prev >{JSON.stringify(venue, null, 2)}</prev>  */}
 
         </CContainer>
     );
