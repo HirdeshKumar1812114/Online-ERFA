@@ -50,7 +50,7 @@ const override = css`
 `;
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "http://140.238.227.14:5000/",
 });
 
 const useStyles = makeStyles(styles);
@@ -68,6 +68,7 @@ export default function LoginPage(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [program, setProgram] = useState("");
+  const [selectedProgram, setSelectedProgram] = useState("");
   const [section, setSection] = useState("");
   const [cellNumber, setCellNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -572,11 +573,11 @@ const checkEmailValue= e.target.value;
                             }}
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
-                            value={program}
                             onChange={(e) => {
-                              setProgram(e.target.value);
+                              setSelectedProgram(e.target.value);
                             }}
                             label="Age"
+                            value={selectedProgram}
                           >
 
                             {programs.map((values) => {

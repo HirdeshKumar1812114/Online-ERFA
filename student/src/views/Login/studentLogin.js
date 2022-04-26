@@ -34,7 +34,7 @@ const override = css`
 `;
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/student",
+  baseURL: "http://140.238.227.14:5000/student",
 });
 
 const useStyles = makeStyles(styles);

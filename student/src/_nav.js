@@ -11,7 +11,8 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
-  cilGroup
+  cilGroup,
+  
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -62,6 +63,11 @@ const _navAdmin = [
         component: CNavItem,
         name: 'List Posts',
         to: '/scholarship/list-posts',
+      },
+      {
+        component: CNavItem,
+        name: 'My Applications',
+        to: '/scholarship/my-applications',
       },
     ],
   },

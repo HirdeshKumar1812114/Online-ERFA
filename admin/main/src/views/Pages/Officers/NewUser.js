@@ -57,7 +57,7 @@ const Layout = (props) => {
 const emailSubString ="@szabist.pk";
 
   const api = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: "http://140.238.227.14:5000/",
   });
 
 

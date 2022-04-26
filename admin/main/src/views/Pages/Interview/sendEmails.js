@@ -27,7 +27,7 @@ import { useCookies } from 'react-cookie';
 import axios from "axios";
 import { ApiOutlined } from "@mui/icons-material";
 const api = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: "http://140.238.227.14:5000/",
 });
 
 const Layout = (props) => {

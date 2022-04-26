@@ -35,7 +35,7 @@ const override = css` y
 
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "http://140.238.227.14:5000/",
 });
 const Layout = (props) => {
   const viewPost = () => {
@@ -131,7 +131,7 @@ const Layout = (props) => {
                         }
                       </CCol>
                       <CCol sm={2}>
-                        <CImage fluid src={`http://localhost:5000/getPoster/${posts.poster}`} />
+                        <CImage fluid src={`http://140.238.227.14:5000/getPoster/${posts.poster}`} />
 
                       </CCol>
                     </CRow>

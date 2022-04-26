@@ -40,7 +40,7 @@ const Layout = (props) => {
 
 
     const api = axios.create({
-        baseURL: "http://localhost:5000/",
+        baseURL: "http://140.238.227.14:5000/",
     });
     useEffect(() => {
         api.get("scholarship/all").then((res) => {

@@ -20,7 +20,7 @@ import CheckUser from 'components/CheckUser'
 
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "http://140.238.227.14:5000/",
 });
 const Layout = (props) => {
   const [visible, setVisible] = useState(null);
