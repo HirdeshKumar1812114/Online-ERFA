@@ -1,18 +1,21 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const userStudentSchema = new mongoose.Schema({
-  regid: { type: String, required: true },
-  password: { type: String, required: true },
-  firstname: { type: String, required: true },
-  lastname: { type: String, required: true },
-  program: { type: String, required: true },
-  section: { type: String, required: true },
-  cellnumber: { type: String, required: true },
-  email: { type: String, required: true },
-  dob: { type: String, required: true },
-  permanentaddress: { type: String, required: true },
-  mailingaddress: { type: String, required: true },
-  fathername: { type: String, required: true },
+  regid: { type: String},
+  password: { type: String },
+  firstname: { type: String},
+  lastname: { type: String },
+  program: { type: String },
+  section: { type: String },
+  cellnumber: { type: String },
+  email: { type: String},
+  dob: { type: String},
+  permanentaddress: { type: String },
+  mailingaddress: { type: String },
+  fathername: { type: String },
+  scholarship:[{type:mongoose.Schema.Types.ObjectId,
+    ref:'Scholarshippost'
+  }]
 });
 
 userStudentSchema.pre("save", async function (next) {
@@ -20,6 +23,16 @@ userStudentSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
+userStudentSchema.statics.checkPassword = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    return false;
+  }
+};
 
 userStudentSchema.statics.login = async function (regid, password) {
   const student = await this.findOne({ regid });

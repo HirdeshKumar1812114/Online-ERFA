@@ -47,6 +47,7 @@ exports.addScholarshipPost = expressAsyncHandler(async (req, res, next) => {
       poster: req.file.filename,
       eligibility: req.body.eligibility,
       tags: tags,
+      checkedPrograms : req.body.checkedPrograms
     });
 
     await newPost.save((err, checkTitle) => {
@@ -101,7 +102,7 @@ exports.updateScholarship = async (req, res) => {
   const chk = req.file;
   let tagsRemoveSpaces = req.body.tags.replace(/\s/g, "");
   let tags = tagsRemoveSpaces.split(",");
-  console.log(tags);
+  console.log(req.body.checkedPrograms);
   if (chk) {
     const fetchDetails = await db.ScholarshipPost.findOne({
       _id: req.params.id,
@@ -117,6 +118,7 @@ exports.updateScholarship = async (req, res) => {
           poster: req.file.filename,
           eligibility: req.body.eligibility,
           tags: tags,
+          checkedPrograms : req.body.checkedPrograms
         }
       );
       if (updateDetails) {
@@ -149,6 +151,7 @@ exports.updateScholarship = async (req, res) => {
           applicationdeadline: req.body.applicationdeadline,
           eligibility: req.body.eligibility,
           tags: tags,
+          checkedPrograms : req.body.checkedPrograms
         }
       );
       if (updateDetails) {
@@ -169,9 +172,7 @@ exports.updateScholarship = async (req, res) => {
 exports.getLastThreeScholarship = expressAsyncHandler(
   async (req, res, next) => {
     try {
-      const fetch = await db.ScholarshipPost.find().skip(
-        db.ScholarshipPost.count() - 3
-      );
+      const fetch = await db.ScholarshipPost.find().sort({$natural: -1}).limit(3);
       res.status(200).send(fetch);
       res.end();
     } catch {

@@ -8,6 +8,7 @@ const ScholarshipPostSchema = new mongoose.Schema({
   postingdate: { type: Date, default: Date.now },
   eligibility: String,
   tags: [String],
+  checkedPrograms:{ type: String }
 });
 
 const sps = mongoose.model("Scholarshippost", ScholarshipPostSchema);

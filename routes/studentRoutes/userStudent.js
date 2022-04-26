@@ -19,6 +19,8 @@ router.get(
   }
 );
 router.post("/checksignup", verfiStudentController.verfiStudent);
+router.post("/checkemail", studentController.checkStudentEmail);
+router.post("/reset-password/:id", studentController.checkResetPassword)
 router.post("/signup", studentController.studentSignUp);
 router.get("/getallstudents", studentController.getAllStudent);
 router.post("/login", studentController.studentLogin);
@@ -26,4 +28,6 @@ router.post("/announcements");
 router.delete("/delete/:id", studentController.deleteStudent);
 router.get("/find/:id", studentController.getStudent);
 router.put("/edit/:id", studentController.updateStudent);
+router.post("/applyscholarship",studentController.applyForScholarship)
+router.post("/appliedscholarships", studentController.getStudentAppliedScholarship)
 module.exports = router;
