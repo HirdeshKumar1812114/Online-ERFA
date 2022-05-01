@@ -25,11 +25,7 @@ import { CBadge } from '@coreui/react'
 
 import axios from "axios";
 const api = axios.create({
-<<<<<<< HEAD
   baseURL: "https://server.syedmustafaimam.com/",
-=======
-  baseURL: "https://5000-syedmustafai-onlineerfa-47btspgvx5g.ws-eu42.gitpod.io/",
->>>>>>> 776863cb2be79b28d1540dfd049d21aa58c623e1
 });
 
 const Layout = (props) => {

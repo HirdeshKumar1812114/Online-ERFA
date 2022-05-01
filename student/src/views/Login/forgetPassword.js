@@ -32,7 +32,7 @@ const override = css`
 `;
 
 const api = axios.create({
-    baseURL: 'https://5000-syedmustafai-onlineerfa-47btspgvx5g.ws-eu42.gitpod.io/',
+    baseURL: 'https://server.syedmustafaimam.com/',
 });
 
 const useStyles = makeStyles(styles);
@@ -95,7 +95,7 @@ export default function forgetPassword(props) {
                     console.log(result.data.stdId)
                     const temp=result.data.stdId;
                     
-                        const link=`http://localhost:3000/#/reset-password/${temp}`
+                        const link=`https://online-erfa.web.app/#/reset-password/${temp}`
                     
                        
                         
