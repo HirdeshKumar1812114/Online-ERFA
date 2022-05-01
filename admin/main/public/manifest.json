@@ -1,6 +1,6 @@
 {
-  "short_name": "Online ERFA",
-  "name": "Online ERFA",
+  "short_name": "ERFA Admin",
+  "name": "OnlineERFA Admin Portal",
   "start_url": "/",
   "scope": ".",
   "icons": [

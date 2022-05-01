@@ -135,11 +135,9 @@ const Layout = (props) => {
                           onClick={() => {
                             localStorage.setItem("interviewId", application._id);
                             localStorage.setItem("interviewScholarshipId", application.scholarship);
-
-                            
-
                             sendEmails();
                           }}
+                          style={{'color':'white'}}
                         >
                           Send Emails
                         </CButton>
