@@ -23,7 +23,7 @@ import { useCookies } from 'react-cookie';
 
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://140.238.227.14:5000/",
+  baseURL: "https://server.syedmustafaimam.com/",
 });
 
 const Layout = (props) => {

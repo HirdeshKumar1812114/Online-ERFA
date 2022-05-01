@@ -1,0 +1,1 @@
+let CACHE_NAME = 'codePWA'

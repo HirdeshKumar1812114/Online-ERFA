@@ -47,7 +47,7 @@ const Layout = (props) => {
   let [color, setColor] = useState("#49A54D");
 
   const api = axios.create({
-    baseURL: "http://140.238.227.14:5000/",
+    baseURL: "https://server.syedmustafaimam.com/",
   });
 
   useEffect(() => {
@@ -199,7 +199,7 @@ if(studentEligibility===true){
             </CCardHeader>
             <CCardBody>
         
-              {poster != '' ? <CImage fluid src={`http://140.238.227.14:5000/getPoster/${poster}`} /> : <>Loading</>}
+              {poster != '' ? <CImage fluid src={`https://server.syedmustafaimam.com/getPoster/${poster}`} /> : <>Loading</>}
               <br></br>
 
 

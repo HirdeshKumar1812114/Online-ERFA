@@ -1,6 +1,8 @@
 {
   "short_name": "Online ERFA",
   "name": "Online ERFA",
+  "start_url": "/",
+  "scope": ".",
   "icons": [
     {
       "src": "./Icons/android-icon-36x36.png",
@@ -35,6 +37,7 @@
      {
       "src": "./Icons/android-icon-192x192.png",
       "sizes": "192x192",
+      "purpose": "any maskable",
       "type": "image/png",
       "density": "4.0"
      },
@@ -46,10 +49,8 @@
 
      }
   ],
-  "start_url": "https://online-erfa-admin.web.app/",
   "theme_color": "#3DB166",
   "background_color": "#FFFFFF",
   "display": "standalone",
-  "orientation": "portrait",
-  "scope": "https://online-erfa-admin.web.app/"
+  "orientation": "portrait"
 }
