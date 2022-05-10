@@ -46,10 +46,9 @@
 
      }
   ],
-  "start_url": "https://online-erfa-admin.web.app/",
+  
   "theme_color": "#3DB166",
   "background_color": "#FFFFFF",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "https://online-erfa-admin.web.app/"
 }
