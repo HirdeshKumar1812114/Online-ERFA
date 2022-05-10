@@ -1,5 +1,5 @@
 ## Erfa user login
-POST http://http://localhost:5000//erfa/login HTTP/1.1
+POST http://https://server.syedmustafaimam.com//erfa/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 
 ### erfa admin login request
-POST http://http://localhost:5000//erfa/login HTTP/1.1
+POST http://https://server.syedmustafaimam.com//erfa/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -21,7 +21,7 @@ Content-Type: application/json
 
 }
 ### new user in erfa
-POST http://http://localhost:5000//erfa/signup HTTP/1.1
+POST http://https://server.syedmustafaimam.com//erfa/signup HTTP/1.1
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 ### student sign up request
-POST http://http://localhost:5000//student/signup HTTP/1.1
+POST http://https://server.syedmustafaimam.com//student/signup HTTP/1.1
 Content-Type: application/json
 
 {
@@ -51,7 +51,7 @@ Content-Type: application/json
 }
 
 ### student login request
-POST http://http://localhost:5000//student/login HTTP/1.1
+POST http://https://server.syedmustafaimam.com//student/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -61,7 +61,7 @@ Content-Type: application/json
 
 #### student login request
 
-POST http://http://localhost:5000//student/login HTTP/1.1
+POST http://https://server.syedmustafaimam.com//student/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -71,7 +71,7 @@ Content-Type: application/json
 }
 
 #### panlist login request for
-POST http://http://localhost:5000//panelist/login HTTP/1.1
+POST http://https://server.syedmustafaimam.com//panelist/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -82,7 +82,7 @@ Content-Type: application/json
 
 
 ### student login request
-GET  http://http://localhost:5000//student/getallstudents HTTP/1.1
+GET  http://https://server.syedmustafaimam.com//student/getallstudents HTTP/1.1
 Content-Type: application/json
 
 {

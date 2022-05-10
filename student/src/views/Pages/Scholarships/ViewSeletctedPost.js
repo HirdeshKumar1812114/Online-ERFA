@@ -47,7 +47,7 @@ const Layout = (props) => {
   let [color, setColor] = useState("#49A54D");
 
   const api = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: "https://server.syedmustafaimam.com/",
   });
 
   useEffect(() => {
@@ -118,14 +118,23 @@ if(studentEligibility===true){
     )
     .then((result)=>{
 
- if(result.data.message==='User is Eligible' || 'User has already applied for scholarship')
+ if(result.data.message==='User is Eligible')
 {
   console.log('User is Eligible')
   setStudentEligibility(true)
   console.log(studentEligibility)
   setShowAlert("Yes")
   setLoading(false)
-}else{
+}
+else if(result.data.message==='User has already applied for scholarship')
+{
+  console.log('User has already applied for scholarship')
+  setStudentEligibility(true)
+  console.log(studentEligibility)
+  setShowAlert("Yes")
+  setLoading(false)
+}
+else{
   setStudentEligibility(false)
   console.log(studentEligibility)
   setShowAlert("Yes")
@@ -199,7 +208,7 @@ if(studentEligibility===true){
             </CCardHeader>
             <CCardBody>
         
-              {poster != '' ? <CImage fluid src={`http://localhost:5000/getPoster/${poster}`} /> : <>Loading</>}
+              {poster != '' ? <CImage fluid src={`https://server.syedmustafaimam.com/getPoster/${poster}`} /> : <>Loading</>}
               <br></br>
 
 

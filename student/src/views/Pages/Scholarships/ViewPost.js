@@ -25,7 +25,7 @@ import { CBadge } from '@coreui/react'
 
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://server.syedmustafaimam.com/",
 });
 
 const Layout = (props) => {
@@ -81,7 +81,7 @@ const Layout = (props) => {
                       }
                     </CCol>
                     <CCol sm={2}>
-                      <CImage fluid src={`http://localhost:5000/getPoster/${posts.poster}`} />
+                      <CImage fluid src={`https://server.syedmustafaimam.com/getPoster/${posts.poster}`} />
 
                     </CCol>
                   </CRow>

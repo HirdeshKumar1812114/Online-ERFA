@@ -24,7 +24,7 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://server.syedmustafaimam.com/",
 });
 const Dashboard = (props) => {
 
@@ -55,7 +55,7 @@ const Dashboard = (props) => {
             {/* <CRow xs={{ cols: 1 }} md={{ cols: 3 }} className="g-4">
               <CCol xs>
                 <CCard className="h-100">
-                  <CCardImage orientation="top" src="http://localhost:5000/getPoster/poster_1643631802225.jpg" />
+                  <CCardImage orientation="top" src="https://server.syedmustafaimam.com/getPoster/poster_1643631802225.jpg" />
                   <CCardBody>
                     <CCardText>
                       Some quick example text to build on the card title and make up the bulk of the card's content.
@@ -65,7 +65,7 @@ const Dashboard = (props) => {
                 </CCard>
 
                 <CCard className="h-100">
-                  <CCardImage orientation="top" src="http://localhost:5000/getPoster/poster_1643631802225.jpg" />
+                  <CCardImage orientation="top" src="https://server.syedmustafaimam.com/getPoster/poster_1643631802225.jpg" />
                   <CCardBody>
                     <CCardText>
                       Some quick example text to build on the card title and make up the bulk of the card's content.
@@ -84,7 +84,7 @@ const Dashboard = (props) => {
                       <CCard className="h-100">
                         <CCardImage
                           orientation="top"
-                          src={`http://localhost:5000/getPoster/${posts.poster}`}
+                          src={`https://server.syedmustafaimam.com/getPoster/${posts.poster}`}
                         />
                         <CCardBody>
                           <CCardTitle>{posts.title}</CCardTitle>

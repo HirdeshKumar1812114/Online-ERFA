@@ -26,7 +26,7 @@ import { useCookies } from 'react-cookie';
 
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://server.syedmustafaimam.com/",
 });
 
 const Layout = (props) => {
@@ -135,11 +135,9 @@ const Layout = (props) => {
                           onClick={() => {
                             localStorage.setItem("interviewId", application._id);
                             localStorage.setItem("interviewScholarshipId", application.scholarship);
-
-                            
-
                             sendEmails();
                           }}
+                          style={{'color':'white'}}
                         >
                           Send Emails
                         </CButton>

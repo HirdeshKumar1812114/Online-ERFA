@@ -28,7 +28,7 @@ export function register(config) {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
+      const swUrl = `${process.env.PUBLIC_URL}/sw.js`
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -37,7 +37,7 @@ export function register(config) {
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         navigator.serviceWorker.ready.then(() => {
-           console.log(
+          console.log(
             'This web app is being served cache-first by a service ' +
               'worker. To learn more, visit https://goo.gl/SC7cgQ',
           )
@@ -63,7 +63,7 @@ function registerValidSW(swUrl, config) {
               // the fresh content will have been added to the cache.
               // It's the perfect time to display a "New content is
               // available; please refresh." message in your web app.
-             console.log('New content is available; please refresh.')
+              console.log('New content is available; please refresh.')
 
               // Execute callback
               if (config.onUpdate) {
@@ -73,7 +73,7 @@ function registerValidSW(swUrl, config) {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
-               console.log('Content is cached for offline use.')
+              console.log('Content is cached for offline use.')
 
               // Execute callback
               if (config.onSuccess) {
@@ -110,7 +110,7 @@ function checkValidServiceWorker(swUrl, config) {
       }
     })
     .catch(() => {
-       console.log('No internet connection found. App is running in offline mode.')
+      console.log('No internet connection found. App is running in offline mode.')
     })
 }
 

@@ -44,7 +44,7 @@ const Layout = (props) => {
 
 
     const api = axios.create({
-        baseURL: "http://localhost:5000/",
+        baseURL: "https://server.syedmustafaimam.com/",
     });
     useEffect(() => {
         api.get(`interview/schedule/${localStorage.getItem('interviewId')}`).then((res) => {

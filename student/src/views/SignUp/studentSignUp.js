@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import validator from "validator";
+import Checkbox from 'rc-checkbox';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -50,7 +51,7 @@ const override = css`
 `;
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://server.syedmustafaimam.com/",
 });
 
 const useStyles = makeStyles(styles);
@@ -68,6 +69,7 @@ export default function LoginPage(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [program, setProgram] = useState("");
+  const [selectedProgram, setSelectedProgram] = useState("");
   const [section, setSection] = useState("");
   const [cellNumber, setCellNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -104,7 +106,7 @@ const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BS
       password !== "" &&
       firstName !== "" &&
       lastName !== "" &&
-      program !== "" &&
+      selectedProgram !== "" &&
       section !== "" &&
       cellNumber !== "" &&
       email !== "" &&
@@ -124,7 +126,7 @@ const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BS
             password,
             firstname: firstName,
             lastname: lastName,
-            program,
+            program:selectedProgram,
             section,
             cellnumber: cellNumber,
             email,
@@ -572,16 +574,16 @@ const checkEmailValue= e.target.value;
                             }}
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
-                            value={program}
                             onChange={(e) => {
-                              setProgram(e.target.value);
+                              setSelectedProgram(e.target.value);
                             }}
                             label="Age"
+                            value={selectedProgram}
                           >
 
                             {programs.map((values) => {
                              return ( 
-                             <MenuItem value={values}>
+                             <MenuItem  value={values}>
                                 {values}
                               </MenuItem>)
                             })}
@@ -815,7 +817,8 @@ const checkEmailValue= e.target.value;
         </div>
         <Footer whiteFont />
       </div>
-      {/* <prev>{JSON.stringify(program, null, 2)}</prev>
+      {/* <prev>{JSON.stringify(selectedProgram, null, 2)}</prev>
+      <prev>{JSON.stringify(program, null, 2)}</prev>
       <prev>{JSON.stringify(password, null, 2)}</prev>
       <prev>{JSON.stringify(passQualityMsg, null, 2)}</prev>
       <prev>{JSON.stringify(toSend, null, 2)}</prev>
@@ -828,7 +831,7 @@ const checkEmailValue= e.target.value;
       <prev>{JSON.stringify(dob, null, 2)}</prev>
       <prev>{JSON.stringify(permanentAddress, null, 2)}</prev>
       <prev>{JSON.stringify(mailingAddress, null, 2)}</prev>
-      <prev>{JSON.stringify(fatherName, null, 2)}</prev> */}
+      <prev>{JSON.stringify(fatherName, null, 2)}</prev>  */}
     </div>
   );
 }

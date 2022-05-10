@@ -40,7 +40,7 @@ const Layout = (props) => {
   let [color, setColor] = useState("#49A54D");
 
   const api = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: "https://server.syedmustafaimam.com/",
   });
   const setVis = (value) => {
     setVisible(value)
@@ -109,7 +109,7 @@ const Layout = (props) => {
             </CCardHeader>
             <CCardBody>
 
-              {poster != '' ? <CImage fluid src={`http://localhost:5000/getPoster/${poster}`} /> : <>Loading</>}
+              {poster != '' ? <CImage fluid src={`https://server.syedmustafaimam.com/getPoster/${poster}`} /> : <>Loading</>}
               <br></br>
 
 
