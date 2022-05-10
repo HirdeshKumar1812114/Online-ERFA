@@ -120,7 +120,7 @@ export default function forgetPassword(props) {
                 
                 setValid("true")
                 alert()
-             
+                setTimeout(()=>{props.history.push('/')},2000)
                 // window.alert('Welcome to Admin Portal')
             }).catch(err => {
                 setLoading(false)

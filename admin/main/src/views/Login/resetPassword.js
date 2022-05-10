@@ -80,8 +80,8 @@ export default function forgetPassword(props) {
                 // window.alert('Welcome to Admin Portal')
                 setValid("true")
                 alert()
-              
-                    props.history.push("/login")
+                setTimeout(()=>{ props.history.push("/login")},1500)
+                   
            
                 // window.alert('Welcome to Admin Portal')
             }).catch(err => {

@@ -32,7 +32,7 @@ const override = css`
 `;
 
 const api = axios.create({
-    baseURL: 'http://140.238.227.14:5000',
+    baseURL: 'https://server.syedmustafaimam.com',
 });
 
 const useStyles = makeStyles(styles);
@@ -95,7 +95,7 @@ export default function forgetPassword(props) {
                     console.log(result.data.stdId)
                     const temp=result.data.stdId;
                     
-                        const link=`http://localhost:3000/#/reset-password/${temp}`
+                        const link=`https://online-erfa-admin.web.app/#/reset-password/${temp}`
                     
                        
                         
@@ -120,6 +120,7 @@ export default function forgetPassword(props) {
                 
                 setValid("true")
                 alert()
+                setTimeout(()=>{props.history.push('/')},2000)
              
                 // window.alert('Welcome to Admin Portal')
             }).catch(err => {
