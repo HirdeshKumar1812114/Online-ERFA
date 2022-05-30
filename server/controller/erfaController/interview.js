@@ -248,12 +248,17 @@ exports.sendPanelistEmail= expressAsyncHandler(async (req, res)=>{
     const endTime=req.body.endTime;
     const date=req.body.date;
     const venue=req.body.venue;
+    const panelistId=req.body.panelistId;
+    const scholarshipTitle=req.body.scholarshipTitle;
     console.log(firstname);
     console.log(lastname);
     console.log(startTime);
     console.log(endTime);
     console.log(venue);
     console.log(date);
+    console.log(panelistId);
+    console.log(scholarshipTitle);
+
     const officer = await db.ErfaOfficer.findOne({ $and:[{firstname:firstname, lastname:lastname}] });
     if (officer) {
     
@@ -275,7 +280,7 @@ exports.sendPanelistEmail= expressAsyncHandler(async (req, res)=>{
       subject: `Invite to ${firstname} ${lastname}`,
       html: `<p><strong>Hello ${firstname},</strong></p>
   <p>&nbsp;</p>
-  <p>We are delighted to invite you as a interview panelist to evaluate students that shorlisted by the ERFA Department.</p>
+  <p>We are delighted to invite you as a interview panelist to evaluate students that shorlisted for ${scholarshipTitle} by the ERFA Department.</p>
   <p>Kindly, please be availble on ${date} from ${startTime} till ${endTime} at ${venue}.</p>.
   <p>&nbsp;</p>
   <p>King Regards,</p>
@@ -290,13 +295,28 @@ exports.sendPanelistEmail= expressAsyncHandler(async (req, res)=>{
         console.log('Email sent: ' + info.response);
       }
     });
+    const addNewRecord =new db.InterviewPanelist({
 
+      date: date,
+      startTime: startTime,
+      endTime: endTime,
+      venue: venue,
+      scholarshipTitle: scholarshipTitle,
+      panelistId: ObjectId(panelistId),
+
+    })
+
+    const checkRecord = await addNewRecord.save();
+    if(checkRecord){
     res.status(200).send({message: 'Email sent successfully'});
-      res.end();
+      res.end();}
+      else{
+        res.status(400).send({message: 'Email not sent successfully'});
+      }
     } else {
       res.status(400).json({ message: "User First Name and Last Name are not matching" });
     }
   } catch (err) {
-    res.status(400).send("Error in delete catch block");
+    res.status(400).send("catch block");
   }
 })
