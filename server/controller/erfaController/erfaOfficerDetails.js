@@ -9,7 +9,7 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
     const addNewUser = new db.UserErfa({
       email: req.body.email,
       password: req.body.password,
-      usertype: "officer",
+      usertype: req.body.designation,
     });
 
     try {

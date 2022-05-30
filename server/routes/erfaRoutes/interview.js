@@ -10,6 +10,7 @@ router.put('/reschedule/:id',interviewController.reSchedule)
 router.delete('/schedule/remove/:id',interviewController.removeSchdule)
 router.post("/selectinterviewee",interviewController.selectStudents)
 router.post("/sendinterviewemail",interviewController.sendEmailInterview)
+router.post("/sendemailpanelist",interviewController.sendPanelistEmail)
 
 
 module.exports = router;

@@ -237,3 +237,22 @@ exports.sendEmailInterview = expressAsyncHandler(async (req, res) => {
 
   res.end();
 })
+
+
+
+exports.sendPanelistEmail= expressAsyncHandler(async (req, res)=>{
+  try {
+   const firstname=req.body.firstname;
+   const lastname=req.body.lastname;
+    console.log(firstname)
+    const officer = await db.ErfaOfficer.findOne({ $and:[{firstname: firstname},{lastname: lastname} ]});
+    if (officer) {
+      res.status(200).send(officer);
+      res.end();
+    } else {
+      res.status(400).json({ message: "Not found" });
+    }
+  } catch (err) {
+    res.status(400).send("Error in delete catch block");
+  }
+})
