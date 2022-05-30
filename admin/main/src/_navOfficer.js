@@ -78,6 +78,12 @@ const _navOfficer = [
     to: "/list-schedule",
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: "Pannelist Portal",
+    to: "/pannelist",
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+  },
 ]
 
 export default _navOfficer
