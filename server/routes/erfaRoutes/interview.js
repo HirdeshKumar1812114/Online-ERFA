@@ -11,6 +11,8 @@ router.delete('/schedule/remove/:id',interviewController.removeSchdule)
 router.post("/selectinterviewee",interviewController.selectStudents)
 router.post("/sendinterviewemail",interviewController.sendEmailInterview)
 router.post("/sendemailpanelist",interviewController.sendPanelistEmail)
-
+router.post("/getstudentdetails",interviewController.fetchStudentRecordsOnStudent)
+router.post("/evaluatesapplication",interviewController.evaluateStudent)
+router.post("/getallremarksapplication",interviewController.getAllRemarkonApplication)
 
 module.exports = router;

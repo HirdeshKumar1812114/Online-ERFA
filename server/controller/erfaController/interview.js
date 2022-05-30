@@ -320,3 +320,86 @@ exports.sendPanelistEmail= expressAsyncHandler(async (req, res)=>{
     res.status(400).send("catch block");
   }
 })
+
+exports.fetchStudentRecordsOnStudent= expressAsyncHandler(async (req, res)=>{
+
+  try{
+const studentId=req.body.studentId;
+const scholarshipTitle=req.body.scholarshipTitle;
+const fetchStudentId= await db.UserStudent.findOne({regid:studentId});
+const fetchScholarshipTitle=await db.ScholarshipPost.findOne({title:scholarshipTitle});
+
+const spstudentId=fetchStudentId._id;
+const spscholarshipTitle=fetchScholarshipTitle._id;
+const fetchStudentApplication=await db.ScholarshipForm.findOne({$and:[{student:spstudentId},{scholarship:spscholarshipTitle}]});
+// console.log(spstudentId);
+// console.log(spscholarshipTitle);
+
+if(fetchStudentId &&  fetchScholarshipTitle && fetchStudentApplication){
+ 
+
+  res.status(200).send({studentdetails:fetchStudentId,scholarshipdetails:fetchScholarshipTitle,scholarship:fetchStudentApplication})
+  res.end()
+}else
+{
+  res.status(400).send({message: 'Not Found'})
+  res.end()
+}
+} catch (err) {
+    res.status(400).send({message:'Not Found'});
+    res.end()
+  }
+})
+
+exports.evaluateStudent= expressAsyncHandler(async (req, res)=>{
+ const chk1=  ObjectId(req.body.panelist);
+ const chk2=  ObjectId(req.body.application);
+  try{
+const checkRecord= await db.EvaluationScholarshipApplications.findOne({$and:[ {application:chk2},{        panelist:chk1}]})
+console.log(checkRecord)   
+if(checkRecord){
+
+
+      res.status(400).send({message:'Interview panelist has evaluated this candiate.'})
+      res.end()
+   }
+
+    else{
+      const addNewRecord = new db.EvaluationScholarshipApplications ({
+
+        score:req.body.score,
+        remark:req.body.remark,
+        application:ObjectId(req.body.application),
+        panelist:ObjectId(req.body.panelist),
+  
+      })
+  
+      const checkRecord = await addNewRecord.save();
+  
+      if (checkRecord) {
+        res.status(200).send({ message: 'Student Evaluated!', checkRecord: checkRecord });
+      }
+      else {
+        res.status(400).send({ message: 'Error in saving the data ' })
+      }
+      res.end();
+    }
+  }catch(err){
+    res.status(500).send({ message: err.message });
+  }
+})
+
+exports.getAllRemarkonApplication = expressAsyncHandler(async (req, res, next) => {
+  try {
+    const app = req.body.application;
+    const fetch = await db.EvaluationScholarshipApplications.find({application:app});
+  if(fetch){
+    res.status(200).send(fetch);
+    res.end();
+  }else{
+    res.status(404).json({ message: "Not Found" });
+  }
+  } catch {
+    res.status(500).json({ message: "Catch error" });
+  }
+});
