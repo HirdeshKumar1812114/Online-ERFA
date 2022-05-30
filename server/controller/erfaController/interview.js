@@ -237,3 +237,66 @@ exports.sendEmailInterview = expressAsyncHandler(async (req, res) => {
 
   res.end();
 })
+
+
+
+exports.sendPanelistEmail= expressAsyncHandler(async (req, res)=>{
+  try {
+    const firstname=req.body.firstname;
+    const lastname=req.body.lastname;
+    const startTime=req.body.startTime;
+    const endTime=req.body.endTime;
+    const date=req.body.date;
+    const venue=req.body.venue;
+    console.log(firstname);
+    console.log(lastname);
+    console.log(startTime);
+    console.log(endTime);
+    console.log(venue);
+    console.log(date);
+    const officer = await db.ErfaOfficer.findOne({ $and:[{firstname:firstname, lastname:lastname}] });
+    if (officer) {
+    
+
+      
+    var nodemailer = require('nodemailer');
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'onlineerfa1998@gmail.com',
+        pass: 'ciuptmjpjlnzgfgo'
+      }
+    });
+
+    var mailOptions = {
+      from: 'onlineerfa1998@gmail.com',
+      to: `${officer.email}`,
+      subject: `Invite to ${firstname} ${lastname}`,
+      html: `<p><strong>Hello ${firstname},</strong></p>
+  <p>&nbsp;</p>
+  <p>We are delighted to invite you as a interview panelist to evaluate students that shorlisted by the ERFA Department.</p>
+  <p>Kindly, please be availble on ${date} from ${startTime} till ${endTime} at ${venue}.</p>.
+  <p>&nbsp;</p>
+  <p>King Regards,</p>
+  <p>EERFA Department</p>
+  <p>&nbsp;</p>`
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+    res.status(200).send({message: 'Email sent successfully'});
+      res.end();
+    } else {
+      res.status(400).json({ message: "User First Name and Last Name are not matching" });
+    }
+  } catch (err) {
+    res.status(400).send("Error in delete catch block");
+  }
+})
