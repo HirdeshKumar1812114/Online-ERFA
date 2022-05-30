@@ -1,11 +1,15 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useState } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
-
+import { useCookies } from 'react-cookie';
 // routes config
 import routes from '../routes'
 
 const AppContent = () => {
+  const [userType, setUserType] = useCookies(['onlineerfa_admin_userType']);
+  const [usertype, setUsertype] = useState(userType.onlineerfa_admin_userType)
+  console.log('userType=> Dashboard>', usertype);
+
   return (
     <CContainer lg>
       <Suspense fallback={<CSpinner color="primary" />}>
@@ -27,7 +31,12 @@ const AppContent = () => {
               )
             )
           })}
-          <Redirect from="/" to="/dashboard" />
+
+          {usertype == 'faculty' ?
+            <Redirect from="/" to="/pannelist" />
+            :
+            <Redirect from="/" to="/dashboard" />
+          }
         </Switch>
       </Suspense>
     </CContainer>

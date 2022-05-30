@@ -17,7 +17,8 @@ const scheduling = React.lazy(()=>import('./views/Pages/Interview/scheduling'))
 const listSchedule = React.lazy(()=>import('./views/Pages/Interview/listSchedule'))
 const sendEmails = React.lazy(()=>import('./views/Pages/Interview/sendEmails'))
 const reSchedule = React.lazy(()=>import('./views/Pages/Interview/reScheduling'))
-
+// Pannelist
+const Pannelist = React.lazy(() => import('./views/Pannelist/pannelist'))
 
 
 
@@ -29,6 +30,7 @@ const reSchedule = React.lazy(()=>import('./views/Pages/Interview/reScheduling')
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/pannelist', name: 'Pannelist Portal', component: Pannelist },
 // Officers Routes  
   { path: '/officers', name: 'User Management', component: NewUser, exact: true},
   { path: '/officers/create-new', name: 'Create New', component: NewUser },

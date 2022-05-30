@@ -19,22 +19,27 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from "@coreui/icons";
 import { AppBreadcrumb } from "./index";
 import { AppHeaderDropdown } from "./Header/index";
 import { logo } from "../assets/brand/logo";
+import { useCookies } from 'react-cookie';
 
 const AppHeader = () => {
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
-
+  const [userType, setUserType] = useCookies(['onlineerfa_admin_userType']);
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
-        <CHeaderToggler
-          className="ps-1"
-          onClick={() => dispatch({ type: "set", sidebarShow: !sidebarShow })}
-        >
-          <CIcon icon={cilMenu} size="lg" />
-        </CHeaderToggler>
+        {userType.onlineerfa_admin_userType === 'faculty' ? <></>
+          :
+          <CHeaderToggler
+            className="ps-1"
+            onClick={() => dispatch({ type: "set", sidebarShow: !sidebarShow })}
+          >
+
+            <CIcon icon={cilMenu} size="lg" />
+          </CHeaderToggler>}
+
         <CHeaderBrand className="mx-auto d-md-none" to="/">
-          ONLINE ERFA
+          Pannelist Portal
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
@@ -42,8 +47,11 @@ const AppHeader = () => {
               to="/dashboard"
               component={NavLink}
               activeClassName="active"
-            >
-              Dashboard
+            >{userType.onlineerfa_admin_userType === 'faculty' ? <>Pannelist's Portal</>
+              :
+            userType.onlineerfa_admin_userType === 'officer' ? <>Officer's Portal</>
+            :  
+              <>Admin's Dashboard</>}
             </CNavLink>
           </CNavItem>
           {/* <CNavItem>
@@ -69,10 +77,15 @@ const AppHeader = () => {
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
-      <CHeaderDivider />
+      {userType.onlineerfa_admin_userType === 'faculty' ?
+      <></>:
+      <>
+     <CHeaderDivider />
       <CContainer fluid>
         <AppBreadcrumb />
       </CContainer>
+     </> 
+      }
     </CHeader>
   );
 };
