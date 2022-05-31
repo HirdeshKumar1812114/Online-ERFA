@@ -569,3 +569,307 @@ res.status(500).send({message: error.message })
 res.end();
   }
 })
+
+exports.allocateScholarship = expressAsyncHandler(async function(req, res, next){
+
+ const getApplicationId=req.body.applicationId;
+ const scholarshipPercentage=req.body.scholarshipPercentage;
+ const acceptedForScholarship=req.body.acceptedForScholarship;
+// console.log(getApplicationId);
+// console.log(acceptedForScholarship);
+// console.log(scholarshipPercentage);
+
+
+  
+  const saveChanges=await db.ScholarshipForm.findByIdAndUpdate(getApplicationId,{
+    $set:{
+      scholarshipPercentage:scholarshipPercentage,
+      acceptedForScholarship:acceptedForScholarship
+    }
+  })
+
+if(saveChanges){
+  res.status(200).json({ message: "Successfully in saving changes!" })
+  res.end();
+}else{
+  res.status(400).json({ message: "Unsuccessfully in saving changes!" })
+  res.end();
+}
+
+
+
+
+
+
+})
+
+exports.fetchAllAcceptedByScholarshipId= expressAsyncHandler(async function (req, res){
+try{
+
+  const getScholarshipTitle=req.body.scholarshipTitle;
+
+  const findScholarshipID=await db.ScholarshipPost.findOne({title: getScholarshipTitle })
+
+if(findScholarshipID){
+
+const getScholarshipId=findScholarshipID._id;
+  
+const fetchApplications=await db.ScholarshipForm.aggregate([
+ 
+  {
+    $match: {
+        acceptedForScholarship: { $exists: true},
+scholarship:{$eq: ObjectId(getScholarshipId)}
+}
+  }   ,{
+    $lookup:{
+        from:'scholarshipposts',
+        localField:"scholarship",
+        foreignField:"_id",
+        as:"scholarshipdetails"
+    },
+  
+},{$unwind:"$scholarshipdetails"},
+{$lookup:{
+  from:'userstudents',
+  localField:"student",
+  foreignField:"_id",
+  as:"studentdetails"
+}},{$unwind:"$studentdetails"},{
+  $project:{
+      "_id":1,
+      "student":1,
+     "scholarship":1,
+   
+     "scholarshipPercentage":1,
+     "acceptedForScholarship":1,
+     "status":1,
+      "scholarshipdetails.title":1,
+      "studentdetails.regid":1,
+      "studentdetails.firstname":1,
+      "studentdetails.lastname":1,
+      "studentdetails.section":1,
+      "studentdetails.email":1            
+  }  
+}  ])
+
+if(fetchApplications){
+  res.status(200).send(fetchApplications)
+  res.end()
+}else{
+  res.status(400).send({ message: 'No canidate approved this scholarship'})
+  res.end()
+}
+
+}else{
+  res.status(400).send({ message: 'Unable to locate scholarship of this title'})
+  res.end()
+}
+}
+catch(error){
+res.status(500).send({message:"Error in catch"})
+}
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.fetchAllAcceptedByRegId= expressAsyncHandler(async function (req, res){
+  try{
+  
+    const getRegId=req.body.regid;
+  
+    const findStudentID=await db.UserStudent.findOne({regid: getRegId })
+  
+  if(findStudentID){
+  
+  const getfindStudentID=findStudentID._id;
+    
+  const fetchApplications=await db.ScholarshipForm.aggregate([
+   
+    {
+      $match: {
+          acceptedForScholarship: { $exists: true},
+  student:{$eq: ObjectId(getfindStudentID)}
+  }
+    }   ,{
+      $lookup:{
+          from:'scholarshipposts',
+          localField:"scholarship",
+          foreignField:"_id",
+          as:"scholarshipdetails"
+      },
+    
+  },{$unwind:"$scholarshipdetails"},
+  {$lookup:{
+    from:'userstudents',
+    localField:"student",
+    foreignField:"_id",
+    as:"studentdetails"
+  }},{$unwind:"$studentdetails"},{
+    $project:{
+        "_id":1,
+        "student":1,
+       "scholarship":1,
+     
+       "scholarshipPercentage":1,
+        "acceptedForScholarship":1,
+        "status":1,
+        "scholarshipdetails.title":1,
+        "studentdetails.regid":1,
+        "studentdetails.firstname":1,
+        "studentdetails.lastname":1,
+        "studentdetails.section":1,
+        "studentdetails.email":1            
+    }  
+  }  ])
+  
+  if(fetchApplications){
+    res.status(200).send(fetchApplications)
+    res.end()
+  }else{
+    res.status(400).send({ message: 'No canidate approved this scholarship'})
+    res.end()
+  }
+  
+  }else{
+    res.status(400).send({ message: 'Unable to locate scholarship of this regid'})
+    res.end()
+  }
+  }
+  catch(error){
+  res.status(500).send({message:"Error in catch"})
+  }
+  
+  })
+
+
+exports.sendScholarshipAcceptanceEmail= expressAsyncHandler(async function(req, res){
+
+   var students = req.body.students;
+   console.log(students)
+  for (let i = 0; i < students.length; i++) {
+    console.log(students[i])
+    var findStudent = await db.ScholarshipForm.aggregate([
+      {
+        $match: { _id: ObjectId(students[i]) }
+      },
+      {
+        $lookup: {
+          from: 'userstudents',
+          localField: "student",
+          foreignField: "_id",
+          as: "studentdetails"
+        }
+      }, { $unwind: "$studentdetails" },
+
+      {
+        $lookup: {
+          from: 'interviews',
+          localField: "interview",
+          foreignField: "_id",
+          as: "interviewdetails"
+        }
+      }, { $unwind: "$interviewdetails" },
+
+      {
+        $lookup:{
+            from:'scholarshipposts',
+            localField:"scholarship",
+            foreignField:"_id",
+            as:"scholarshipdetails"
+        },
+      
+    },{$unwind:"$scholarshipdetails"},
+      {
+        $project: {
+          "_id": 1,
+          "student": 1,
+          "scholarship": 1,
+          "form": 1,
+          "status": 1,
+          "messageStudent": 1,
+          "messageOfficer": 1,
+          "interview": 1,
+          "scholarshipPercentage":1,
+          "studentdetails.regid": 1,
+          "studentdetails.firstname": 1,
+          "studentdetails.lastname": 1,
+          "studentdetails.email": 1,
+          "studentdetails.section": 1,
+          "scholarshipdetails.title":1,
+          "interviewdetails.startDate": 1,
+          "interviewdetails.startDate": 1,
+          "interviewdetails.endDate": 1,
+          "interviewdetails.startTime": 1,
+          "interviewdetails.endTime": 1,
+          "interviewdetails.venue": 1,
+
+        }
+      }
+
+    ]);
+
+    console.log(findStudent[0])
+   
+    var nodemailer = require('nodemailer');
+
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'onlineerfa1998@gmail.com',
+        pass: 'ciuptmjpjlnzgfgo'
+      }
+    });
+
+    var mailOptions = {
+      from: 'onlineerfa1998@gmail.com',
+      to: `${findStudent[0].studentdetails.email}`,
+      subject: `${findStudent[0].scholarshipdetails.title} Final Result of ${findStudent[0].studentdetails.regid}`,
+      html: `<p><strong>Hello ${findStudent[0].studentdetails.firstname},</strong></p>
+  <p>&nbsp;</p>
+  <p>We are pleased to inform you that you have successfully been accepted for ${findStudent[0].scholarshipdetails.title}.</p>
+  <p>As per the evaluation from interview panelist and ERFA, we please to grant you ${findStudent[0].scholarshipPercentage} of the scholarship.</p>
+  <p>&nbsp;</p>
+  <p>King Regards,</p>
+  <p>EERFA Department</p>
+  <p>&nbsp;</p>`
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+    console.log(findStudent[0].studentdetails.email)
+
+  }
+
+
+  //   for(let i=0; i<students.length; i++){
+  // }
+res.status(200).send({message:"Emails to accepted candiates"})
+  res.end();
+})
+  
+  
+  

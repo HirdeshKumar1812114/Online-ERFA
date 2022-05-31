@@ -22,4 +22,8 @@ router.put(
   );
 router.post("/sortstatus",scholarshipFormController.sortStatus)
 router.post("/sorttitlestatus",scholarshipFormController.sortStatusandTitle)
+router.post("/evaluationstudent",scholarshipFormController.allocateScholarship)
+router.post("/acceptedapplicationsscholarship",scholarshipFormController.fetchAllAcceptedByScholarshipId)
+router.post("/acceptedapplicationsstudent",scholarshipFormController.fetchAllAcceptedByRegId)
+router.post("/sendemailtofinalizedstudents",scholarshipFormController.sendScholarshipAcceptanceEmail)
 module.exports = router;

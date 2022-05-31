@@ -9,7 +9,9 @@ messageStudent:{type: String},
 messageOfficer:{type: String},
 applicationComplete:{type: String},
 interview:{type:mongoose.Schema.Types.ObjectId, ref:'Interview' },
-emailSented:{type: String}
+emailSented:{type: String},
+scholarshipPercentage: { type: String},
+acceptedForScholarship: { type: Boolean}
 })
 
 const scholarshipForm = mongoose.model('Scholarshipform',scholarshipFormSchema);
