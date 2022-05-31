@@ -391,8 +391,32 @@ if(checkRecord){
 
 exports.getAllRemarkonApplication = expressAsyncHandler(async (req, res, next) => {
   try {
-    const app = req.body.application;
-    const fetch = await db.EvaluationScholarshipApplications.find({application:app});
+    const app =  ObjectId(req.body.application);
+    // const fetch = await db.EvaluationScholarshipApplications.find({application:app});
+
+    const fetch = await db.EvaluationScholarshipApplications.aggregate([{
+      $match: {application:{ $eq: ObjectId(app)}}
+    },{
+      $lookup:{
+          from:'erfaofficers',
+          localField:"panelist",
+          foreignField:"_id",
+          as:"erfadetails"
+      },
+    
+  },{$unwind:"$erfadetails"},
+  {
+    $project:{
+      "_id": 1,
+      "score": 1,
+      "remark": 1,
+   "application":1,
+        "erfadetails.firstname":1,
+        "erfadetails.lastname":1,
+        "erfadetails.designation":1,
+        "erfadetails.email":1
+              
+    }}])
   if(fetch){
     res.status(200).send(fetch);
     res.end();
@@ -403,3 +427,4 @@ exports.getAllRemarkonApplication = expressAsyncHandler(async (req, res, next) =
     res.status(500).json({ message: "Catch error" });
   }
 });
+
