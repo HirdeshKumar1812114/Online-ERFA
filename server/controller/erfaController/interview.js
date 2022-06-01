@@ -428,3 +428,17 @@ exports.getAllRemarkonApplication = expressAsyncHandler(async (req, res, next) =
   }
 });
 
+
+exports.getAllInterviewPanelistDetails = expressAsyncHandler(async (req, res, next) => {
+  try {
+    const officer = await db.InterviewPanelist.find();
+    if (officer) {
+      res.status(200).send(officer);
+      res.end();
+    } else {
+      res.status(400).json({ message: "Not found" });
+    }
+  } catch (err) {
+    res.status(400).send("Error in delete catch block");
+  }
+});
