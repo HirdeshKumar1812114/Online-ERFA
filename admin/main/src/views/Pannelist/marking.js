@@ -22,7 +22,7 @@ export default function Marking() {
           </CCardHeader>
             <CCardBody>
               <CForm>
-                <CFormLabel htmlFor="staticEmail" className="col-sm-4 col-form-label">Comments</CFormLabel>
+                <CFormLabel htmlFor="staticEmail" className="col-form-label">Comments</CFormLabel>
                 <CFormInput
                   type="text"
                   id="exampleFormControlInput1"
@@ -31,7 +31,7 @@ export default function Marking() {
                   text="Must be 8-20 characters long."
                   aria-describedby="exampleFormControlInputHelpInline"
                 />
-                <CFormLabel htmlFor="staticEmail" className="col-sm-4 col-form-label">Select Percentage</CFormLabel>
+                <CFormLabel htmlFor="staticEmail" className="col-form-label">Select Percentage</CFormLabel>
                 <CFormRange min="0" max="100" label="Example range" step="25" defaultValue="0" onChange={(e) => { setPer(e.target.value) }} id="customRange2" />
                 <CFormInput type="text" id="staticEmail" defaultValue={per} readOnly plainText style={{ 'font-weight': 'bold' }} />
                 <CButton type="submit" className="mb-3">
