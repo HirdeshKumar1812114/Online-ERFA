@@ -46,7 +46,7 @@ exports.erfaSignUp = expressAsyncHandler(async (req, res) => {
   const user = new db.UserErfa({
     email: req.body.email,
     password: req.body.password,
-    usertype: req.body.usertype,
+    usertype: req.body.designation,
   });
 
   try {
