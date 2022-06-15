@@ -1,15 +1,13 @@
-import React, { lazy } from 'react'
+import { React, useState } from "react";
+import Marking from './marking'
 
-const Pannelist = () => {
-  
+
+export default function App() {
+
 
   return (
-    <>
-      <h1>
-        Pannelist Portal
-      </h1>
-    </>
-  )
-}
+ 
+    <Marking />
 
-export default Pannelist
+  );
+}

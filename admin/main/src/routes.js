@@ -19,6 +19,10 @@ const sendEmails = React.lazy(()=>import('./views/Pages/Interview/sendEmails'))
 const reSchedule = React.lazy(()=>import('./views/Pages/Interview/reScheduling'))
 // Pannelist
 const Pannelist = React.lazy(() => import('./views/Pannelist/pannelist'))
+// Results
+const listEvaluation = React.lazy(() => import('./views/Pages/Results/listEvalutaion'))
+const selectedEvaluation = React.lazy(() => import('./views/Pages/Results/selectedEvaluation'))
+
 
 
 
@@ -54,8 +58,10 @@ const routes = [
 { path: '/re-scheduling', name: 'Re-scheduling', component: reSchedule },
 { path: '/send-emails', name: 'Send Emails', component: sendEmails },
 
+// Results Routes
 
-
+{ path: '/list-evaluation', name: 'All Applications', component: listEvaluation },
+{ path: '/selected-evaluation', name: 'Application', component: selectedEvaluation },
 
 ]
 
