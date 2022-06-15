@@ -43,6 +43,8 @@ export default function LoginPage(props) {
     const [userID, setUserID] = useCookies(['onlineerfa_admin_userID']);
     const [userType, setUserType] = useCookies(['onlineerfa_admin_userType']);
     const [userEmail, setUserEmail] = useCookies(['onlineerfa_admin_userEmail']);
+    const [userId, setUserId] = useCookies(['onlineerfa_admin_userId']);
+
     const [loading, setLoading] = useState(false)
     const [showTimer, setShowTimer] = useState(false)
 
@@ -90,6 +92,9 @@ export default function LoginPage(props) {
                     setUserID('onlineerfa_admin_userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })
                     setUserType('onlineerfa_admin_userType', result.data.sendUserType, { path: '/', maxAge: 1800, secure: true })
                     setUserEmail('onlineerfa_admin_userEmail', result.data.sendUserEmail, { path: '/', maxAge: 1800, secure: true })
+                    setUserId('onlineerfa_admin_userId', result.data.sendUserId, { path: '/', maxAge: 1800, secure: true })
+
+                    
                     // window.alert('Welcome to Admin Portal')
                     setValid("true")
                     alert()

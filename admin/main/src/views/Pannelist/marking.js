@@ -1,6 +1,8 @@
 import { React, useState } from "react";
 import { CContainer, CRow, CForm, CCol, CFormInput, CFormLabel, CFormRange, CButton, CCard, CCardBody, CCardHeader } from '@coreui/react'
 
+import { useCookies } from 'react-cookie';
+
 import AllPagesPDFViewer from "./all-pages";
 import RingLoader from "react-spinners/RingLoader";
 import Alert from "@mui/material/Alert";
@@ -21,89 +23,231 @@ export default function Marking(props) {
   const [per, setPer] = useState('')
   const [comment, setComment] = useState('')
 
-  const [dataSubmited,setDataSubmited] = useState(false)
+  const [dataSubmited, setDataSubmited] = useState(false)
+  const [userId, setUserId] = useCookies(['onlineerfa_admin_userId']);
 
   props.func(dataSubmited)
 
+  // console.log('pannelistId: ',userId.onlineerfa_admin_userId)
+
+  const api = axios.create({
+    baseURL: "http://localhost:5000/",
+  });
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    if (form.checkValidity() === false || per == "" || comment == "") {
+      event.preventDefault()
+      event.stopPropagation()
+      setValid("incomplete");
+      alert();
+    } else {
+      submitData();
+    }
+
+    setValidated(true)
+  }
+
+
+  const submitData = () => {
+    api
+      .post(
+        "interview/evaluatesapplication",
+        {
+          score: per,
+          remark: comment,
+          application: props.applicationId,
+          panelist: props.pannelistId
+        },
+        setLoading(true)
+      )
+      .then((result) => {
+        console.log(result.data)
+        window.alert('Evaluation Done!')
+        setLoading(false);
+        setDataSubmited(true)
+        setValid("true");
+        alert();
+        console.log(result)
+        // props.history.push("view-users");
+
+        if (result.message === 'Interview panelist has evaluated this candiate.') {
+          setValid("already");
+          alert()
+          setDataSubmited(true)
+
+        }
+      })
+      .catch((err) => {
+        window.alert('You have evaluated this candiate.')
+        setLoading(false);
+        console.log(err)
+        setDataSubmited(true)
+
+      });
+
+  }
+
+  const alert = () => {
+    if (valid != "") {
+      if (valid == "true") {
+        return (
+          <>
+            <br />
+            <br />
+            <Alert
+              style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+              severity="success"
+            >
+              SUCCESS - <strong>Student found!</strong>
+            </Alert>
+            {/* <Redirect to='/' /> */}
+          </>
+        );
+      } else if (valid == "incomplete") {
+        return (
+          <>
+            <br />
+            <br />
+
+            <Alert
+              style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+              severity="warning"
+            >
+              ALERT —{" "}
+              <strong>
+                {" "}
+                Invalid form, please fill all the fields properly!
+              </strong>
+            </Alert>
+          </>
+        );
+      }
+      else if (valid == "already") {
+        return (
+          <>
+            <br />
+            <br />
+
+            <Alert
+              style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+              severity="error"
+            >
+              404 —{" "}
+              <strong>
+                {" "}
+                Interview panelist has evaluated this candiate!
+              </strong>
+            </Alert>
+          </>
+        );
+      }
+    }
+
+    else {
+      return <></>;
+    }
+  };
+
+
+
   return (
     <CContainer>
-      <CRow>
-        <CCol>
+      {alert()}
+      {loading == true ? (
+        <>
+          <br />
+          <RingLoader color={color} css={override} size={100} />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </>
+      ) : (
+        <CRow>
+          <CCol>
 
 
-          <CCard>
-            <CCardHeader>
-              Student Evaluation
-            </CCardHeader>
-            <CCardBody>
-              <CForm>
+            <CCard>
+              <CCardHeader>
+                Student Evaluation
+              </CCardHeader>
+              <CCardBody>
+                <CForm
+                  noValidate
+                  className="row g-3 needs-validation"
+                  validated={validated}
+                  onSubmit={handleSubmit}
+                >
 
-                <CRow className="mb-12">
-                  <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Name</CFormLabel>
-                  <CCol sm={9}>
-                    <CFormInput  style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.name} readOnly plainText />
-                  </CCol>
-                </CRow>
+                  <CRow className="mb-12">
+                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Name</CFormLabel>
+                    <CCol sm={9}>
+                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.name} readOnly plainText />
+                    </CCol>
+                  </CRow>
 
-                <CRow className="mb-12">
-                  <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Reg. No.</CFormLabel>
-                  <CCol sm={9}>
-                    <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.regNo} readOnly plainText />
-                  </CCol>
-                </CRow>
+                  <CRow className="mb-12">
+                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Reg. No.</CFormLabel>
+                    <CCol sm={9}>
+                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.regNo} readOnly plainText />
+                    </CCol>
+                  </CRow>
 
-                <CRow className="mb-12">
-                  <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Program</CFormLabel>
-                  <CCol sm={9}>
-                    <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.program} readOnly plainText />
-                  </CCol>
-                </CRow>
+                  <CRow className="mb-12">
+                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Program</CFormLabel>
+                    <CCol sm={9}>
+                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.program} readOnly plainText />
+                    </CCol>
+                  </CRow>
 
-                <CRow className="mb-12">
-                  <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Section</CFormLabel>
-                  <CCol sm={9}>
-                    <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.section} readOnly plainText />
-                  </CCol>
-                </CRow>
+                  <CRow className="mb-12">
+                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Section</CFormLabel>
+                    <CCol sm={9}>
+                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.section} readOnly plainText />
+                    </CCol>
+                  </CRow>
 
-                <CFormLabel htmlFor="staticEmail" className="col-form-label">Comments</CFormLabel>
-                <CFormInput
-                  type="text"
-                  id="exampleFormControlInput1"
-                  label="Remarks"
-                  placeholder="He should be awared for 100%"
-                  text="Must be 8-20 characters long."
-                  aria-describedby="exampleFormControlInputHelpInline"
-                />
-                <CFormLabel htmlFor="staticEmail" className="col-form-label">Select Percentage</CFormLabel>
-                <CFormRange min="0" max="100" label="Example range" step="25" defaultValue="0" onChange={(e) => { setPer(e.target.value) }} id="customRange2" />
-                <CFormInput type="text" id="staticEmail" defaultValue={per} readOnly plainText style={{ 'font-weight': 'bold' }} />
-                <br/>
-                <CButton type="submit" className="mb-3" onClick={()=>{setDataSubmited(true)}}>
-                  Post Results
-                </CButton>
-              </CForm>
-              {/* <prev >{JSON.stringify(per, null, 2)}</prev> */}
-            </CCardBody>
-          </CCard>
+                  <CFormLabel htmlFor="staticEmail" className="col-form-label">Comments</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="exampleFormControlInput1"
+                    label="Remarks"
+                    placeholder="He should be awared for 100%"
+                    required
+                    onChange={(e)=>{setComment(e.target.value) }}
+                  />
+                  <CFormLabel htmlFor="staticEmail" className="col-form-label">Select Percentage</CFormLabel>
+                  <CFormRange min="0" max="100" label="Example range" step="25" defaultValue="0" onChange={(e) => { setPer(e.target.value) }} id="customRange2" />
+                  <CFormInput type="text" id="staticEmail" defaultValue={per} readOnly plainText style={{ 'font-weight': 'bold' }} />
+                  <br />
+                  <CButton type="submit" className="mb-3">
+                    Post Results
+                  </CButton>
+                </CForm>
+                {/* <prev >{JSON.stringify(per, null, 2)}</prev> */}
+              </CCardBody>
+            </CCard>
 
-        </CCol>
+          </CCol>
 
-        <CCol sm={8} >
-          <CCard>
-            <CCardHeader>
-              Application form
-            </CCardHeader>
-            <CCardBody>
-              <div className="App">
+          <CCol sm={8} >
+            <CCard>
+              <CCardHeader>
+                Application form
+              </CCardHeader>
+              <CCardBody>
+                <div className="App">
 
-                <div className="all-page-container">
-                  <AllPagesPDFViewer pdf={`http://localhost:5000/getForm/${props.form}`} />
-                </div>
+                  <div className="all-page-container">
+                    <AllPagesPDFViewer pdf={`http://localhost:5000/getForm/${props.form}`} />
+                  </div>
 
-                {/* https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf */}
+                  {/* https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf */}
 
-                {/* <object
+                  {/* <object
               data='http://localhost:5000/getForm/form_1650629418470.pdf'
               type="application/pdf"
               width="100%"
@@ -119,14 +263,15 @@ export default function Marking(props) {
               </iframe>
             </object> */}
 
-                <hr />
+                  <hr />
 
-              </div>
-            </CCardBody>
-          </CCard>
-        </CCol>
+                </div>
+              </CCardBody>
+            </CCard>
+          </CCol>
 
-      </CRow>
+        </CRow>
+      )}
 
     </CContainer>
 

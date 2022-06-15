@@ -9,6 +9,7 @@ import axios from "axios";
 const override = css`
   margin: 0 auto;
 `;
+import { useCookies } from 'react-cookie';
 
 export default function App() {
   const [scholarship, setScholarship] = useState('')
@@ -20,6 +21,8 @@ export default function App() {
   const [valid, setValid] = useState("");
   let [color, setColor] = useState("#49A54D");
   const [validated, setValidated] = useState(false);
+  const [userId, setUserId] = useCookies(['onlineerfa_admin_userId']);
+
   let [studentData, setStudentData] = useState({
     name: '',
     regNo: '',
@@ -87,7 +90,7 @@ export default function App() {
           section: result.data.studentdetails.section,
           form: result.data.scholarship.form,
           applicationId: result.data.scholarship._id,
-          pannelistId: result.data.studentdetails.application,
+          pannelistId: userId.onlineerfa_admin_userId,
         })
 
         setValid("true");
@@ -123,7 +126,7 @@ export default function App() {
               style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
               severity="success"
             >
-              SUCCESS - <strong>Student found!</strong>
+              SUCCESS - <strong>Evaluation done!</strong>
             </Alert>
             {/* <Redirect to='/' /> */}
           </>
@@ -266,6 +269,8 @@ export default function App() {
           program={studentData.program}
           section={studentData.section}
           form={studentData.form}
+          applicationId={studentData.applicationId}
+          pannelistId={studentData.pannelistId}
           func={pull_data}
         />
 
