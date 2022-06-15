@@ -32,7 +32,7 @@ const override = css`
 `;
 
 const api = axios.create({
-    baseURL: 'https://server.syedmustafaimam.com/',
+    baseURL: 'http://localhost:5000/',
 });
 
 
@@ -84,7 +84,7 @@ export default function LoginPage(props) {
             if (count < 4) {
                 api.post('erfa/login', { email: username, password }, setLoading(true)).then(result => {
                     setLoading(false)
-                    //  console.log(result.data)
+                     console.log(result.data)
                     // console.log(result.data.token)
                     setToken('onlineerfa_admin_token', result.data.token, { path: '/', maxAge: 1800, secure: true })
                     setUserID('onlineerfa_admin_userID', result.data.sendUserName, { path: '/', maxAge: 1800, secure: true })

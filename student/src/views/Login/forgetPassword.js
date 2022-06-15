@@ -32,7 +32,7 @@ const override = css`
 `;
 
 const api = axios.create({
-    baseURL: 'https://server.syedmustafaimam.com/',
+    baseURL: 'http://localhost:5000/',
 });
 
 const useStyles = makeStyles(styles);

@@ -40,7 +40,7 @@ const Layout = (props) => {
 
 
     const api = axios.create({
-        baseURL: "https://server.syedmustafaimam.com/",
+        baseURL: "http://localhost:5000/",
     });
     useEffect(() => {
         api.get("scholarship/all").then((res) => {

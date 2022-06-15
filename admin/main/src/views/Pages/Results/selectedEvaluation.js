@@ -30,7 +30,7 @@ const override = css`
 `;
 
 const api = axios.create({
-    baseURL: "https://server.syedmustafaimam.com/",
+    baseURL: "http://localhost:5000/",
 });
 
 const Layout = (props) => {
@@ -230,12 +230,12 @@ const Layout = (props) => {
                                             <CCol md={12}>
                                                 {/* <PDFViewer
                                                     document={{
-                                                        url: 'https://server.syedmustafaimam.com/getForm/form_1646489636119.pdf',
+                                                        url: 'http://localhost:5000/getForm/form_1646489636119.pdf',
                                                     }}
                                                 /> */}
-                                                {/* <iframe src="https://server.syedmustafaimam.com/getForm/form_1646489636119.pdf" width="100%" height="500px">
+                                                {/* <iframe src="http://localhost:5000/getForm/form_1646489636119.pdf" width="100%" height="500px">
                                                 </iframe> */}
-                                                Open the file <a href={`https://server.syedmustafaimam.com/getForm/${formName}`} target='_blank'>{formName}</a>
+                                                Open the file <a href={`http://localhost:5000/getForm/${formName}`} target='_blank'>{formName}</a>
                                             </CCol>
                                         </>
 

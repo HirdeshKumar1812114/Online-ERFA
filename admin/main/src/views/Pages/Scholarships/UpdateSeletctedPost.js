@@ -53,7 +53,7 @@ const Layout = (props) => {
   const programs = ['BBA', 'BEME', 'BABS', 'BS-BIO', 'BS-BIOTECH', 'BS-ENTRE', 'BSAF', 'BSCS', 'BSAI', 'BSMS', 'BSSS', 'MA-EDU', 'MBA-EVE-36', 'MBA-EVE-72', 'MSMD', 'MSPM', 'PhD-BIO', 'MS-Mecha', 'MSCS', 'MSMS', 'PhDMS', 'MSPH', 'MSSS', 'PhDSS']
 
   const api = axios.create({
-    baseURL: "https://server.syedmustafaimam.com/",
+    baseURL: "http://localhost:5000/",
   });
 
 
@@ -385,7 +385,7 @@ const Layout = (props) => {
                     {
                       <CImage
                         fluid
-                        src={`https://server.syedmustafaimam.com/getPoster/${imageName}`}
+                        src={`http://localhost:5000/getPoster/${imageName}`}
                       />
                     }
                   </CCol>
