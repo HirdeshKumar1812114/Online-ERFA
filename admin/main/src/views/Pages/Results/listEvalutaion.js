@@ -26,7 +26,7 @@ import { useCookies } from 'react-cookie';
 
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "http://localhost:5000",
 });
 
 const Layout = (props) => {
@@ -121,6 +121,8 @@ const Layout = (props) => {
 
 
   useEffect(() => {
+
+  
     api.get("scholarship-form/all").then((res) => {
       // console.log(getapplications)
       localStorage.setItem("all-applications", JSON.stringify(res.data));
@@ -129,6 +131,8 @@ const Layout = (props) => {
       setApplications(res.data);
     });
   }, []);
+
+
 
   useEffect(() => {
     if(selectStatus!=""){api.post('scholarship-form/sortstatus', { status: selectStatus })
@@ -170,7 +174,7 @@ const Layout = (props) => {
   };
 
   const applicationUpdate = () => {
-    props.history.push("selected-applicaiton");
+    props.history.push("selected-evaluation");
   };
 
   
@@ -212,8 +216,7 @@ const Layout = (props) => {
                 <CTableHeaderCell scope="col">Start date</CTableHeaderCell>
                 <CTableHeaderCell scope="col">End date</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Student Id</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Message from Student</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Name </CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -227,8 +230,7 @@ const Layout = (props) => {
                     <CTableDataCell>{application.scholarshipdetails.applicationstart}</CTableDataCell>
                     <CTableDataCell style={{'color':'red'}}>{application.scholarshipdetails.applicationdeadline}</CTableDataCell>
                     <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
-                    <CTableDataCell>{stautsBadge(application.status)}</CTableDataCell>
-                    <CTableDataCell>{application.messageStudent}</CTableDataCell>
+                    <CTableDataCell>{`${application.studentdetails.firstname} ${application.studentdetails.lastname}  `}</CTableDataCell>
                     <CTableDataCell>
                       <CButtonGroup
                         role="group"

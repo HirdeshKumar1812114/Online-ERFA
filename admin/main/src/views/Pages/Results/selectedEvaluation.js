@@ -15,6 +15,12 @@ import {
     CFormLabel,
     CFormTextarea,
     CFormCheck,
+    CTable,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CTableDataCell,
+  CTableBody,
     CBadge,
     CRow
 } from "@coreui/react";
@@ -30,7 +36,7 @@ const override = css`
 `;
 
 const api = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: "http://localhost:5000",
 });
 
 const Layout = (props) => {
@@ -52,9 +58,11 @@ const Layout = (props) => {
 
     const [studentName, setName] = useState('')
     const [regid, setregid] = useState('')
-
+    const [getRemarks, setRemarks] = useState([])
+    const [checkInterview, setCheckInterview]= useState(false)
     const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
 
+    var remarks=[];
     useEffect(() => {
         api.
             post('scholarship-form/applicationform', { scholarship: localStorage.getItem("viewPostUrl"), student: localStorage.getItem("studentId") },
@@ -65,6 +73,7 @@ const Layout = (props) => {
                 setPdf(form)
                 setFormName(form)
                 setStatus(status)
+                setApplicationId(res.data._id)
                 setYourMessage(messageStudent)
                 setOfficerMessage(messageOfficer)
                 setApplicationId(_id)
@@ -75,6 +84,18 @@ const Layout = (props) => {
             setregid(regid)
     }, [title])
 
+    useEffect(() => {
+        if(applicationId!=""){api.post('interview/getallremarksapplication', { application:applicationId })
+          .then(res => {
+              
+       console.log(res.data);
+        remarks=res.data;
+        setCheckInterview(true)
+        setRemarks(res.data);
+          console.log("Record 0",res.data[0])
+          console.log("Record 1",res.data[0].erfadetails.email)
+          }).catch((err) => console.log(err))}
+      }, [applicationId])
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
@@ -185,12 +206,31 @@ const Layout = (props) => {
                             <CCol md={6}> Registration Id: <span style={{'fontWeight':'bold'}}>{regid}</span></CCol>
                         </CRow>
                         <br></br>
-                            <CCol md={12}>
-                                <CFormLabel htmlFor="formFile">Status of the Application:</CFormLabel>
-                                &nbsp;&nbsp;&nbsp;   {stautsBadge(status)}
-                            </CCol>
-
-
+                        <CTable striped hover responsive>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Panelist Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Designation</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Percentage</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Comments</CTableHeaderCell>
+             
+              </CTableRow>
+            </CTableHead>  
+            <CTableBody>
+            {getRemarks.map((remark,key) => {   
+    return(  
+        
+               <CTableRow>
+  <CTableDataCell>{`${remark.erfadetails.firstname} ${remark.erfadetails.lastname}`}</CTableDataCell>
+  <CTableDataCell>{remark.erfadetails.designation}</CTableDataCell>
+  <CTableDataCell>{remark.score}</CTableDataCell>
+  <CTableDataCell>{remark.remark}</CTableDataCell>
+               </CTableRow>
+            
+            );}   )}
+            </CTableBody> 
+                       </CTable> 
+                        <br></br>
                             <>
                                 <br />
                                 <CForm
@@ -204,22 +244,7 @@ const Layout = (props) => {
 
                                     </CRow>
 
-                                    <CCol md={12}>
-                                        <CFormLabel htmlFor="exampleFormControlTextarea1">Message From student:</CFormLabel>
-                                        <CFormTextarea id="exampleFormControlTextarea1" placeholder={'Type your message here!'}
-                                            value={yourMessage != '' ? yourMessage : ''}
-                                            onChange={(e) => { setYourMessage(e.target.value) }}
-                                            disabled
-                                            rows="3"></CFormTextarea>
-                                    </CCol>
-
-                                    <CCol md={12}>
-                                        <CFormLabel htmlFor="exampleFormControlTextarea1">Message from officer:</CFormLabel>
-                                        <CFormTextarea id="exampleFormControlTextarea1"
-                                            value={officerMessage}
-                                            onChange={(e) => { setOfficerMessage(e.target.value) }}
-                                            rows="3"></CFormTextarea>
-                                    </CCol>
+                                 
 
                                     {formName == '' || !formName || formName == undefined ?
                                         <span style={{ 'color': 'red' }}>
@@ -267,8 +292,13 @@ const Layout = (props) => {
       <prev>{JSON.stringify(pdf, null, 2)}</prev>
       <prev>{JSON.stringify(description, null, 2)}</prev>
       <prev>{JSON.stringify(eligibility, null, 2)}</prev>
-      <prev>{JSON.stringify(tags, null, 2)}</prev> */}
+    <prev>{JSON.stringify(applicationId, null, 2)}</prev> 
         </CContainer>
+    <prev>{JSON.stringify(tags, null, 2)}</prev> */}
+     
+     <prev>{JSON.stringify(checkInterview, null, 2)}</prev>
+        </CContainer>
+        
     );
 };
 

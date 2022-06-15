@@ -5,11 +5,16 @@ exports.addErfaOfficer = expressAsyncHandler(async (req, res, next) => {
   const checkRecord = await db.ErfaOfficer.findOne({
     email: req.body.email,
   });
+  const abc = req.body.designation;
+  const lowrabc=abc.toLowerCase();
+  console.log(lowrabc);
   if (checkRecord === null) {
+ 
+ 
     const addNewUser = new db.UserErfa({
       email: req.body.email,
       password: req.body.password,
-      usertype: req.body.designation,
+      usertype: lowrabc,
     });
 
     try {
