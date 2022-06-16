@@ -54,7 +54,7 @@ const Layout = (props) => {
     else if (status === 'paused') {
       return (
         <>
-          <CBadge color="warning">Hold</CBadge>
+          <CBadge color="warning">Pending</CBadge>
         </>)
     }
     else if (status === 'rejected') {
@@ -190,7 +190,7 @@ const Layout = (props) => {
               <CFormSelect aria-label="Default select example" color="primary" onChange={(e) => { setSelectStatus(e.target.value) }}>
                 <option>Filter all applications</option>
                 <option value='accepted' >Accepted</option>
-                <option value='paused'>Hold</option>
+                <option value='paused'>Pending</option>
                 <option value='rejected'>Rejected</option>
                 <option value='submitted'>Not Reviewed</option>
 
