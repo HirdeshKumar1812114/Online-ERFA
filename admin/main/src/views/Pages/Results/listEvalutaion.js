@@ -228,8 +228,6 @@ const Layout = (props) => {
               <CTableRow>
                 <CTableHeaderCell scope="col">Name </CTableHeaderCell>
                 <CTableHeaderCell scope="col">Student Id</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Start date</CTableHeaderCell>
-                <CTableHeaderCell scope="col">End date</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               </CTableRow>

@@ -155,7 +155,7 @@ const Layout = (props) => {
                     scholarshipPercentage: per,
                     acceptedForScholarship: true,
                     applicationId: applicationId,
-                    studentId:userID.onlineerfa_student_userID
+                    studentId:localStorage.getItem("studentId")
 
                 }, setLoading(true))
             .then((result) => {
