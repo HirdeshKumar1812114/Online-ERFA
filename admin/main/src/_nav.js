@@ -5,6 +5,7 @@ import {
   cilCalculator,
   cilChartPie,
   cilCursor,
+  cilEnvelopeClosed,
   cilDrop,
   cilNotes,
   cilNewspaper,
@@ -111,6 +112,12 @@ const _navAdmin = [
     name: "List Evaluation",
     to: "/list-evaluation",
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Send Results",
+    to: "/send-results",
+    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
   }
 ];
 

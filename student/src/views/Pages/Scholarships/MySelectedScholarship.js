@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import Fade from 'react-reveal/Fade';
 
 import Checkbox from 'rc-checkbox';
 // import 'rc-checkbox/assets/index.css';

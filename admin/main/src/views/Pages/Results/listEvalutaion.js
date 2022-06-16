@@ -39,6 +39,9 @@ const Layout = (props) => {
   const [email, setEmail] = useState(applicationEmail.onlineerfa_admin_applicationEmail)
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState('')
+  const [post, setPost] = useState([]);
+  const [scholarship, setScholarship] = useState('')
+
   const [selectStatus, setSelectStatus] = useState('')
 
 
@@ -121,8 +124,18 @@ const Layout = (props) => {
 
 
   useEffect(() => {
+    api.get("scholarship/all").then((res) => {
+      // console.log('getPost=>', getPost)
+      localStorage.setItem("posts", JSON.stringify(res.data));
+      let posts = res.data;
+      console.log('posts=>', posts)
+      setPost(posts);
+    });
+  }, []);
 
-  
+  useEffect(() => {
+
+
     api.get("scholarship-form/all").then((res) => {
       // console.log(getapplications)
       localStorage.setItem("all-applications", JSON.stringify(res.data));
@@ -135,14 +148,16 @@ const Layout = (props) => {
 
 
   useEffect(() => {
-    if(selectStatus!=""){api.post('scholarship-form/sortstatus', { status: selectStatus })
+    if (scholarship != "") {
+      api.post('scholarship-form/acceptedapplicationsscholarship', { scholarshipTitle: scholarship })
       .then(res => {
         localStorage.setItem("all-applications", JSON.stringify(res.data));
         applications = res.data;
         console.log('2', applications)
         setApplications(res.data);
-      }).catch((err) => console.log(err))}
-  }, [selectStatus])
+      }).catch((err) => console.log(err))
+    }
+  }, [scholarship])
 
   const showAll = () => {
     api.get("scholarship-form/all").then((res) => {
@@ -177,7 +192,7 @@ const Layout = (props) => {
     props.history.push("selected-evaluation");
   };
 
-  
+
 
   return (
     <CContainer>
@@ -186,26 +201,43 @@ const Layout = (props) => {
           <CRow>
             <CCol md={4} sm={4}>
               <strong>
-                <h3>All applications</h3>
+                <h3>All Evaluations</h3>
               </strong>
             </CCol>
             <CCol md={4} sm={4}>
+                <CFormSelect
+                  value={scholarship}
+                  onChange={(e) => {
+                    setScholarship(e.target.value)
+                  }}
+                  id="validationCustom04"
+                  label="ScholarshipTitle"
+                  required
+                >
+                  <option >Select scholarship</option>
+                  {post.map((value, key) => {
+                    return (
+                      <option value={value.title} >{value.title}</option>
+                    )
+                  })}
+                </CFormSelect>
 
-              <CFormSelect aria-label="Default select example" color="primary" onChange={(e) => { setSelectStatus(e.target.value) }}>
-                <option>Filter all applications</option>
-                <option value='accepted' >Accepted</option>
-                <option value='paused'>Paused</option>
-                <option value='rejected'>Rejected</option>
-                <option value='submitted'>Not Reviewed</option>
 
-                
+                {/* <CFormSelect aria-label="Default select example" color="primary" onChange={(e) => { setSelectStatus(e.target.value) }}>
+                  <option>Filter all applications</option>
+                  <option value='accepted' >Accepted</option>
+                  <option value='paused'>Paused</option>
+                  <option value='rejected'>Rejected</option>
+                  <option value='submitted'>Not Reviewed</option>
 
-              </CFormSelect>
-            </CCol>
-            <CCol md={4} sm={4}>
-              <CButton color="primary" onClick={() => { showAll() }} >Show All scholarships</CButton>
 
-            </CCol>
+
+                </CFormSelect> */}
+              </CCol>
+              <CCol md={4} sm={4}>
+                <CButton color="primary" onClick={() => { showAll() }} >Show All scholarships</CButton>
+
+              </CCol>
           </CRow>
         </CCardHeader>
         <CCardBody>
@@ -228,7 +260,7 @@ const Layout = (props) => {
                       {application.scholarshipdetails.title}
                     </CTableHeaderCell>
                     <CTableDataCell>{application.scholarshipdetails.applicationstart}</CTableDataCell>
-                    <CTableDataCell style={{'color':'red'}}>{application.scholarshipdetails.applicationdeadline}</CTableDataCell>
+                    <CTableDataCell style={{ 'color': 'red' }}>{application.scholarshipdetails.applicationdeadline}</CTableDataCell>
                     <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
                     <CTableDataCell>{`${application.studentdetails.firstname} ${application.studentdetails.lastname}  `}</CTableDataCell>
                     <CTableDataCell>
@@ -303,7 +335,7 @@ const Layout = (props) => {
             </CModalFooter>
           </CModal>
         </CCardBody>
-    
+
       </CCard>
     </CContainer>
   );

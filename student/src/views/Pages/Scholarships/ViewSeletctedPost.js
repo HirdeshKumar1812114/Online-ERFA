@@ -18,6 +18,7 @@ import axios from "axios";
 import { CBadge } from '@coreui/react'
 import Alert from "@mui/material/Alert";
 
+import Fade from 'react-reveal/Fade';
 
 
 const override = css`
@@ -38,11 +39,11 @@ const Layout = (props) => {
   const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
   const [regID, setRegID] = useState(["onlineerfa_student_userID"]);
   const [visible, setVisible] = useState(false);
-  const [scholarshipId, setScholarshipId]= useState("");
+  const [scholarshipId, setScholarshipId] = useState("");
   const [studentId, setStudentId] = useState("");
-  const [studentProgram,setStudentProgram] = useState("");
+  const [studentProgram, setStudentProgram] = useState("");
   const [studentEligibility, setStudentEligibility] = useState(false);
-  const [showAlert,setShowAlert] = useState("")
+  const [showAlert, setShowAlert] = useState("")
 
   let [color, setColor] = useState("#49A54D");
 
@@ -68,80 +69,79 @@ const Layout = (props) => {
         getStudentProgram()
         localStorage.setItem('ScholarshipTitle', res.data.title);
       })
-      .catch((error) =>  console.log(error));
+      .catch((error) => console.log(error));
 
   }, [eligibility]);
 
- const alert = () => {
-if (showAlert != "") {
-if(studentEligibility===true){
-  return (
-    <>
-      <Alert
-        style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
-        onClose={() => {
-          setShowAlert("")
-        }}
-        severity="success"
-      >
-        ELIGIBLE - <strong>You can apply for the {title}.</strong>
-      </Alert>
-      <Redirect to='/scholarship/scholarship-form' />
-    </>
-  )
-}else{
-  return (
-    <Alert
-      style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
-      onClose={() => {
-        setShowAlert("");
-      }}
-      severity="error"
-    >
-     INELIGIBLE — <strong>You can not apply for the {title}.</strong>
-    </Alert>
-  )
-}
-}else {
-  return <></>;
-}
- }
-  const checkStudentScholarshipEligibilty=()=>{
+  const alert = () => {
+    if (showAlert != "") {
+      if (studentEligibility === true) {
+        return (
+          <>
+            <Alert
+              style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+              onClose={() => {
+                setShowAlert("")
+              }}
+              severity="success"
+            >
+              ELIGIBLE - <strong>You can apply for the {title}.</strong>
+            </Alert>
+            <Redirect to='/scholarship/scholarship-form' />
+          </>
+        )
+      } else {
+        return (
+          <Alert
+            style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+            onClose={() => {
+              setShowAlert("");
+            }}
+            severity="error"
+          >
+            INELIGIBLE — <strong>You can not apply for the {title}.</strong>
+          </Alert>
+        )
+      }
+    } else {
+      return <></>;
+    }
+  }
+  const checkStudentScholarshipEligibilty = () => {
     api
-    .post(`student_scholarship/check_eligibility`,
-    {program:studentProgram,
-     scholarship:scholarshipId,
-     regid:userID.onlineerfa_student_userRegID
-    },
-     setLoading(true)
-    
-    )
-    .then((result)=>{
+      .post(`student_scholarship/check_eligibility`,
+        {
+          program: studentProgram,
+          scholarship: scholarshipId,
+          regid: userID.onlineerfa_student_userRegID
+        },
+        setLoading(true)
 
- if(result.data.message==='User is Eligible')
-{
-  console.log('User is Eligible')
-  setStudentEligibility(true)
-  console.log(studentEligibility)
-  setShowAlert("Yes")
-  setLoading(false)
-}
-else if(result.data.message==='User has already applied for scholarship')
-{
-  console.log('User has already applied for scholarship')
-  setStudentEligibility(true)
-  console.log(studentEligibility)
-  setShowAlert("Yes")
-  setLoading(false)
-}
-else{
-  setStudentEligibility(false)
-  console.log(studentEligibility)
-  setShowAlert("Yes")
-  setLoading(false)
-}
-    })
-    .catch((error) => console.log(error));
+      )
+      .then((result) => {
+
+        if (result.data.message === 'User is Eligible') {
+          console.log('User is Eligible')
+          setStudentEligibility(true)
+          console.log(studentEligibility)
+          setShowAlert("Yes")
+          setLoading(false)
+        }
+        else if (result.data.message === 'User has already applied for scholarship') {
+          console.log('User has already applied for scholarship')
+          setStudentEligibility(true)
+          console.log(studentEligibility)
+          setShowAlert("Yes")
+          setLoading(false)
+        }
+        else {
+          setStudentEligibility(false)
+          console.log(studentEligibility)
+          setShowAlert("Yes")
+          setLoading(false)
+        }
+      })
+      .catch((error) => console.log(error));
   }
   const deleteposts = () => {
     // // console.log('posts to delte: ',poststoDelete)
@@ -162,18 +162,19 @@ else{
         setVisible(false);
       });
   };
-  
-  const getStudentProgram = ()=>{
+
+  const getStudentProgram = () => {
     api
-    .get(`/student/find/${studentId}`)
-    .then((result)=>{
-      console.log(studentId)
-      console.log(result.data.program)
-      setStudentProgram(result.data.program)
-    })
-    .catch((err)=>{
-      console.log(studentId)
-      console.log(err)})
+      .get(`/student/find/${studentId}`)
+      .then((result) => {
+        console.log(studentId)
+        console.log(result.data.program)
+        setStudentProgram(result.data.program)
+      })
+      .catch((err) => {
+        console.log(studentId)
+        console.log(err)
+      })
   }
   const postsUpdate = () => {
     props.history.push("update-post");
@@ -182,9 +183,9 @@ else{
   return (
 
     <CContainer fluid>
-     
+
       <CCard>
-      {alert()}
+        {alert()}
 
         {loading == true || poster == '' ? (
           <>
@@ -201,29 +202,46 @@ else{
           <>
             <CCardHeader>
               <strong>
-                <h3 style={{ 'margin': '20px' }}>{title}</h3>
+                <Fade left cascade>
+                  <h3 style={{ 'margin': '20px' }}>{title}</h3>
+                </Fade>
                 <p style={{ 'margin': '20px' }}>Application Starts: {applicationstart} | Application Deadline: {applicationdeadline}</p>
 
               </strong>
             </CCardHeader>
             <CCardBody>
-        
-              {poster != '' ? <CImage fluid src={`http://localhost:5000/getPoster/${poster}`} /> : <>Loading</>}
+              <Fade top>
+                {poster != '' ? <CImage fluid src={`http://localhost:5000/getPoster/${poster}`} /> : <>Loading</>}
+              </Fade>
               <br></br>
 
 
               <hr></hr>
+              <Fade bottom>
+                <p style={{ 'text-align': 'justify', 'margin': '20px' }}>{description}</p>
+              </Fade>
+              <Fade bottom>
+                <h3 style={{ 'margin': '20px' }}>Eligliblity</h3>
+              </Fade>
 
-              <p style={{ 'text-align': 'justify', 'margin': '20px' }}>{description}</p>
-              <h3 style={{ 'margin': '20px' }}>Eligliblity</h3>
               <ul style={{ 'text-align': 'justify', 'margin': '10px' }}>
-              {eligibilityArr.map((value,key)=>{
-                 return (<li>{value}</li>)
-              })}
+                {eligibilityArr.map((value, key) => {
+                  return (
+                    <Fade right>
+                      <li>
+                        {value}
+                      </li>
+                    </Fade>
+                      )
+                })}
               </ul>
-              <h3 style={{ 'margin': '20px' }}>Timeline</h3>
+              <Fade bottom>
+                <h3 style={{ 'margin': '20px' }}>Timeline</h3>
+              </Fade>
+              <Fade right>
               <p style={{ 'margin': '20px', 'font-size': '22px' }}>Start Date: {applicationstart}</p>
               <p style={{ 'margin': '20px', 'font-size': '22px', 'color': 'red' }}>End Date: <span style={{ 'color': 'red' }}>{applicationdeadline}</span></p>
+              </Fade>
               <h4 style={{ 'margin': '20px' }}>Tags</h4>
               <p style={{ 'margin': '20px', 'font-size': '18px' }}>
                 {tags.map((tag, key) => {
@@ -246,7 +264,7 @@ else{
             </CCardFooter>
           </>
         )}
-       
+
       </CCard>
       {/* <prev >{JSON.stringify(username, null, 2)}</prev>
       <prev >{JSON.stringify(userID.onlineerfa_student_userRegID, null, 2)}</prev>

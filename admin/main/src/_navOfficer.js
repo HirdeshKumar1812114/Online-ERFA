@@ -12,6 +12,7 @@ import {
   cilPencil,
   cilPuzzle,
   cilSpeedometer,
+  cilEnvelopeClosed,
   cilStar,
   cilChartLine,
   cilGroup
@@ -93,6 +94,12 @@ const _navOfficer = [
     name: "List Evaluation",
     to: "/list-evaluation",
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Send Results",
+    to: "/send-results",
+    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
   }
 ]
 

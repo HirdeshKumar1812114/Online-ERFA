@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Marking from './marking'
-
+import Fade from 'react-reveal/Fade';
 import { CContainer, CRow, CForm, CCol, CFormInput, CFormSelect, CFormLabel, CFormRange, CButton, CCard, CCardBody, CCardHeader } from '@coreui/react'
 import RingLoader from "react-spinners/RingLoader";
 import Alert from "@mui/material/Alert";
@@ -177,104 +177,113 @@ export default function App() {
   };
 
   const searchStudent = () => {
-    return (<CCard style={{ "width": "40%", "margin": "0 auto" }}>
-      <CCardHeader><h4>Search Student</h4></CCardHeader>
-      <CCardBody>
-        {alert()}
-        {loading == true ? (
-          <>
-            <br />
-            <RingLoader color={color} css={override} size={100} />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-          </>
-        ) : (
-          <CRow>
+    return (
+      <Fade bottom>
+        <CCard style={{ "width": "40%", "margin": "0 auto" }}>
+          <CCardHeader><h4>Search Student</h4></CCardHeader>
+          <CCardBody>
+            {alert()}
+            {loading == true ? (
+              <>
+                <br />
+                <RingLoader color={color} css={override} size={100} />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+              </>
+            ) : (
 
-            <CForm
-              noValidate
-              className="row g-3 needs-validation"
-              validated={validated}
-              onSubmit={handleSubmit}
-            >
-              <CCol md={12}>
-                <CRow>
-                  <CFormLabel htmlFor="registration" className="col-sm-4 col-form-label">Registration No. </CFormLabel>
-                  <CCol sm={8}>
-                    <CFormInput
-                      type="text"
-                      value={regNo}
-                      text="Enter the registration number of the student."
-                      onChange={(e) => { setRegNo(e.target.value) }}
-                      required
+              <CRow>
 
-                    />
+                <CForm
+                  noValidate
+                  className="row g-3 needs-validation"
+                  validated={validated}
+                  onSubmit={handleSubmit}
+                >
+                  <CCol md={12}>
+                    <CRow>
+                      <CFormLabel htmlFor="registration" className="col-sm-4 col-form-label">Registration No. </CFormLabel>
+                      <CCol sm={8}>
+                        <CFormInput
+                          type="text"
+                          value={regNo}
+                          text="Enter the registration number of the student."
+                          onChange={(e) => { setRegNo(e.target.value) }}
+                          required
 
+                        />
+
+                      </CCol>
+                    </CRow>
                   </CCol>
-                </CRow>
-              </CCol>
 
-              <CCol md={12}>
-                <CRow>
-                  <CFormLabel htmlFor="title" className="col-sm-4 col-form-label">Scholarship title</CFormLabel>
-                  <CCol sm={8}>
+                  <CCol md={12}>
+                    <CRow>
+                      <CFormLabel htmlFor="title" className="col-sm-4 col-form-label">Scholarship title</CFormLabel>
+                      <CCol sm={8}>
 
-                    <CFormSelect
-                      value={scholarship}
-                      onChange={(e) => {
-                        setScholarship(e.target.value)
-                      }}
-                      id="validationCustom04"
-                      label="ScholarshipTitle"
-                      required
-                    >
-                      <option >Select scholarship</option>
-                      {post.map((value, key) => {
-                        return (
-                          <option value={value.title} >{value.title}</option>
-                        )
-                      })}
-                    </CFormSelect>
+                        <CFormSelect
+                          value={scholarship}
+                          onChange={(e) => {
+                            setScholarship(e.target.value)
+                          }}
+                          id="validationCustom04"
+                          label="ScholarshipTitle"
+                          required
+                        >
+                          <option >Select scholarship</option>
+                          {post.map((value, key) => {
+                            return (
+                              <option value={value.title} >{value.title}</option>
+                            )
+                          })}
+                        </CFormSelect>
 
 
 
+                      </CCol>
+                    </CRow>
                   </CCol>
-                </CRow>
-              </CCol>
 
 
-              <div className="d-grid gap-2">
-                <CButton type="submit" color="primary">Search</CButton>
-              </div>
-            </CForm>
-          </CRow>
-        )}
-      </CCardBody>
-    </CCard>)
+                  <div className="d-grid gap-2">
+                    <CButton type="submit" color="primary">Search</CButton>
+                  </div>
+                </CForm>
+              </CRow>
+            )}
+          </CCardBody>
+        </CCard>
+      </Fade >
+    )
   }
 
 
 
   return (
     <CContainer fluid>
-      {studentFound === false ? searchStudent() : <>
+      {studentFound === false ?
+        searchStudent()
+        : <>
+        <Fade top>
 
-        <Marking
-          name={studentData.name}
-          regNo={studentData.regNo}
-          program={studentData.program}
-          section={studentData.section}
-          form={studentData.form}
-          applicationId={studentData.applicationId}
-          pannelistId={studentData.pannelistId}
-          func={pull_data}
-        />
+          <Marking
+            name={studentData.name}
+            regNo={studentData.regNo}
+            program={studentData.program}
+            section={studentData.section}
+            form={studentData.form}
+            applicationId={studentData.applicationId}
+            pannelistId={studentData.pannelistId}
+            func={pull_data}
+          />
+        </Fade>
 
-      </>}
+        </>}
 
       {/* <prev >{JSON.stringify(scholarship, null, 2)}</prev>
        */}

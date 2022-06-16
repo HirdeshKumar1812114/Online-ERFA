@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { CContainer, CRow, CForm, CCol, CFormInput, CFormLabel, CFormRange, CButton, CCard, CCardBody, CCardHeader } from '@coreui/react'
 
 import { useCookies } from 'react-cookie';
+import Fade from 'react-reveal/Fade';
 
 import AllPagesPDFViewer from "./all-pages";
 import RingLoader from "react-spinners/RingLoader";
@@ -169,85 +170,86 @@ export default function Marking(props) {
         <CRow>
           <CCol>
 
+            <Fade left>
+              <CCard>
+                <CCardHeader>
+                  Student Evaluation
+                </CCardHeader>
+                <CCardBody>
+                  <CForm
+                    noValidate
+                    className="row g-3 needs-validation"
+                    validated={validated}
+                    onSubmit={handleSubmit}
+                  >
 
-            <CCard>
-              <CCardHeader>
-                Student Evaluation
-              </CCardHeader>
-              <CCardBody>
-                <CForm
-                  noValidate
-                  className="row g-3 needs-validation"
-                  validated={validated}
-                  onSubmit={handleSubmit}
-                >
+                    <CRow className="mb-12">
+                      <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Name</CFormLabel>
+                      <CCol sm={9}>
+                        <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.name} readOnly plainText />
+                      </CCol>
+                    </CRow>
 
-                  <CRow className="mb-12">
-                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Name</CFormLabel>
-                    <CCol sm={9}>
-                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.name} readOnly plainText />
-                    </CCol>
-                  </CRow>
+                    <CRow className="mb-12">
+                      <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Reg. No.</CFormLabel>
+                      <CCol sm={9}>
+                        <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.regNo} readOnly plainText />
+                      </CCol>
+                    </CRow>
 
-                  <CRow className="mb-12">
-                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Reg. No.</CFormLabel>
-                    <CCol sm={9}>
-                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.regNo} readOnly plainText />
-                    </CCol>
-                  </CRow>
+                    <CRow className="mb-12">
+                      <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Program</CFormLabel>
+                      <CCol sm={9}>
+                        <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.program} readOnly plainText />
+                      </CCol>
+                    </CRow>
 
-                  <CRow className="mb-12">
-                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Program</CFormLabel>
-                    <CCol sm={9}>
-                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.program} readOnly plainText />
-                    </CCol>
-                  </CRow>
+                    <CRow className="mb-12">
+                      <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Section</CFormLabel>
+                      <CCol sm={9}>
+                        <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.section} readOnly plainText />
+                      </CCol>
+                    </CRow>
 
-                  <CRow className="mb-12">
-                    <CFormLabel htmlFor="staticEmail" className="col-sm-3 col-form-label">Section</CFormLabel>
-                    <CCol sm={9}>
-                      <CFormInput style={{ 'font-weight': 'bold' }} type="text" id="staticEmail" defaultValue={props.section} readOnly plainText />
-                    </CCol>
-                  </CRow>
-
-                  <CFormLabel htmlFor="staticEmail" className="col-form-label">Comments</CFormLabel>
-                  <CFormInput
-                    type="text"
-                    id="exampleFormControlInput1"
-                    label="Remarks"
-                    placeholder="He should be awared for 100%"
-                    required
-                    onChange={(e)=>{setComment(e.target.value) }}
-                  />
-                  <CFormLabel htmlFor="staticEmail" className="col-form-label">Select Percentage</CFormLabel>
-                  <CFormRange min="0" max="100" label="Example range" step="25" defaultValue="0" onChange={(e) => { setPer(e.target.value) }} id="customRange2" />
-                  <CFormInput type="text" id="staticEmail" defaultValue={per} readOnly plainText style={{ 'font-weight': 'bold' }} />
-                  <br />
-                  <CButton type="submit" className="mb-3">
-                    Post Results
-                  </CButton>
-                </CForm>
-                {/* <prev >{JSON.stringify(per, null, 2)}</prev> */}
-              </CCardBody>
-            </CCard>
-
+                    <CFormLabel htmlFor="staticEmail" className="col-form-label">Comments</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      id="exampleFormControlInput1"
+                      label="Remarks"
+                      placeholder="He should be awared for 100%"
+                      required
+                      onChange={(e) => { setComment(e.target.value) }}
+                    />
+                    <CFormLabel htmlFor="staticEmail" className="col-form-label">Select Percentage</CFormLabel>
+                    <CFormRange min="0" max="100" label="Example range" step="25" defaultValue="0" onChange={(e) => { setPer(e.target.value) }} id="customRange2" />
+                    <CFormInput type="text" id="staticEmail" defaultValue={per} readOnly plainText style={{ 'font-weight': 'bold' }} />
+                    <br />
+                    <CButton type="submit" className="mb-3">
+                      Post Results
+                    </CButton>
+                  </CForm>
+                  {/* <prev >{JSON.stringify(per, null, 2)}</prev> */}
+                </CCardBody>
+              </CCard>
+            </Fade>
           </CCol>
 
           <CCol sm={8} >
-            <CCard>
-              <CCardHeader>
-                Application form
-              </CCardHeader>
-              <CCardBody>
-                <div className="App">
+            <Fade right>
+              <CCard>
+                <CCardHeader>
+                  Application form
+                </CCardHeader>
+                <CCardBody>
+                  <div className="App">
 
-                  <div className="all-page-container">
-                    <AllPagesPDFViewer pdf={`http://localhost:5000/getForm/${props.form}`} />
-                  </div>
+                    <div className="all-page-container">
+                      <AllPagesPDFViewer pdf={`http://localhost:5000/getForm/${props.form}`} />
+                    </div>
 
-                  {/* https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf */}
+                    {/* https://pdfjs-express.s3-us-west-2.amazonaws.com/docs/choosing-a-pdf-viewer.pdf */}
 
-                  {/* <object
+                    {/* <object
               data='http://localhost:5000/getForm/form_1650629418470.pdf'
               type="application/pdf"
               width="100%"
@@ -263,11 +265,12 @@ export default function Marking(props) {
               </iframe>
             </object> */}
 
-                  <hr />
+                    <hr />
 
-                </div>
-              </CCardBody>
-            </CCard>
+                  </div>
+                </CCardBody>
+              </CCard>
+            </Fade>
           </CCol>
 
         </CRow>

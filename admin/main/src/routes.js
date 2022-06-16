@@ -24,6 +24,8 @@ const marking = React.lazy(() => import('./views/Pannelist/marking'))
 // Results
 const listEvaluation = React.lazy(() => import('./views/Pages/Results/listEvalutaion'))
 const selectedEvaluation = React.lazy(() => import('./views/Pages/Results/selectedEvaluation'))
+const sendResults = React.lazy(() => import('./views/Pages/Results/sendResults'))
+
 
 
 
@@ -64,8 +66,10 @@ const routes = [
 
   // Results Routes
 
-  { path: '/list-evaluation', name: 'All Applications', component: listEvaluation },
-  { path: '/selected-evaluation', name: 'Application', component: selectedEvaluation },
+  { path: '/list-evaluation', name: 'All Evaluations', component: listEvaluation },
+  { path: '/selected-evaluation', name: 'Student Evaluation', component: selectedEvaluation },
+  { path: '/send-results', name: 'Application', component: sendResults },
+  
 
 
 ]

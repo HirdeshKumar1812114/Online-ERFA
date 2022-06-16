@@ -22,11 +22,13 @@ import {
   CRow,
 } from "@coreui/react";
 import { CBadge } from '@coreui/react'
+import Reveal from 'react-reveal/Reveal';
 
 import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:5000/",
 });
+import Slide from 'react-reveal/Slide';
 
 const Layout = (props) => {
   const [visible, setVisible] = useState(false);
@@ -54,10 +56,11 @@ const Layout = (props) => {
   }
   return (
     <CContainer>
-     
+
       {getPost.map((posts, key) => {
         return (
           <>
+          <Slide left cascade>
             <CCard>
               <CCardBody>
                 <a style={{ 'text-decoration': 'none' }} onClick={() => {
@@ -88,13 +91,14 @@ const Layout = (props) => {
                 </a>
               </CCardBody>
             </CCard>
+            </Slide>
             <br />
           </>
-        )
-      })}
+  )
+})}
 
 
-    </CContainer>
+    </CContainer >
   );
 };
 
