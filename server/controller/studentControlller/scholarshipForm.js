@@ -575,9 +575,11 @@ exports.allocateScholarship = expressAsyncHandler(async function(req, res, next)
  const getApplicationId=req.body.applicationId;
  const scholarshipPercentage=req.body.scholarshipPercentage;
  const acceptedForScholarship=req.body.acceptedForScholarship;
+ const studentId= req.body.studentId;
+ const scholarshipTitle=req.body.scholarshipTitle
 // console.log(getApplicationId);
 // console.log(acceptedForScholarship);
-// console.log(scholarshipPercentage);
+// console.log(scholarshipPerzzcentage);
 
 
   
@@ -588,7 +590,45 @@ exports.allocateScholarship = expressAsyncHandler(async function(req, res, next)
     }
   })
 
+
+const getEmailAddress = await db.UserStudent.findOne({_id:studentId})
+console.log(getEmailAddress.email)
+
 if(saveChanges){
+
+   
+  var nodemailer = require('nodemailer');
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'onlineerfa1998@gmail.com',
+      pass: 'ciuptmjpjlnzgfgo'
+    }
+  });
+
+  var mailOptions = {
+    from: 'onlineerfa1998@gmail.com',
+    to: `${getEmailAddress.email}`,
+    subject: `${getEmailAddress.regid} ${scholarshipTitle} Final Decision`,
+    html: `<p><strong>Hello ${getEmailAddress.firstname} ${getEmailAddress.lastname}</strong></p>
+<p>&nbsp;</p>
+<p>We are delighted to grant you ${scholarshipPercentage} scholarship under ${scholarshipTitle}.</p>
+<p>This scholarship will be automatically adjusted for your next semester fees.</p>.
+<p>&nbsp;</p>
+<p>King Regards,</p>
+<p>EERFA Department</p>
+<p>&nbsp;</p>`
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
   res.status(200).json({ message: "Successfully in saving changes!" })
   res.end();
 }else{
