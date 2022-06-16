@@ -224,9 +224,12 @@ export default function Marking(props) {
                     <CFormRange min="0" max="100" label="Example range" step="25" defaultValue="0" onChange={(e) => { setPer(e.target.value) }} id="customRange2" />
                     <CFormInput type="text" id="staticEmail" defaultValue={per} readOnly plainText style={{ 'font-weight': 'bold' }} />
                     <br />
-                    <CButton type="submit" className="mb-3">
+                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <CButton type="submit" color="success" className="me-md-2">
                       Post Results
-                    </CButton>
+                      </CButton>
+                      <CButton color="warning" onClick={() =>{setDataSubmited(true)}}> Go back</CButton>
+                    </div>
                   </CForm>
                   {/* <prev >{JSON.stringify(per, null, 2)}</prev> */}
                 </CCardBody>
