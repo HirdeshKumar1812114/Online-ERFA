@@ -129,7 +129,7 @@ const Layout = (props) => {
     else if (status === 'paused') {
       return (
         <>
-          <CBadge color="warning">Paused</CBadge>
+          <CBadge color="warning">Hold</CBadge>
         </>)
     }
     else if (status === 'rejected') {
