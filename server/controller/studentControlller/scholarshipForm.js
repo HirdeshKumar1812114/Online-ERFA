@@ -58,7 +58,8 @@ console.log(checkRecord)
       messageStudent: req.body.messageStudent,
       messageOfficer:req.body.messageOfficer,
       applicationComplete:req.body.applicationComplete,
-      emailSented:'No'
+      emailSented:'No',
+      acceptedForScholarship:false
     });
 
     await newForm.save((err, checkTitle) => {
@@ -658,7 +659,7 @@ const fetchApplications=await db.ScholarshipForm.aggregate([
  
   {
     $match: {
-        acceptedForScholarship: { $exists: true},
+        interview: { $exists: true},
 scholarship:{$eq: ObjectId(getScholarshipId)}
 }
   }   ,{
@@ -680,7 +681,7 @@ scholarship:{$eq: ObjectId(getScholarshipId)}
       "_id":1,
       "student":1,
      "scholarship":1,
-   
+   "interview":1,
      "scholarshipPercentage":1,
      "acceptedForScholarship":1,
      "status":1,
