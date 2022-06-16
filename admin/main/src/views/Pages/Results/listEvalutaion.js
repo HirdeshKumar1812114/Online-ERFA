@@ -47,23 +47,10 @@ const Layout = (props) => {
 
   var applications = [];
   const stautsBadge = (status) => {
-    if (status === 'accepted') {
+    if (status === true) {
       return (
         <>
-          <CBadge color="success">Accepted</CBadge>
-        </>
-      )
-    }
-    else if (status === 'paused') {
-      return (
-        <>
-          <CBadge color="warning">Paused</CBadge>
-        </>)
-    }
-    else if (status === 'rejected') {
-      return (
-        <>
-          <CBadge color="danger">Rejected</CBadge>
+          <CBadge color="success">Evaluation Done!</CBadge>
         </>
       )
     }
@@ -133,17 +120,15 @@ const Layout = (props) => {
     });
   }, []);
 
-  useEffect(() => {
-
-
-    api.get("scholarship-form/all").then((res) => {
-      // console.log(getapplications)
-      localStorage.setItem("all-applications", JSON.stringify(res.data));
-      applications = res.data;
-      console.log('1', applications)
-      setApplications(res.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   api.get("scholarship-form/all").then((res) => {
+  //     console.log('all Data=>',res.data)
+  //     localStorage.setItem("all-applications", JSON.stringify(res.data));
+  //     applications = res.data;
+  //     console.log('1', applications)
+  //     setApplications(res.data);
+  //   });
+  // }, []);
 
 
 
@@ -159,15 +144,15 @@ const Layout = (props) => {
     }
   }, [scholarship])
 
-  const showAll = () => {
-    api.get("scholarship-form/all").then((res) => {
-      // console.log(getapplications)
-      localStorage.setItem("all-applications", JSON.stringify(res.data));
-      applications = res.data;
-      console.log('3', applications)
-      setApplications(res.data);
-    });
-  }
+  // const showAll = () => {
+  //   api.get("scholarship-form/all").then((res) => {
+  //     // console.log(getapplications)
+  //     localStorage.setItem("all-applications", JSON.stringify(res.data));
+  //     applications = res.data;
+  //     console.log('3', applications)
+  //     setApplications(res.data);
+  //   });
+  // }
   const deleteapplication = () => {
     // console.log('application to delte: ',applicationtoDelete)
     api
@@ -204,7 +189,7 @@ const Layout = (props) => {
                 <h3>All Evaluations</h3>
               </strong>
             </CCol>
-            <CCol md={4} sm={4}>
+            <CCol md={8} sm={8}>
                 <CFormSelect
                   value={scholarship}
                   onChange={(e) => {
@@ -234,21 +219,18 @@ const Layout = (props) => {
 
                 </CFormSelect> */}
               </CCol>
-              <CCol md={4} sm={4}>
-                <CButton color="primary" onClick={() => { showAll() }} >Show All scholarships</CButton>
-
-              </CCol>
+              
           </CRow>
         </CCardHeader>
         <CCardBody>
           <CTable striped hover responsive>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">Applicaiton title</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Name </CTableHeaderCell>
+                <CTableHeaderCell scope="col">Student Id</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Start date</CTableHeaderCell>
                 <CTableHeaderCell scope="col">End date</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Student Id</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Name </CTableHeaderCell>
+                <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
@@ -257,12 +239,12 @@ const Layout = (props) => {
                 return (
                   <CTableRow>
                     <CTableHeaderCell scope="row">
-                      {application.scholarshipdetails.title}
+                    {`${application.studentdetails.firstname} ${application.studentdetails.lastname}  `}
                     </CTableHeaderCell>
+                    <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
                     <CTableDataCell>{application.scholarshipdetails.applicationstart}</CTableDataCell>
                     <CTableDataCell style={{ 'color': 'red' }}>{application.scholarshipdetails.applicationdeadline}</CTableDataCell>
-                    <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
-                    <CTableDataCell>{`${application.studentdetails.firstname} ${application.studentdetails.lastname}  `}</CTableDataCell>
+                    <CTableDataCell>{stautsBadge(application.acceptedForScholarship)}</CTableDataCell>
                     <CTableDataCell>
                       <CButtonGroup
                         role="group"

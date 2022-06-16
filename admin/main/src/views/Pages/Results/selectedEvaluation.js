@@ -16,11 +16,11 @@ import {
     CFormTextarea,
     CFormCheck,
     CTable,
-  CTableHead,
-  CTableRow,
-  CTableHeaderCell,
-  CTableDataCell,
-  CTableBody,
+    CTableHead,
+    CTableRow,
+    CTableHeaderCell,
+    CTableDataCell,
+    CTableBody,
     CBadge,
     CRow, CFormRange
 } from "@coreui/react";
@@ -48,7 +48,6 @@ const Layout = (props) => {
     const [title, setTitle] = useState("");
     const [pdf, setPdf] = useState('');
     const [applicationComplete, setApplicationComplete] = useState('');
-    const [status, setStatus] = useState('notreviewed');
     const [per, setPer] = useState('')
     const [disabled, setDisabled] = useState(false);
     const [formName, setFormName] = useState('');
@@ -59,10 +58,10 @@ const Layout = (props) => {
     const [studentName, setName] = useState('')
     const [regid, setregid] = useState('')
     const [getRemarks, setRemarks] = useState([])
-    const [checkInterview, setCheckInterview]= useState(false)
+    const [checkInterview, setCheckInterview] = useState(false)
     const [userID, setUserID] = useCookies(["onlineerfa_student_userID"]);
 
-    var remarks=[];
+    var remarks = [];
     useEffect(() => {
         api.
             post('scholarship-form/applicationform', { scholarship: localStorage.getItem("viewPostUrl"), student: localStorage.getItem("studentId") },
@@ -72,30 +71,32 @@ const Layout = (props) => {
                 console.log(res.data)
                 setPdf(form)
                 setFormName(form)
-                setStatus(status)
+                setPer(per)
                 setApplicationId(res.data._id)
                 setYourMessage(messageStudent)
                 setOfficerMessage(messageOfficer)
                 setApplicationId(_id)
                 setLoading(false)
             })
-            let {firstname, lastname, regid} = JSON.parse(localStorage.getItem("student-details"))
-            setName(`${firstname} ${lastname}`)
-            setregid(regid)
+        let { firstname, lastname, regid } = JSON.parse(localStorage.getItem("student-details"))
+        setName(`${firstname} ${lastname}`)
+        setregid(regid)
     }, [title])
 
     useEffect(() => {
-        if(applicationId!=""){api.post('interview/getallremarksapplication', { application:applicationId })
-          .then(res => {
-              
-       console.log(res.data);
-        remarks=res.data;
-        setCheckInterview(true)
-        setRemarks(res.data);
-          console.log("Record 0",res.data[0])
-          console.log("Record 1",res.data[0].erfadetails.email)
-          }).catch((err) => console.log(err))}
-      }, [applicationId])
+        if (applicationId != "") {
+            api.post('interview/getallremarksapplication', { application: applicationId })
+            .then(res => {
+
+                console.log(res.data);
+                remarks = res.data;
+                setCheckInterview(true)
+                setRemarks(res.data);
+                console.log("Record 0", res.data[0])
+                console.log("Record 1", res.data[0].erfadetails.email)
+            }).catch((err) => console.log(err))
+        }
+    }, [applicationId])
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
@@ -143,29 +144,23 @@ const Layout = (props) => {
     }
 
     const submitData = () => {
-        console.log('pdf1==>', pdf);
         let scholarshipID = localStorage.getItem("viewPostUrl")
         console.log(JSON.parse(JSON.stringify(scholarshipID)));
         console.log(userID.onlineerfa_student_userID)
 
-        var data = new FormData();
-        data.append('messageOfficer', officerMessage)
-        data.append('status', status)
-
-        // console.log("FormData ==>", data);
-        // for (var value of data.values()) {
-        //   console.log('loop values==>', value);
-        // }
-
-        const config = {
-            headers: { "content-type": "multipart/form-data" },
-        };
 
         api
-            .put(`scholarship-form/sendofficer/${applicationId}`, { messageOfficer: officerMessage, status: status }, setLoading(true), config)
+            .post('scholarship-form/evaluationstudent',
+                {
+                    scholarshipPercentage: per,
+                    acceptedForScholarship: true,
+                    applicationId: applicationId,
+                    studentId:userID.onlineerfa_student_userID
+
+                }, setLoading(true))
             .then((result) => {
-                // console.log("Data Posted in DB");
-                // console.log("Response==>", result);
+                console.log("Data Posted in DB");
+                console.log("Response==>", result);
                 setLoading(false);
                 console.log(result.data)
                 window.alert("Evaluation done!");
@@ -201,36 +196,36 @@ const Layout = (props) => {
                         </>
                     ) : (
                         <>
-                        <CRow>
-                            <CCol md={6}>Student Name: <span style={{'fontWeight':'bold'}}>{studentName}</span></CCol>
-                            <CCol md={6}> Registration Id: <span style={{'fontWeight':'bold'}}>{regid}</span></CCol>
-                        </CRow>
-                        <br></br>
-                        <CTable striped hover responsive>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">Panelist Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Designation</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Percentage</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Comments</CTableHeaderCell>
-             
-              </CTableRow>
-            </CTableHead>  
-            <CTableBody>
-            {getRemarks.map((remark,key) => {   
-    return(  
-        
-               <CTableRow>
-  <CTableDataCell>{`${remark.erfadetails.firstname} ${remark.erfadetails.lastname}`}</CTableDataCell>
-  <CTableDataCell>{remark.erfadetails.designation}</CTableDataCell>
-  <CTableDataCell>{remark.score}</CTableDataCell>
-  <CTableDataCell>{remark.remark}</CTableDataCell>
-               </CTableRow>
-            
-            );}   )}
-            </CTableBody> 
-                       </CTable> 
-                        <br></br>
+                            <CRow>
+                                <CCol md={6}>Student Name: <span style={{ 'fontWeight': 'bold' }}>{studentName}</span></CCol>
+                                <CCol md={6}> Registration Id: <span style={{ 'fontWeight': 'bold' }}>{regid}</span></CCol>
+                            </CRow>
+                            <br></br>
+                            <CTable striped hover responsive>
+                                <CTableHead>
+                                    <CTableRow>
+                                        <CTableHeaderCell scope="col">Panelist Name</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Designation</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Percentage</CTableHeaderCell>
+                                        <CTableHeaderCell scope="col">Comments</CTableHeaderCell>
+
+                                    </CTableRow>
+                                </CTableHead>
+                                <CTableBody>
+                                    {getRemarks.map((remark, key) => {
+                                        return (
+
+                                            <CTableRow>
+                                                <CTableDataCell>{`${remark.erfadetails.firstname} ${remark.erfadetails.lastname}`}</CTableDataCell>
+                                                <CTableDataCell>{remark.erfadetails.designation}</CTableDataCell>
+                                                <CTableDataCell>{remark.score}</CTableDataCell>
+                                                <CTableDataCell>{remark.remark}</CTableDataCell>
+                                            </CTableRow>
+
+                                        );
+                                    })}
+                                </CTableBody>
+                            </CTable>
                             <>
                                 <br />
                                 <CForm
@@ -244,7 +239,7 @@ const Layout = (props) => {
 
                                     </CRow>
 
-                                 
+
 
                                     {formName == '' || !formName || formName == undefined ?
                                         <span style={{ 'color': 'red' }}>
@@ -266,12 +261,14 @@ const Layout = (props) => {
 
                                     }
                                     <CCol md={12}>
-                                        <CFormLabel htmlFor="formFile">Update status:</CFormLabel>
-                                        <CFormSelect aria-label="Default select example" onChange={(e) => { setStatus(e.target.value) }}>
-                                            <option >Select status</option>
-                                            <option value="accepted">Accept Application</option>
-                                            <option value="paused">Pause Application</option>
-                                            <option value="rejected" >Reject Applicaiton</option>
+                                        <CFormLabel htmlFor="formFile">Final scholarship %:</CFormLabel>
+                                        <CFormSelect aria-label="Default select example" onChange={(e) => { setPer(e.target.value) }}>
+                                            <option >Select percentage</option>
+                                            <option value="0">0%</option>
+                                            <option value="25">25%</option>
+                                            <option value="50" >50%</option>
+                                            <option value="75">75%</option>
+                                            <option value="100" >100%</option>
                                         </CFormSelect>
                                     </CCol>
 
@@ -279,7 +276,7 @@ const Layout = (props) => {
                                     <br />
                                     <br />
                                     <CButton type="submit" color="primary">
-                                        Update Evaluation Form
+                                        Finalize Evaluation Results
                                     </CButton>
                                 </CForm>
                             </>
@@ -297,10 +294,10 @@ const Layout = (props) => {
     <prev>{JSON.stringify(applicationId, null, 2)}</prev> 
         </CContainer>
     <prev>{JSON.stringify(tags, null, 2)}</prev> */}
-     
-     <prev>{JSON.stringify(checkInterview, null, 2)}</prev>
+
+            <prev>{JSON.stringify(checkInterview, null, 2)}</prev>
         </CContainer>
-        
+
     );
 };
 
