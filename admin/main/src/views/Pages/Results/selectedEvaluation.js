@@ -22,7 +22,7 @@ import {
   CTableDataCell,
   CTableBody,
     CBadge,
-    CRow
+    CRow, CFormRange
 } from "@coreui/react";
 
 import Alert from "@mui/material/Alert";
@@ -49,7 +49,7 @@ const Layout = (props) => {
     const [pdf, setPdf] = useState('');
     const [applicationComplete, setApplicationComplete] = useState('');
     const [status, setStatus] = useState('notreviewed');
-
+    const [per, setPer] = useState('')
     const [disabled, setDisabled] = useState(false);
     const [formName, setFormName] = useState('');
     const [yourMessage, setYourMessage] = useState('');
@@ -274,6 +274,8 @@ const Layout = (props) => {
                                             <option value="rejected" >Reject Applicaiton</option>
                                         </CFormSelect>
                                     </CCol>
+
+
                                     <br />
                                     <br />
                                     <CButton type="submit" color="primary">
