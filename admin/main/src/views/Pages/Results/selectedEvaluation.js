@@ -54,6 +54,7 @@ const Layout = (props) => {
     const [yourMessage, setYourMessage] = useState('');
     const [officerMessage, setOfficerMessage] = useState('');
     const [applicationId, setApplicationId] = useState('');
+    const [prevPer, setPrevPer] = useState('')
 
     const [studentName, setName] = useState('')
     const [regid, setregid] = useState('')
@@ -74,6 +75,7 @@ const Layout = (props) => {
                 setPer(per)
                 setApplicationId(res.data._id)
                 setYourMessage(messageStudent)
+                setPrevPer(res.data.scholarshipPercentage)
                 setOfficerMessage(messageOfficer)
                 setApplicationId(_id)
                 setLoading(false)
@@ -86,15 +88,15 @@ const Layout = (props) => {
     useEffect(() => {
         if (applicationId != "") {
             api.post('interview/getallremarksapplication', { application: applicationId })
-            .then(res => {
+                .then(res => {
 
-                console.log(res.data);
-                remarks = res.data;
-                setCheckInterview(true)
-                setRemarks(res.data);
-                console.log("Record 0", res.data[0])
-                console.log("Record 1", res.data[0].erfadetails.email)
-            }).catch((err) => console.log(err))
+                    console.log(res.data);
+                    remarks = res.data;
+                    setCheckInterview(true)
+                    setRemarks(res.data);
+                    console.log("Record 0", res.data[0])
+                    console.log("Record 1", res.data[0].erfadetails.email)
+                }).catch((err) => console.log(err))
         }
     }, [applicationId])
 
@@ -155,16 +157,15 @@ const Layout = (props) => {
                     scholarshipPercentage: per,
                     acceptedForScholarship: true,
                     applicationId: applicationId,
-                    studentId:localStorage.getItem("studentId")
+                    studentId: localStorage.getItem("studentId")
 
                 }, setLoading(true))
             .then((result) => {
-                console.log("Data Posted in DB");
-                console.log("Response==>", result);
+                // console.log("Response==>", result);
                 setLoading(false);
                 console.log(result.data)
                 window.alert("Evaluation done!");
-                props.history.push('applications')
+                props.history.push('list-evaluation')
             })
             .catch((err) => {
                 setLoading(false);
@@ -235,53 +236,48 @@ const Layout = (props) => {
                                     validated={validated}
                                     onSubmit={handleSubmit}
                                 >
-                                    <CRow className="mb-3">
+                                   
 
-                                    </CRow>
-
-
-
-                                    {formName == '' || !formName || formName == undefined ?
-                                        <span style={{ 'color': 'red' }}>
-                                            Form Not uploaded
-                                        </span>
+                                    {prevPer >= 0 ?
+                                        <CFormLabel htmlFor="formFile">Scholarship Alloted: <span style={{ 'color': 'red' }}>{prevPer}%</span></CFormLabel>
                                         :
-                                        <>
-                                            <CCol md={12}>
-                                                {/* <PDFViewer
-                                                    document={{
-                                                        url: 'http://localhost:5000/getForm/form_1646489636119.pdf',
-                                                    }}
-                                                /> */}
-                                                {/* <iframe src="http://localhost:5000/getForm/form_1646489636119.pdf" width="100%" height="500px">
-                                                </iframe> */}
-                                                Open the file <a href={`http://localhost:5000/getForm/${formName}`} target='_blank'>{formName}</a>
-                                            </CCol>
+                                        <>  
+                                            <CRow className="mb-3">
+                                                <CCol md={6}>
+
+                                                    <CFormLabel htmlFor="formFile">Final scholarship %:</CFormLabel>
+                                                    <CFormSelect aria-label="Default select example" onChange={(e) => { setPer(e.target.value) }}>
+                                                        <option >Select percentage</option>
+                                                        <option value="0">0%</option>
+                                                        <option value="25">25%</option>
+                                                        <option value="50" >50%</option>
+                                                        <option value="75">75%</option>
+                                                        <option value="100" >100%</option>
+                                                    </CFormSelect>
+                                                </CCol>
+                                            </CRow>
+                                                <br />
+                                                <br />
+
+                                            <CRow className="mb-3">
+
+                                                <CCol md={6}>
+                                                    <CButton type="submit" color="primary">
+                                                        Finalize Evaluation Results
+                                                    </CButton>
+                                                </CCol>
+                                            </CRow>
                                         </>
-
                                     }
-                                    <CCol md={12}>
-                                        <CFormLabel htmlFor="formFile">Final scholarship %:</CFormLabel>
-                                        <CFormSelect aria-label="Default select example" onChange={(e) => { setPer(e.target.value) }}>
-                                            <option >Select percentage</option>
-                                            <option value="0">0%</option>
-                                            <option value="25">25%</option>
-                                            <option value="50" >50%</option>
-                                            <option value="75">75%</option>
-                                            <option value="100" >100%</option>
-                                        </CFormSelect>
-                                    </CCol>
 
 
-                                    <br />
-                                    <br />
-                                    <CButton type="submit" color="primary">
-                                        Finalize Evaluation Results
-                                    </CButton>
+
                                 </CForm>
                             </>
                         </>
                     )}
+                    {/* <prev>{JSON.stringify(prevPer, null, 2)}</prev> */}
+
                 </CCardBody>
             </CCard>
 
@@ -295,7 +291,6 @@ const Layout = (props) => {
         </CContainer>
     <prev>{JSON.stringify(tags, null, 2)}</prev> */}
 
-            <prev>{JSON.stringify(checkInterview, null, 2)}</prev>
         </CContainer>
 
     );

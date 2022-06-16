@@ -95,7 +95,7 @@ const _navAdmin = [
     component: CNavItem,
     name: "List Schedule",
     to: "/list-schedule",
-    icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -113,12 +113,7 @@ const _navAdmin = [
     to: "/list-evaluation",
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: "Send Results",
-    to: "/send-results",
-    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
-  }
+  
 ];
 
 export default _navAdmin;
