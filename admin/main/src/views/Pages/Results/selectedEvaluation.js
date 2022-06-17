@@ -157,7 +157,8 @@ const Layout = (props) => {
                     scholarshipPercentage: per,
                     acceptedForScholarship: true,
                     applicationId: applicationId,
-                    studentId: localStorage.getItem("studentId")
+                    studentId: localStorage.getItem("studentId"),
+                    scholarshipTitle:localStorage.getItem('ScholarshipTitle')
 
                 }, setLoading(true))
             .then((result) => {

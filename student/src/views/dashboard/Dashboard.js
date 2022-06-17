@@ -94,9 +94,9 @@ const Dashboard = (props) => {
                             <CCardBody>
                               <CCardTitle>{posts.scholarshipdetails.title}</CCardTitle>
                               <CCardText>
-                                {posts.scholarshipPercentage !== '0%' ?
+                                {posts.scholarshipPercentage !== true ?
                                   <p>
-                                    Congratulations you have been successful awared <span style={{ color: '#09014A', fontWeight: 'bold' }}>{posts.scholarshipPercentage}</span> scholarship for your academic year 2022 - 2023.
+                                    Congratulations you have been successful awared <span style={{ color: '#09014A', fontWeight: 'bold' }}>{posts.scholarshipPercentage}</span> % scholarship for your academic year 2022 - 2023.
                                   </p>
                                   : 
                                   <p>
@@ -148,7 +148,7 @@ const Dashboard = (props) => {
                     <CCardText>
                       Some quick example text to build on the card title and make up the bulk of the card's content.
                     </CCardText>
-                    <CButton href="#">Go somewhere</CButton>
+                    <•••••••CButton href="#">Go somewhere</•••••••CButton>
                   </CCardBody>
                 </CCard>
               </CCol>
