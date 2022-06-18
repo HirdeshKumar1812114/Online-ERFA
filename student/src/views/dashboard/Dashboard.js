@@ -82,34 +82,41 @@ const Dashboard = (props) => {
                   {
                     getResult.map((posts, key) => {
                       return (
-                        <CCol xs>
-                        <Flip left>
-                          <CCard
-                            color={posts.scholarshipPercentage !== '0%' ? "success" : "danger"}
-                            textColor={"white"}
-                            className="mb-3"
-                            style={{ maxWidth: '18rem' }}
-                          >
-                            <CCardHeader>Scholarship Result</CCardHeader>
-                            <CCardBody>
-                              <CCardTitle>{posts.scholarshipdetails.title}</CCardTitle>
-                              <CCardText>
-                                {posts.scholarshipPercentage !== true ?
-                                  <p>
-                                    Congratulations you have been successful awared <span style={{ color: '#09014A', fontWeight: 'bold' }}>{posts.scholarshipPercentage}</span> % scholarship for your academic year 2022 - 2023.
-                                  </p>
-                                  : 
-                                  <p>
-                                    We regret to inform you that you did not qualify for this scholarship for your academic year 2022 - 2023.
-                                  </p>
-                                  }
+                        <>
+                          { posts.acceptedForScholarship === true ?
+                            <CCol xs>
+                              <Flip left>
+                                <CCard
+                                  color={posts.scholarshipPercentage !== '0%' ? "success" : "danger"}
+                                  textColor={"white"}
+                                  className="mb-3"
+                                  style={{ maxWidth: '18rem' }}
+                                >
+                                  <CCardHeader>Scholarship Result</CCardHeader>
+                                  <CCardBody>
+                                    <CCardTitle>{posts.scholarshipdetails.title}</CCardTitle>
+                                    <CCardText>
+                                      {posts.scholarshipPercentage !== true ?
+                                        <p>
+                                          Congratulations you have been successful awared <span style={{ color: '#09014A', fontWeight: 'bold' }}>{posts.scholarshipPercentage}</span> % scholarship for your academic year 2022 - 2023.
+                                        </p>
+                                        :
+                                        <p>
+                                          We regret to inform you that you did not qualify for this scholarship for your academic year 2022 - 2023.
+                                        </p>
+                                      }
 
 
-                              </CCardText>
-                            </CCardBody>
-                          </CCard>
-                          </Flip>
-                        </CCol>
+                                    </CCardText>
+                                  </CCardBody>
+                                </CCard>
+                              </Flip>
+                            </CCol>
+                          :
+                          <></>
+                          }
+
+                        </>
                       )
                     })
                   }

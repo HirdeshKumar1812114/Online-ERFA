@@ -60,6 +60,7 @@ const Layout = (props) => {
       {getPost.map((posts, key) => {
         return (
           <>
+          
           <Slide left cascade>
             <CCard>
               <CCardBody>

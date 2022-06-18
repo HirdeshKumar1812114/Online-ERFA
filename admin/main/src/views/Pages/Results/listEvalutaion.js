@@ -240,8 +240,6 @@ const Layout = (props) => {
                     {`${application.studentdetails.firstname} ${application.studentdetails.lastname}  `}
                     </CTableHeaderCell>
                     <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
-                    <CTableDataCell>{application.scholarshipdetails.applicationstart}</CTableDataCell>
-                    <CTableDataCell style={{ 'color': 'red' }}>{application.scholarshipdetails.applicationdeadline}</CTableDataCell>
                     <CTableDataCell>{stautsBadge(application.acceptedForScholarship)}</CTableDataCell>
                     <CTableDataCell>
                       <CButtonGroup
