@@ -44,7 +44,7 @@ const Layout = (props) => {
     const [getStudents, setStudents] = useState([]);
     const mongoose = require("mongoose");
     const ObjectId = mongoose.Types.ObjectId;
-    
+
     var applications = [];
     const stautsBadge = (status) => {
         if (status === 'accepted') {
@@ -76,23 +76,23 @@ const Layout = (props) => {
         }
     }
 
-  
+
 
     useEffect(() => {
-        api.post("scholarship-form/sorttitlestatus",{status: "accepted", scholarship: localStorage.getItem("interviewScholarshipId") })
-        .then((res) => {
-            // console.log(getapplications)
-          console.log(localStorage.getItem("interviewScholarshipId"))
-            localStorage.setItem("all-applications", JSON.stringify(res.data));
-            applications = res.data;
-            console.log('applicants=>',res.data)
-            // console.log(applications[0].interview)
-            setApplications(res.data);
-        });
+        api.post("scholarship-form/sorttitlestatus", { status: "accepted", scholarship: localStorage.getItem("interviewScholarshipId") })
+            .then((res) => {
+                // console.log(getapplications)
+                console.log(localStorage.getItem("interviewScholarshipId"))
+                localStorage.setItem("all-applications", JSON.stringify(res.data));
+                applications = res.data;
+                console.log('applicants=>', res.data)
+                // console.log(applications[0].interview)
+                setApplications(res.data);
+            });
     }, []);
 
     let appendStudent = (student) => {
-        if (!getStudents.includes(student) ) {
+        if (!getStudents.includes(student)) {
             setStudents((getStudents) => ([...getStudents, student]))
         }
     }
@@ -100,7 +100,10 @@ const Layout = (props) => {
     useEffect(() => {
         let len = getApplications.length
         for (let i = 0; i < len; i++) {
-            appendStudent(getApplications[i]._id)
+            if(getApplications[i].acceptedForScholarship==false){
+                console.log('Append=>', getApplications[i].firstname )
+                appendStudent(getApplications[i]._id)
+            }
             // 
         }
     }, [applications])
@@ -150,14 +153,14 @@ const Layout = (props) => {
         props.history.push("selected-applicaiton");
     };
 
-    const sendEmails = ()=>{
-        console.log('localStorage.getItem("interviewScholarshipId")=>',localStorage.getItem("interviewId"))
+    const sendEmails = () => {
+        console.log('localStorage.getItem("interviewScholarshipId")=>', localStorage.getItem("interviewId"))
         console.log(getStudents);
-        api.post('interview/selectinterviewee',{interview:localStorage.getItem("interviewId"),students:getStudents})
-        .then((res) => {
-            console.log(res)
-            window.alert('Email Sent')
-        }).catch((err) => console.log(err))
+        api.post('interview/selectinterviewee', { interview: localStorage.getItem("interviewId"), students: getStudents })
+            .then((res) => {
+                console.log(res)
+                window.alert('Email Sent')
+            }).catch((err) => console.log(err))
     }
 
 
@@ -171,7 +174,7 @@ const Layout = (props) => {
                                 <h3>{localStorage.getItem("interviewScholarshipTitle")}</h3>
                             </strong>
                         </CCol>
-                        <CCol md={4} sm={12} style={{'float': 'right'}}>
+                        <CCol md={4} sm={12} style={{ 'float': 'right' }}>
                             <CButton color="success" style={{ "color": "white" }} onClick={() => { sendEmails() }} >Send interview confirmation email</CButton>
                         </CCol>
                     </CRow>
@@ -187,27 +190,28 @@ const Layout = (props) => {
                                 <CTableHeaderCell scope="col">Email Sent</CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
-                         <CTableBody>
+                        <CTableBody>
                             {getApplications.map((application, key) => {
-
                                 return (
+                                    application.acceptedForScholarship == false ?
 
-                                    <CTableRow>
-                                        <CTableHeaderCell scope="row">
-                                            {application.studentdetails.firstname} {application.studentdetails.lastname}
-                                        </CTableHeaderCell>
-                                        <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
-                                        <CTableDataCell>{application.studentdetails.section}</CTableDataCell>
-                                        <CTableDataCell>{stautsBadge(application.status)}</CTableDataCell>
-                                        <CTableDataCell>{application.emailSented}</CTableDataCell>
-                                    </CTableRow>
-                                );
+                                        <CTableRow>
+                                            <CTableHeaderCell scope="row">
+                                                {application.studentdetails.firstname} {application.studentdetails.lastname}
+                                            </CTableHeaderCell>
+                                            <CTableDataCell>{application.studentdetails.regid}</CTableDataCell>
+                                            <CTableDataCell>{application.studentdetails.section}</CTableDataCell>
+                                            <CTableDataCell>{stautsBadge(application.status)}</CTableDataCell>
+                                            <CTableDataCell>{application.emailSented}</CTableDataCell>
+                                        </CTableRow>
+                                        : <></>
+                                )
 
                             })
 
 
                             }
-                        </CTableBody> 
+                        </CTableBody>
                     </CTable>
 
                     <CModal

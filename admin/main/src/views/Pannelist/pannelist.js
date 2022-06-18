@@ -82,24 +82,33 @@ export default function App() {
         setLoading(true)
       )
       .then((result) => {
-        console.log(result.data)
-        setStudentData({
-          name: `${result.data.studentdetails.firstname} ${result.data.studentdetails.lastname}`,
-          regNo: result.data.studentdetails.regid,
-          program: result.data.studentdetails.program,
-          section: result.data.studentdetails.section,
-          form: result.data.scholarship.form,
-          applicationId: result.data.scholarship._id,
-          pannelistId: userId.onlineerfa_admin_userId,
-        })
 
-        setValid("true");
-        alert();
-        setLoading(false);
-        setStudentFound(true);
-        setShowSearch(false)
-        console.log(result)
-        // props.history.push("view-users");
+        if (result.data.scholarship.emailSented == 'Yes') {
+          console.log(result.data)
+          setStudentData({
+            name: `${result.data.studentdetails.firstname} ${result.data.studentdetails.lastname}`,
+            regNo: result.data.studentdetails.regid,
+            program: result.data.studentdetails.program,
+            section: result.data.studentdetails.section,
+            form: result.data.scholarship.form,
+            applicationId: result.data.scholarship._id,
+            pannelistId: userId.onlineerfa_admin_userId,
+          })
+
+          setValid("true");
+          alert();
+          setLoading(false);
+          setStudentFound(true);
+          setShowSearch(false)
+          console.log(result)
+          // props.history.push("view-users");
+        }else{
+          setLoading(false);
+          setValid("notFound");
+          alert()
+        }
+
+
 
         if (result.message === 'Not Found') {
           setValid("notFound");
@@ -269,19 +278,19 @@ export default function App() {
       {studentFound === false ?
         searchStudent()
         : <>
-        <Fade top>
+          <Fade top>
 
-          <Marking
-            name={studentData.name}
-            regNo={studentData.regNo}
-            program={studentData.program}
-            section={studentData.section}
-            form={studentData.form}
-            applicationId={studentData.applicationId}
-            pannelistId={studentData.pannelistId}
-            func={pull_data}
-          />
-        </Fade>
+            <Marking
+              name={studentData.name}
+              regNo={studentData.regNo}
+              program={studentData.program}
+              section={studentData.section}
+              form={studentData.form}
+              applicationId={studentData.applicationId}
+              pannelistId={studentData.pannelistId}
+              func={pull_data}
+            />
+          </Fade>
 
         </>}
 

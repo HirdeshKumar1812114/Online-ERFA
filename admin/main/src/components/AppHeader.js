@@ -39,7 +39,11 @@ const AppHeader = () => {
           </CHeaderToggler>}
 
         <CHeaderBrand className="mx-auto d-md-none" to="/">
-          Pannelist Portal
+        {userType.onlineerfa_admin_userType === 'faculty' ? <>Pannelist's Portal</>
+              :
+            userType.onlineerfa_admin_userType === 'officer' ? <>Officer's Portal</>
+            :  
+              <>Admin's Dashboard</>}
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
