@@ -83,11 +83,12 @@ const Dashboard = (props) => {
                     getResult.map((posts, key) => {
                       return (
                         <>
-                          { posts.acceptedForScholarship === true ?
+                          {posts.acceptedForScholarship === true ?
                             <CCol xs>
                               <Flip left>
                                 <CCard
-                                  color={posts.scholarshipPercentage !== '0%' ? "success" : "danger"}
+                                  color={posts.scholarshipPercentage > "0" && posts.scholarshipPercentage != "" ? "success" :
+                                         posts.scholarshipPercentage == "0" && posts.scholarshipPercentage != "" ? "danger" :""}
                                   textColor={"white"}
                                   className="mb-3"
                                   style={{ maxWidth: '18rem' }}
@@ -96,14 +97,15 @@ const Dashboard = (props) => {
                                   <CCardBody>
                                     <CCardTitle>{posts.scholarshipdetails.title}</CCardTitle>
                                     <CCardText>
-                                      {posts.scholarshipPercentage !== true ?
+                                      {posts.scholarshipPercentage > "0" && posts.scholarshipPercentage != "" ?
                                         <p>
                                           Congratulations you have been successful awared <span style={{ color: '#09014A', fontWeight: 'bold' }}>{posts.scholarshipPercentage}</span> % scholarship for your academic year 2022 - 2023.
                                         </p>
-                                        :
-                                        <p>
-                                          We regret to inform you that you did not qualify for this scholarship for your academic year 2022 - 2023.
-                                        </p>
+                                        : posts.scholarshipPercentage == "0" && posts.scholarshipPercentage != "" ?
+                                          <p>
+                                            We regret to inform you that you did not qualify for this scholarship for your academic year 2022 - 2023.
+                                          </p> :
+                                          <></>
                                       }
 
 
@@ -112,8 +114,8 @@ const Dashboard = (props) => {
                                 </CCard>
                               </Flip>
                             </CCol>
-                          :
-                          <></>
+                            :
+                            <></>
                           }
 
                         </>

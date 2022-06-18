@@ -236,15 +236,13 @@ export default function App() {
                       <CCol sm={8}>
 
                         <CFormSelect
+                          required
                           value={scholarship}
                           onChange={(e) => {
                             setScholarship(e.target.value)
                           }}
-                          id="validationCustom04"
-                          label="ScholarshipTitle"
-                          required
                         >
-                          <option >Select scholarship</option>
+                          <option  selected="" value="">Select scholarship</option>
                           {post.map((value, key) => {
                             return (
                               <option value={value.title} >{value.title}</option>

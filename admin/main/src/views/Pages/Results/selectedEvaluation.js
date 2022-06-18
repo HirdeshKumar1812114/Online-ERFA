@@ -42,7 +42,7 @@ const api = axios.create({
 const Layout = (props) => {
 
     let [color, setColor] = useState("#49A54D");
-
+    const [valid, setValid] = useState("");
     const [loading, setLoading] = useState(false);
     const [validated, setValidated] = useState(false);
     const [title, setTitle] = useState("");
@@ -100,50 +100,97 @@ const Layout = (props) => {
         }
     }, [applicationId])
 
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        event.preventDefault();
-        // if (pdf.length == 0) {
-        //   event.stopPropagation();
-        //   setValidated(true);
-        // } else {
+    // const handleSubmit = (event) => {
+    //     const form = event.currentTarget;
+    //     event.preventDefault();
+    //     // if (pdf.length == 0) {
+    //     //   event.stopPropagation();
+    //     //   setValidated(true);
+    //     // } else {
 
-        // }
-        setValidated(false);
-        submitData();
+    //     // }
+    //     setValidated(false);
+    //     submitData();
+    // };
+
+    const handleSubmit = (event) => {
+        const form = event.currentTarget
+        if (form.checkValidity() === false || per == "") {
+            console.log('incomplete form')
+            setValid("incomplete");
+            alert();
+            event.preventDefault()
+            event.stopPropagation()
+        } else {
+            console.log('complete form')
+            submitData();
+        }
+
+        setValidated(true)
+    }
+
+
+    const alert = () => {
+        if (valid != "") {
+            if (valid == "true") {
+                return (
+                    <>
+                        <br />
+                        <br />
+                        <Alert
+                            style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+                            severity="success"
+                        >
+                            SUCCESS - <strong>Student Evaluation done</strong>
+                        </Alert>
+                        {/* <Redirect to='/' /> */}
+                    </>
+                );
+            } else if (valid == "incomplete") {
+                return (
+                    <>
+                        <br />
+                        <br />
+
+                        <Alert
+                            style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+                            severity="warning"
+                        >
+                            ALERT —{" "}
+                            <strong>
+                                {" "}
+                                Invalid form, please fill all the fields properly!
+                            </strong>
+                        </Alert>
+                    </>
+                );
+            }
+            else if (valid == "error") {
+                return (
+                    <>
+                        <br />
+                        <br />
+
+                        <Alert
+                            style={{ "margin-top": "-40px", "margin-bottom": "15px" }}
+                            severity="error"
+                        >
+                            500 —{" "}
+                            <strong>
+                                {" "}
+                                Internet connection error!
+                            </strong>
+                        </Alert>
+                    </>
+                );
+            }
+        }
+
+        else {
+            return <></>;
+        }
     };
 
-
-
-    const stautsBadge = (status) => {
-        if (status === 'accepted') {
-            return (
-                <>
-                    <CBadge color="success">Accepted</CBadge>
-                </>
-            )
-        }
-        else if (status === 'paused') {
-            return (
-                <>
-                    <CBadge color="warning">Pending</CBadge>
-                </>)
-        }
-        else if (status === 'rejected') {
-            return (
-                <>
-                    <CBadge color="danger">Rejected</CBadge>
-                </>
-            )
-        }
-        else {
-            return (
-                <>
-                    <CBadge color="primary">To be evaluated</CBadge>
-                </>
-            )
-        }
-    }
 
     const submitData = () => {
         let scholarshipID = localStorage.getItem("viewPostUrl")
@@ -158,7 +205,7 @@ const Layout = (props) => {
                     acceptedForScholarship: true,
                     applicationId: applicationId,
                     studentId: localStorage.getItem("studentId"),
-                    scholarshipTitle:localStorage.getItem('ScholarshipTitle')
+                    scholarshipTitle: localStorage.getItem('ScholarshipTitle')
 
                 }, setLoading(true))
             .then((result) => {
@@ -178,6 +225,7 @@ const Layout = (props) => {
     };
     return (
         <CContainer fluid>
+            {alert()}
             <CCard>
                 <CCardHeader>
                     <strong>
@@ -230,35 +278,46 @@ const Layout = (props) => {
                             </CTable>
                             <>
                                 <br />
-                                <CForm
-                                    disabled
-                                    className="row g-3 needs-validation"
-                                    noValidate
-                                    validated={validated}
-                                    onSubmit={handleSubmit}
-                                >
-                                   
 
-                                    {prevPer >= 0 ?
-                                        <CFormLabel htmlFor="formFile">Scholarship Alloted: <span style={{ 'color': 'red' }}>{prevPer}%</span></CFormLabel>
-                                        :
-                                        <>  
+
+
+                                {prevPer >= 0 ?
+                                    <CFormLabel htmlFor="formFile">Scholarship Alloted: <span style={{ 'color': 'red' }}>{prevPer}%</span></CFormLabel>
+                                    :
+                                    <>
+                                        <CForm
+                                            className="row g-3 needs-validation"
+                                            noValidate
+                                            validated={validated}
+                                            onSubmit={handleSubmit}
+                                        >
                                             <CRow className="mb-3">
                                                 <CCol md={6}>
 
                                                     <CFormLabel htmlFor="formFile">Final scholarship %:</CFormLabel>
-                                                    <CFormSelect aria-label="Default select example" onChange={(e) => { setPer(e.target.value) }}>
-                                                        <option >Select percentage</option>
+
+                                                    <CFormSelect
+                                                        feedbackInvalid="Please select a valid percentage."
+                                                        aria-label="select percentage"
+                                                        required
+                                                        onChange={(e) => {
+                                                            setPer(e.target.value)
+                                                        }}
+                                                    >
+                                                        <option selected="" value="">
+                                                            Select percentage
+                                                        </option>
                                                         <option value="0">0%</option>
                                                         <option value="25">25%</option>
                                                         <option value="50" >50%</option>
                                                         <option value="75">75%</option>
                                                         <option value="100" >100%</option>
                                                     </CFormSelect>
+
                                                 </CCol>
                                             </CRow>
-                                                <br />
-                                                <br />
+                                            <br />
+                                            <br />
 
                                             <CRow className="mb-3">
 
@@ -268,12 +327,12 @@ const Layout = (props) => {
                                                     </CButton>
                                                 </CCol>
                                             </CRow>
-                                        </>
-                                    }
+                                        </CForm>
+                                    </>
+                                }
 
 
 
-                                </CForm>
                             </>
                         </>
                     )}
