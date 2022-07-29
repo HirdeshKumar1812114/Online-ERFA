@@ -1,5 +1,11 @@
 # Online-ERFA
 
+## Group Members
+- #### Syed Mustafa Imam 1812134
+- #### Hirdesh Kumar 1812114
+
+---
+
 ## Introduction
 The procedure of the entire scholarship process is still following the traditional file system. This can be challenging for both the ERFA (External Relationship & Financial Assistance) department and students as both encounter complex and tedious tasks.
 
@@ -19,12 +25,6 @@ To develop a fully automated PWA (Progressive Web Application) for SZABIST’s E
 - Interview panellists’ evaluation sheets can be displaced and lost as there is a large volume of papers involved.
 - The previous year’s scholarship holder’s records review is laborious for the ERFA Department while allocating the scholarship percentage to a specific student.
 - If a student is already a scholarship holder, he or she has to follow the entire afresh procedure of re-application which would cause redundancy as some of the documents are already present in the records of the department.
-
-## Group Members
-- #### Syed Mustafa Imam 1812134
-- #### Hirdesh Kumar 1812114
-
----
 
 # Deployment
 
