@@ -32,13 +32,15 @@ To get started with the project Nodejs version ```v14.17.6``` and above should b
 
 ## Prject Structure
 
-│
+
 ├── admin
 │     ├── main <--- Admin Client Side (Reactjs)
+
 ├── server  <--- Backend server (Nodejs)
 |
+
 ├── student <--- Student Client Side (Reactjs)
-│   
+   
 
 
 ## Required Tools:
