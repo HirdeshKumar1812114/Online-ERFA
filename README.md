@@ -30,24 +30,15 @@ To develop a fully automated PWA (Progressive Web Application) for SZABIST’s E
 
 To get started with the project Nodejs version ```v14.17.6``` and above should be installed on the system.  
 
-## Prject Structure
-
-
-│├── admin
-
-       ├── main <--- Admin Client Side (Reactjs)
-
-     
-| 
-
-│├── server  <--- Backend server (Nodejs)
-
- 
-| 
-
-|├── student <--- Student Client Side (Reactjs)
+## Project Structure
+.
+├── admin
+│   └── main <--- Admin Client Side (Reactjs)
+|
+├── server  <--- Backend server (Nodejs)
+│
+└── student <--- Student Client Side (Reactjs)
    
-
 
 ## Required Tools:
 In order to run the project the system needs the following tools.
