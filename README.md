@@ -34,7 +34,6 @@ To get started with the project Nodejs version ```v14.17.6``` and above should b
 
 
 │├── admin
-
 |              ├── main <--- Admin Client Side (Reactjs)
 
      
