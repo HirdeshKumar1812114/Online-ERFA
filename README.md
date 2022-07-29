@@ -16,8 +16,9 @@ In this project an automated PWA (Progressive Web Application) will be developed
 
 To get started with the project Nodejs version ```v14.17.6``` and above should be installed on the system.  
 
-## Prject Structure
+## Project Structure
 .
+
 ├── admin
 
 │   └── main <--- Admin Client Side (Reactjs)
