@@ -19,14 +19,6 @@ To develop a fully automated PWA (Progressive Web Application) for SZABIST’s E
 - Interview panellists’ evaluation sheets can be displaced and lost as there is a large volume of papers involved.
 - The previous year’s scholarship holder’s records review is laborious for the ERFA Department while allocating the scholarship percentage to a specific student.
 - If a student is already a scholarship holder, he or she has to follow the entire afresh procedure of re-application which would cause redundancy as some of the documents are already present in the records of the department.
----
-## Project Links
-- Website Portfolio: [wwww.onlineerfa.com](https://syedmustafaimam.com/FypWork/Online_ERFA/index.html)
-- Admin Portal: [www.onlineerfa-admin.com](https://online-erfa-admin.web.app/#/login)
-- Student Portal: [www.onlineerfa-student.com](https://online-erfa.web.app/#/login)
-
-
----
 
 ## Group Members
 - #### Syed Mustafa Imam 1812134
