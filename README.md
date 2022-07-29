@@ -26,11 +26,6 @@ To develop a fully automated PWA (Progressive Web Application) for SZABIST’s E
 - Student Portal: [www.onlineerfa-student.com](https://online-erfa.web.app/#/login)
 
 
-# OnlineERFA
-The procedure of the entire scholarship process is still following the traditional file system. This can be challenging for both the ERFA (External Relationship & Financial Assistance) department and students as both encounter complex and tedious tasks. 
-
-In this project an automated PWA (Progressive Web Application) will be developed for SZABIST’s ERFA Department in order to cater for the needs of the whole scholarship’s process from announcements to the allotments of scholarships in a centralized manner. Hence, it would gradually save efforts and resources consumed during the student’s scholarship file submission, interview, and grant allotment. 
-
 ---
 
 ## Group Members
@@ -46,10 +41,15 @@ To get started with the project Nodejs version ```v14.17.6``` and above should b
 ## Prject Structure
 .
 ├── admin
+
 │   └── main <--- Admin Client Side (Reactjs)
+
 |
+
 ├── server  <--- Backend server (Nodejs)
+
 │
+
 └── student <--- Student Client Side (Reactjs)
    
 
